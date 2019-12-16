@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <link rel="icon" href="https://v3.bootcss.com/favicon.ico">
+
+    <title>Dashboard</title>
+
+    <!-- Bootstrap core CSS -->
+    <link th:href="@{common/bootstrap/css/bootstrap.min.css}" rel="stylesheet">
+
+    <!-- Custom styles for this template -->
+    <link th:href="@{common/page/css/dashboard.css}" rel="stylesheet">
+
+    <!--<link th:href="@{common/bootstrap/css/bootstrap.css}" rel="stylesheet">-->
+    <link th:href="@{common/bootstrap-table/src/bootstrap-table.css}" rel="stylesheet">
+    <!--<link th:href="@{common/font-awesome/css/font-awesome.min.css}" rel="stylesheet">-->
+</head>
+
+<body>
+<!-- 模态框 -->
+<div class="modal fade" id="myModal">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <!-- 模态框头部 -->
+            <div class="modal-header" style="border: 0">
+                <h4 class="modal-title">新增集群信息</h4>
+            </div>
+
+            <!-- 模态框主体 -->
+            <div class="modal-body">
+                <form id="insert-form">
+                    <div class="form-group col-md-4">
+                        <label for="insert-address">地址:</label>
+                        <input type="text" class="form-control" id="insert-address" name="address">
+                    </div>
+                    <div class="form-group col-md-4">
+                        <label for="insert-port">端口:</label>
+                        <input type="text" class="form-control" id="insert-port" name="port">
+                    </div>
+                    <div class="form-group col-md-4">
+                        <label for="insert-name">集群名称:</label>
+                        <input type="text" class="form-control" id="insert-name" name="name">
+                    </div>
+                </form>
+            </div>
+
+            <!-- 模态框底部 -->
+            <div class="modal-footer" style="border: 0">
+                <div class="col-md-12">
+                    <button type="button" class="btn btn-success" id="insert-btn">确定</button>
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">关闭</button>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<!-- 顶部固定栏 -->
+<nav class="navbar navbar-inverse navbar-fixed-top">
+    <div class="container-fluid">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar"
+                    aria-expanded="false" aria-controls="navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" id="flinkmanager">Flink Manager</a>
+        </div>
+    </div>
+</nav>
+
+<div class="container-fluid">
+    <div class="row">
+        <!--侧边导航栏-->
+
+        <div class="col-sm-3 col-md-2 sidebar">
+            <ul class="nav nav-sidebar">
+                <li class="active" id="navi_overview"><a href="#overview" data-toggle="tab">Overview </a></li>
+                <li id="navi_clusters"><a href="#clusters" data-toggle="tab">Clusters</a></li>
+                <li id="navi_taskmanagers"><a href="#taskmanagers" data-toggle="tab">Task Managers</a></li>
+                <li><a></a></li>
+                <li id="navi_running_jobs"><a href="#running_jobs" data-toggle="tab">Running Jobs</a></li>
+                <li id="navi_completed_jobs"><a href="#completed_jobs" data-toggle="tab">Completed Jobs</a></li>
+
+
+            </ul>
+        </div>
+
+        <!--Main-->
+        <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
+
+
+            <div class="tab-content">
+                <!--overview-->
+                <div class="tab-pane active" id="overview">
+                    <div class="container-fluid">
+                        <div class="row">
+                            <!-- 集群信息面板 -->
+                            <div class="col-sm-6 default-color2">
+                                <div class="panel panel-default">
+                                    <div class="panel-heading">
+                                        <h3 class="panel-title">
+                                            正在运行的集群数
+                                        </h3>
+                                    </div>
+                                    <div class="panel-body">
+                                        <div class="row">
+                                            <div class="col-sm-12 container-fluid "
+                                                 style="color: green; padding-left: 15px">
+                                                <span class="big-number" id="running_cluster_cnt"></span>
+                                            </div>
+
+                                        </div>
+                                        <hr/>
+                                        <div class="row">
+                                            <div class="col-sm-6 container-fluid" style="color: gray">
+                                                <span>集群总数</span>
+                                                <span id="total_cluster_cnt"></span>
+                                            </div>
+                                            <div class="col-sm-6 container-fluid" style="color: gray">
+                                                <span>正在运行的Taskmanager数</span>
+                                                <span id="running_tm_cnt"></span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- Job信息面板-->
+                            <div class="col-sm-6 default-color6">
+                                <div class="panel panel-default">
+                                    <div class="panel-heading">
+                                        <h3 class="panel-title">
+                                            正在运行的Job数
+                                        </h3>
+                                    </div>
+                                    <div class="panel-body">
+                                        <div class="row">
+                                            <div class="col-sm-12 container-fluid" style="color: green">
+                                                <span class="big-number" id="running_job_cnt"></span>
+                                            </div>
+                                        </div>
+                                        <hr/>
+                                        <div class="row">
+                                            <div class="col-sm-4 container-fluid" style="color: gray">
+                                                <span>已完成</span>
+                                                <span id="finished_job_cnt"></span>
+                                            </div>
+                                            <div class="col-sm-4 container-fluid" style="color: gray">
+                                                <span>取消</span>
+                                                <span id="canceled_job_cnt"></span>
+                                            </div>
+                                            <div class="col-sm-4 container-fluid" style="color: gray">
+                                                <span>失败</span>
+                                                <span id="failed_job_cnt"></span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!--添加集群按钮-->
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <div id="toolbar">
+                                    <div class="btn-group btn-group-sm">
+                                        <button id="btn-add" type="button" class="btn btn-default icon-user"
+                                                data-toggle="modal"
+                                                data-target="#myModal"> 增加
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!--集群信息列表-->
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <table id="cluster_list">
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
+                <!--clusters-->
+                <div class="tab-pane" id="clusters">
+                    <div class="container-fluid">
+                        <div class="row">
+                            <div class="col-sm-2" id="dataSource">
+                                <ul class="nav nav-pills nav-stacked datasourceslist" id="jm_datasourcelist"></ul>
+                            </div>
+                            <div class="col-sm-10" id="clusterContent">
+                                <ul id="myTab" class="nav nav-tabs">
+                                    <li class="active"><a href="#jmconfig" data-toggle="tab">Jobmanager Config</a></li>
+                                </ul>
+                                <div id="myTabContent" class="tab-content">
+                                    <div class="tab-pane fade in active" id="jmconfig">
+                                        <table id="jmconfigtable"></table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
+                <!--taskmanagers-->
+                <div class="tab-pane" id="taskmanagers">
+                    <div class="container-fluid">
+                        <div class="row">
+                            <!--taskmanager 数据来源-->
+                            <div class="col-sm-2">
+                                <ul class="nav nav-pills nav-stacked datasourceslist" id="tm_datasourcelist">
+                                </ul>
+                            </div>
+                            <div class="col-sm-10" id="tab_tm">
+                                <table id="taskmanager_list">
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
+                <!--jobs-->
+                <div class="tab-pane" id="running_jobs">
+                    <div class="container-fluid">
+                        <div class="row">
+                            <div class="col-sm-2">
+                                <!--job 数据来源-->
+                                <ul class="nav nav-pills nav-stacked datasourceslist" id="running_job_datasourcelist">
+                                </ul>
+                            </div>
+                            <div class="col-sm-10">
+                                <table id="running_jobs_table"></table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="tab-pane" id="completed_jobs">
+                    <div class="container-fluid">
+                        <div class="row">
+                            <!--job 数据来源-->
+                            <div class="col-sm-2">
+                                <ul class="nav nav-pills nav-stacked datasourceslist" id="completed_job_datasourcelist">
+                                </ul>
+                            </div>
+                            <div class="col-sm-10">
+                                <table id="completed_jobs_table"></table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+
+
+<!-- Bootstrap core JavaScript
+================================================== -->
+<!-- Placed at the end of the document so the pages load faster -->
+
+<!--<script th:src="@{common/jquery/js/jquery.min.js}"></script>-->
+<!--<script th:src="@{common/jquery/js/bootstrap.min.js}"></script>-->
+
+<script th:src="@{common/jquery.min.js}"></script>
+<script th:src="@{common/bootstrap/js/bootstrap.js}"></script>
+<script th:src="@{common/bootstrap-table/src/bootstrap-table.js}"></script>
+<script th:src="@{common/bootstrap-table/src/extensions/export/tableExport.js}"></script>
+<script th:src="@{common/bootstrap-table/src/extensions/export/bootstrap-table-export.js}"></script>
+<script th:src="@{common/bootstrap/js/bootstrap-confirmation.min.js}"></script>
+<script th:src="@{common/bootstrap-table/src/locale/bootstrap-table-zh-CN.js}"></script>
+<script th:src="@{common/layer/layer.js}"></script>
+<script th:src="@{common/page/js/dashboard.js}"></script>
+</html>
