@@ -2,6 +2,7 @@ package ac.cn.iie.controller;
 
 import ac.cn.iie.entity.Cluster;
 import ac.cn.iie.service.ClusterService;
+import ac.cn.iie.service.FlinkRestService;
 import ac.cn.iie.util.HttpClientUtil;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
@@ -20,7 +21,7 @@ import java.util.Optional;
 @Controller
 public class FlinkRestController {
   @Autowired private ClusterService clusterService;
-
+  @Autowired private FlinkRestService flinkRestService;
   /**
    * 返回值： 正在运行的集群总数 已添加的集群总数 正在运行的TaskManager数量 正在运行的Job数 已完成的Job数 已取消的Job数
    *
@@ -165,188 +166,12 @@ public class FlinkRestController {
   @GetMapping("/jobs/running_list")
   @ResponseBody
   public Object getJobRunningList(Integer id) {
-    if (id == null) {
-      return null;
-    } else if (id == -1) {
-      List<Cluster> clusterList = clusterService.selectCluster();
-      JSONArray res = new JSONArray();
-      for (Cluster cluster : clusterList) {
-        String host = cluster.getAddress();
-        String port = cluster.getPort();
-        JSONObject object =
-            JSON.parseObject(HttpClientUtil.doGet("http://" + host + ":" + port + "/v1/jobs"));
-        JSONArray jobsList = object.getJSONArray("jobs");
-        for (Object job : jobsList) {
-          JSONObject jobJSON = (JSONObject) job;
-          if (jobJSON.get("status").equals("RUNNING")) {
-            JSONObject jobInfo = new JSONObject();
-            jobInfo.put("cluster", cluster.getName());
-            jobInfo.put("id", jobJSON.get("id"));
-            jobInfo.put("status", "RUNNING");
-            String jobDetail =
-                HttpClientUtil.doGet(
-                    "http://" + host + ":" + port + "/v1/jobs/" + jobJSON.get("id"));
-            JSONObject jobDetailJSON = JSON.parseObject(jobDetail);
-            jobInfo.put("name", jobDetailJSON.get("name"));
-            SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
-            jobInfo.put(
-                "start-time",
-                format.format(
-                    new Date(Long.parseLong(String.valueOf(jobDetailJSON.get("start-time"))))));
-            JSONArray tasksList = jobDetailJSON.getJSONArray("vertices");
-            jobInfo.put("tasks", tasksList.size());
-            SimpleDateFormat ft = new SimpleDateFormat("hh:mm:ss");
-            jobInfo.put(
-                "duration",
-                ft.format(new Date(Long.parseLong(String.valueOf(jobDetailJSON.get("duration"))))));
-
-            res.add(jobInfo);
-          }
-        }
-      }
-
-      return res;
-    } else {
-      Optional<Cluster> cluster = clusterService.selectCluster(id);
-      JSONArray res = new JSONArray();
-      if (cluster.isPresent()) {
-        Cluster c = cluster.get();
-        String host = c.getAddress();
-        String port = c.getPort();
-        JSONObject object =
-            JSON.parseObject(HttpClientUtil.doGet("http://" + host + ":" + port + "/v1/jobs"));
-        JSONArray jobsList = object.getJSONArray("jobs");
-        for (Object job : jobsList) {
-          JSONObject jobJSON = (JSONObject) job;
-          if (jobJSON.get("status").equals("RUNNING")) {
-            JSONObject jobInfo = new JSONObject();
-            jobInfo.put("cluster", c.getName());
-            jobInfo.put("id", jobJSON.get("id"));
-            jobInfo.put("status", "RUNNING");
-            String jobDetail =
-                HttpClientUtil.doGet(
-                    "http://" + host + ":" + port + "/v1/jobs/" + jobJSON.get("id"));
-            JSONObject jobDetailJSON = JSON.parseObject(jobDetail);
-            jobInfo.put("name", jobDetailJSON.get("name"));
-            SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
-            jobInfo.put(
-                "start-time",
-                format.format(
-                    new Date(Long.parseLong(String.valueOf(jobDetailJSON.get("start-time"))))));
-            JSONArray tasksList = jobDetailJSON.getJSONArray("vertices");
-            jobInfo.put("tasks", tasksList.size());
-            SimpleDateFormat ft = new SimpleDateFormat("hh:mm:ss");
-            jobInfo.put(
-                "duration",
-                ft.format(new Date(Long.parseLong(String.valueOf(jobDetailJSON.get("duration"))))));
-
-            res.add(jobInfo);
-          }
-        }
-        return res;
-      } else {
-        return null;
-      }
-    }
+    return flinkRestService.getJobList(id, "RUNNING");
   }
 
   @GetMapping("/jobs/completed_list")
   @ResponseBody
   public Object getJobCompletedList(Integer id) {
-
-    if (id == null) {
-      return null;
-    } else if (id == -1) {
-      List<Cluster> clusterList = clusterService.selectCluster();
-      JSONArray res = new JSONArray();
-      for (Cluster cluster : clusterList) {
-        String host = cluster.getAddress();
-        String port = cluster.getPort();
-        JSONObject object =
-            JSON.parseObject(HttpClientUtil.doGet("http://" + host + ":" + port + "/v1/jobs"));
-        JSONArray jobsList = object.getJSONArray("jobs");
-        for (Object job : jobsList) {
-          JSONObject jobJSON = (JSONObject) job;
-          if (jobJSON.get("status").equals("FINISHED")) {
-            JSONObject jobInfo = new JSONObject();
-            jobInfo.put("cluster", cluster.getName());
-            jobInfo.put("id", jobJSON.get("id"));
-            jobInfo.put("status", "RUNNING");
-            String jobDetail =
-                HttpClientUtil.doGet(
-                    "http://" + host + ":" + port + "/v1/jobs/" + jobJSON.get("id"));
-            JSONObject jobDetailJSON = JSON.parseObject(jobDetail);
-            jobInfo.put("name", jobDetailJSON.get("name"));
-
-            SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
-            jobInfo.put(
-                "start-time",
-                format.format(
-                    new Date(Long.parseLong(String.valueOf(jobDetailJSON.get("start-time"))))));
-            jobInfo.put(
-                "end-time",
-                format.format(
-                    new Date(Long.parseLong(String.valueOf(jobDetailJSON.get("end-time"))))));
-
-            JSONArray tasksList = jobDetailJSON.getJSONArray("vertices");
-            jobInfo.put("tasks", tasksList.size());
-            SimpleDateFormat ft = new SimpleDateFormat("hh:mm:ss");
-            jobInfo.put(
-                "duration",
-                ft.format(new Date(Long.parseLong(String.valueOf(jobDetailJSON.get("duration"))))));
-
-            res.add(jobInfo);
-          }
-        }
-      }
-
-      return res;
-    } else {
-      Optional<Cluster> cluster = clusterService.selectCluster(id);
-      JSONArray res = new JSONArray();
-      if (cluster.isPresent()) {
-        Cluster c = cluster.get();
-        String host = c.getAddress();
-        String port = c.getPort();
-        JSONObject object =
-            JSON.parseObject(HttpClientUtil.doGet("http://" + host + ":" + port + "/v1/jobs"));
-        JSONArray jobsList = object.getJSONArray("jobs");
-        for (Object job : jobsList) {
-          JSONObject jobJSON = (JSONObject) job;
-          if (jobJSON.get("status").equals("FINISHED")) {
-            JSONObject jobInfo = new JSONObject();
-            jobInfo.put("cluster", c.getName());
-            jobInfo.put("id", jobJSON.get("id"));
-            jobInfo.put("status", "RUNNING");
-            String jobDetail =
-                HttpClientUtil.doGet(
-                    "http://" + host + ":" + port + "/v1/jobs/" + jobJSON.get("id"));
-            JSONObject jobDetailJSON = JSON.parseObject(jobDetail);
-            jobInfo.put("name", jobDetailJSON.get("name"));
-            SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
-            jobInfo.put(
-                "start-time",
-                format.format(
-                    new Date(Long.parseLong(String.valueOf(jobDetailJSON.get("start-time"))))));
-            jobInfo.put(
-                "end-time",
-                format.format(
-                    new Date(Long.parseLong(String.valueOf(jobDetailJSON.get("end-time"))))));
-            JSONArray tasksList = jobDetailJSON.getJSONArray("vertices");
-            jobInfo.put("tasks", tasksList.size());
-            SimpleDateFormat ft = new SimpleDateFormat("hh:mm:ss");
-            jobInfo.put(
-                "duration",
-                ft.format(new Date(Long.parseLong(String.valueOf(jobDetailJSON.get("duration"))))));
-
-            res.add(jobInfo);
-          }
-        }
-
-        return res;
-      } else {
-        return null;
-      }
-    }
+    return flinkRestService.getJobList(id, "FINISHED");
   }
 }
