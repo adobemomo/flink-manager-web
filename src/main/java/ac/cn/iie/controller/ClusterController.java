@@ -33,7 +33,6 @@ public class ClusterController {
     Map map = new HashMap(2);
     map.put("total", clusters.getTotalElements());
     map.put("rows", clusters.getContent());
-    System.out.println(map);
     return map;
   }
 
@@ -51,8 +50,14 @@ public class ClusterController {
   @PostMapping("/cluster")
   @ResponseBody
   public Cluster addClusterInformation(Cluster cluster) {
-    System.out.println(cluster.toString());
+    cluster.setUri("http://"+cluster.getUri());
     return clusterService.insertCluster(cluster);
+  }
+
+  @PutMapping("/cluster")
+  @ResponseBody
+  public Cluster updatePlayerInformation(Cluster cluster){
+    return clusterService.updateCluster(cluster);
   }
 
   @DeleteMapping("/cluster/{id}")

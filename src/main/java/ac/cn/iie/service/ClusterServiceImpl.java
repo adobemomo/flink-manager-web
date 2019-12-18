@@ -34,7 +34,12 @@ public class ClusterServiceImpl implements ClusterService {
 
   @Override
   public Cluster updateCluster(Cluster cluster) {
-    return null;
+    Optional<Cluster> old = clusterRepository.findById(cluster.getId());
+    if(old.isPresent()){
+      return clusterRepository.save(cluster);
+    }else{
+      return null;
+    }
   }
 
   @Override

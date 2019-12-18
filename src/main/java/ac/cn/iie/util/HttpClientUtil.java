@@ -102,8 +102,4 @@ public class HttpClientUtil {
     return doPost(url, null);
   }
 
-  public static void main(String[] args) {
-    System.out.println(
-        doGet("http://0.0.0.0:8085/v1/taskmanagers/bf087e48f5c19ee0b43300a39bd41679"));
-  }
 }

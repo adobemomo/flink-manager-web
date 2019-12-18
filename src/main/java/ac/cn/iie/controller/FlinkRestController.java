@@ -12,9 +12,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -41,18 +39,15 @@ public class FlinkRestController {
     List<Cluster> clusters = clusterService.selectCluster();
     totalCluster = clusters.size();
     for (Cluster c : clusters) {
-      if (HttpClientUtil.doGet(
-              "http://" + c.getAddress() + ":" + c.getPort() + "/v1/jobmanager/config")
-          != null) runningCluster++;
+      if (HttpClientUtil.doGet(c.getUri() + "/v1/jobmanager/config") != null) runningCluster++;
+      else continue;
 
-      String taskmanaers =
-          HttpClientUtil.doGet("http://" + c.getAddress() + ":" + c.getPort() + "v1/taskmanagers");
+      String taskmanaers = HttpClientUtil.doGet(c.getUri() + "/v1/taskmanagers");
       JSONObject tmObject = JSON.parseObject(taskmanaers);
       JSONArray tmList = JSON.parseArray(tmObject.get("taskmanagers").toString());
-      runningTaskManager = tmList.size();
+      runningTaskManager += tmList.size();
 
-      String jobs =
-          HttpClientUtil.doGet("http://" + c.getAddress() + ":" + c.getPort() + "v1/jobs");
+      String jobs = HttpClientUtil.doGet(c.getUri() + "/v1/jobs");
       JSONArray jobsList = (JSONArray) JSON.parseObject(jobs).get("jobs");
       for (int i = 0; i < jobsList.size(); i++) {
         switch (jobsList.getJSONObject(i).get("status").toString()) {
@@ -93,9 +88,7 @@ public class FlinkRestController {
     Optional<Cluster> cluster = clusterService.selectCluster(id);
     if (cluster.isPresent()) {
       Cluster c = cluster.get();
-      String host = c.getAddress();
-      String port = c.getPort();
-      return HttpClientUtil.doGet("http://" + host + ":" + port + "/v1/jobmanager/config");
+      return HttpClientUtil.doGet(c.getUri() + "/v1/jobmanager/config");
     } else {
       return null;
     }
@@ -110,11 +103,8 @@ public class FlinkRestController {
       List<Cluster> clusterList = clusterService.selectCluster();
       List<Object> taskmanagerInfo = new ArrayList<>();
       for (Cluster cluster : clusterList) {
-        String host = cluster.getAddress();
-        String port = cluster.getPort();
         JSONObject object =
-            JSON.parseObject(
-                HttpClientUtil.doGet("http://" + host + ":" + port + "/v1/taskmanagers"));
+            JSON.parseObject(HttpClientUtil.doGet(cluster.getUri() + "/v1/taskmanagers"));
         List<Object> tmList = (List<Object>) object.get("taskmanagers");
         for (Object tm : tmList) {
           taskmanagerInfo.add(tm);
@@ -125,11 +115,7 @@ public class FlinkRestController {
       Optional<Cluster> cluster = clusterService.selectCluster(id);
       if (cluster.isPresent()) {
         Cluster c = cluster.get();
-        String host = c.getAddress();
-        String port = c.getPort();
-        JSONObject object =
-            JSON.parseObject(
-                HttpClientUtil.doGet("http://" + host + ":" + port + "/v1/taskmanagers"));
+        JSONObject object = JSON.parseObject(HttpClientUtil.doGet(c.getUri() + "/v1/taskmanagers"));
         return object.get("taskmanagers");
       } else {
         return null;
@@ -143,9 +129,7 @@ public class FlinkRestController {
     Optional<Cluster> cluster = clusterService.selectCluster(cluster_id);
     if (cluster.isPresent()) {
       Cluster c = cluster.get();
-      String host = c.getAddress();
-      String port = c.getPort();
-      return HttpClientUtil.doGet("http://" + host + ":" + port + "/v1/taskmanagers/" + tmId);
+      return HttpClientUtil.doGet(c.getUri() + "/v1/taskmanagers/" + tmId);
     } else {
       return null;
     }

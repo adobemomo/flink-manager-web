@@ -46,34 +46,30 @@ $(function () {
             //     width: 14
             // },
             {
-                title: 'address',
-                field: 'address',
+                title: 'URI',
+                field: 'uri',
                 align: 'center',
-                valign: 'middle',
-                width: 14
-            },
-            {
-                title: 'port',
-                field: 'port',
-                align: 'center',
-                valign: 'middle',
-                width: 14
+                width: 14,
+                formatter: function (value, row, index) {
+                    return '<a href="' + value + '" target="_Blank">' + value + '</a>'
+                }
             },
             {
                 title: 'name',
                 field: 'name',
                 align: 'center',
-                valign: 'middle',
                 width: 14
             },
             {
                 title: '操作',
                 field: 'id',
                 align: 'center',
-                valign: "middle",
                 width: 14,
                 formatter: function (value, row, index) {
-                    return '<a href="javascript:void(0)" onclick="delCluster(' + value + ')"><i class="icon-download-alt"></i>删除</a>'
+                    let param = value.toString() + ',&quot;' + row.uri + '&quot;,&quot;' + row.name + '&quot;';
+                    return '<span><a href="javascript:void(0)" onclick="delCluster(' + value + ')">删除</a></span>'
+                        + '<span> </span>'
+                        + '<span><a href="javascript:void(0)" onclick="updateCluster(' + param + ')">修改</a></span>';
                 }
             }
         ]
@@ -97,15 +93,13 @@ $(function () {
             {
                 title: 'key',
                 field: 'key',
-                align: 'center',
-                valign: 'middle',
+                align: 'left',
                 width: 14
             },
             {
                 title: 'value',
                 field: 'value',
-                align: 'center',
-                valign: 'middle',
+                align: 'left',
                 width: 14
             }
         ]
@@ -346,13 +340,27 @@ $(function () {
     $("#insert-btn").on('click', function () {
         $.post("/cluster", $("#insert-form").serialize(), function (response) {
             $("#myModal").modal("hide");
-            venderNavi()
-            $("#cluster_list").bootstrapTable("refresh");
-            $("#jmconfigtable").bootstrapTable("refresh");
-            $("#taskmanager_list").bootstrapTable("refresh");
-            $("#running_jobs_table").bootstrapTable("refresh");
-            $("#completed_jobs_table").bootstrapTable("refresh");
+            refresh()
         })
+    });
+
+    $("#edit-btn").on('click', function () {
+        $.ajax({
+            url: "/cluster",
+            type: "PUT",
+            data: $("#edit-form").serialize() + '&id=' + $(this).attr('current-id'),
+            dataType: "json",
+            success: function (result) {
+                if (result) {
+                    layer.msg("修改成功");
+                    $("#myModal2").modal("hide");
+                    refresh()
+                } else {
+                    layer.msg("修改失败");
+                }
+            }
+        });
+        refresh();
     });
 
     /**
@@ -461,12 +469,7 @@ function delCluster(id) {
         success: function (result) {
             if (result) {
                 layer.msg("删除成功");
-                venderNavi();
-                $("#cluster_list").bootstrapTable("refresh");
-                $("#jmconfigtable").bootstrapTable("refresh");
-                $("#taskmanager_list").bootstrapTable("refresh");
-                $("#running_jobs_table").bootstrapTable("refresh");
-                $("#completed_jobs_table").bootstrapTable("refresh");
+                refresh()
 
             } else {
                 layer.msg("删除失败");
@@ -476,10 +479,21 @@ function delCluster(id) {
 }
 
 /**
+ * 修改集群信息
+ * @param id
+ */
+function updateCluster(value, uri, name) {
+    $("#edit-uri").attr('value', uri);
+    $("#edit-name").attr('value', name);
+    $("#edit-btn").attr('current-id', value);
+    $("#edit-form")[0].reset();
+    $("#myModal2").modal("show");
+}
+
+/**
  * 查看详情
  */
 function getTmDetail(id) {
-    alert(1);
     window.location.href = "/detail?id=" + id;
 }
 
@@ -510,12 +524,24 @@ function getOverallCnt() {
     }
 }
 
+function refresh() {
+    getOverallCnt();
+    venderNavi();
+
+    $("#cluster_list").bootstrapTable("refresh");
+    $("#jmconfigtable").bootstrapTable("refresh");
+    $("#taskmanager_list").bootstrapTable("refresh");
+    $("#running_jobs_table").bootstrapTable("refresh");
+    $("#completed_jobs_table").bootstrapTable("refresh");
+
+}
+
 $(document).ready(function () {
     getOverallCnt();
     $("#taskmanager_list").bootstrapTable("refresh")
     $("#running_jobs_table").bootstrapTable("refresh")
     $("#completed_jobs_table").bootstrapTable("refresh")
-    setInterval('getOverallCnt()', 1000);
-    setInterval('$("#running_jobs_table").bootstrapTable("refresh")', 1000);
+    setInterval('getOverallCnt()', 60000);
+    setInterval('$("#running_jobs_table").bootstrapTable("refresh")', 60000);
 });
 

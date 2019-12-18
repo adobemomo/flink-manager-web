@@ -7,6 +7,11 @@ body {
     padding-top: 50px;
 }
 
+.navi-font {
+    font-family: 'DejaVu Sans', Arial, Helvetica, sans-serif;
+    /*font-weight: bold;*/
+    font-size: medium;
+}
 
 /*
  * Big number
@@ -48,7 +53,7 @@ body {
 @media (min-width: 768px) {
     .sidebar {
         position: fixed;
-        top: 51px;
+        top: 50px;
         bottom: 0;
         left: 0;
         z-index: 1000;
@@ -56,8 +61,8 @@ body {
         padding: 20px;
         overflow-x: hidden;
         overflow-y: auto; /* Scrollable contents if viewport is shorter than content. */
-        background-color: #f5f5f5;
-        border-right: 1px solid #eee;
+        background-color: rgba(255, 255, 255, 0.61);
+        /*border-right: 1px solid #eee;*/
     }
 }
 

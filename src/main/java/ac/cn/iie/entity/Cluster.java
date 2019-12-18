@@ -13,7 +13,6 @@ public class Cluster {
   /** 集群编号 */
   private Integer id;
 
-  private String address;
-  private String port;
+  private String uri;
   private String name;
 }
