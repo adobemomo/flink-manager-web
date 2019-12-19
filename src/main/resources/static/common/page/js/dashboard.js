@@ -212,7 +212,6 @@ $(function () {
                 title: '所属集群',
                 field: 'cluster',
                 align: 'center',
-                valign: 'middle',
                 width: 14
             },
 
@@ -220,42 +219,49 @@ $(function () {
                 title: 'Job Name',
                 field: 'name',
                 align: 'center',
-                valign: 'middle',
                 width: 14
             },
             {
                 title: 'Start Time',
                 field: 'start-time',
                 align: 'center',
-                valign: 'middle',
                 width: 14
             },
             {
                 title: 'Duration',
                 field: 'duration',
                 align: 'center',
-                valign: 'middle',
                 width: 14
             },
             {
                 title: 'End Time',
                 field: 'end-time',
                 align: 'center',
-                valign: 'middle',
                 width: 14
             },
             {
                 title: 'Tasks',
                 field: 'tasks',
                 align: 'center',
-                valign: 'middle',
-                width: 14
+                width: 14,
+                formatter: function (value, row, index) {
+                    let html = '';
+                    let status = ["TOTAL", "CREATED", "CANCELED", "RUNNING", "RECONCILING",
+                        "DEPLOYING", "FAILED", "SCHEDULED", "CANCELING", "FINISHED"];
+                    for (let i = 0; i < status.length; i++) {
+                        html += '<span class="little-box ' + status[i].toLowerCase()
+                            + '" data-toggle="popover" title="' + status[i]
+                            + '"> '
+                            + value[status[i]]
+                            + ' </span>'
+                    }
+                    return html
+                }
             },
             {
                 title: 'Status',
                 field: 'status',
                 align: 'center',
-                valign: 'middle',
                 width: 14
             }
         ]
@@ -281,50 +287,56 @@ $(function () {
                 title: '所属集群',
                 field: 'cluster',
                 align: 'center',
-                valign: 'middle',
-                width: 14
+                width: 5
             },
 
             {
                 title: 'Job Name',
                 field: 'name',
                 align: 'center',
-                valign: 'middle',
                 width: 14
             },
             {
                 title: 'Start Time',
                 field: 'start-time',
                 align: 'center',
-                valign: 'middle',
                 width: 14
             },
             {
                 title: 'Duration',
                 field: 'duration',
                 align: 'center',
-                valign: 'middle',
-                width: 14
+                width: 7
             },
             {
                 title: 'End Time',
                 field: 'end-time',
                 align: 'center',
-                valign: 'middle',
                 width: 14
             },
             {
                 title: 'Tasks',
                 field: 'tasks',
                 align: 'center',
-                valign: 'middle',
-                width: 14
+                width: 30,
+                formatter: function (value, row, index) {
+                    let html = '';
+                    let status = ["TOTAL", "CREATED", "CANCELED", "RUNNING", "RECONCILING",
+                        "DEPLOYING", "FAILED", "SCHEDULED", "CANCELING", "FINISHED"];
+                    for (let i = 0; i < status.length; i++) {
+                        html += '<span class="little-box ' + status[i].toLowerCase()
+                            + '" data-toggle="popover" title="' + status[i]
+                            + '"> '
+                            + value[status[i]]
+                            + ' </span>'
+                    }
+                    return html
+                }
             },
             {
                 title: 'Status',
                 field: 'status',
                 align: 'center',
-                valign: 'middle',
                 width: 14
             }
         ]

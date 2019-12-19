@@ -17,8 +17,57 @@ import static ac.cn.iie.util.HttpClientUtil.doGet;
 
 @Service
 public class FlinkRestServiceImpl implements FlinkRestService {
-  @Autowired private ClusterService clusterService;
+  @Autowired
+  private ClusterService clusterService;
 
+  private JSONObject getVerticesTasks(JSONArray vertices) {
+    Integer created = 0;
+    Integer canceled = 0;
+    Integer running = 0;
+    Integer reconciling = 0;
+    Integer deploying = 0;
+    Integer failed = 0;
+    Integer scheduled = 0;
+    Integer canceling = 0;
+    Integer finished = 0;
+
+    for (Object obj : vertices) {
+      JSONObject count = (JSONObject) ((JSONObject) obj).get("tasks");
+      created += count.getInteger("CREATED");
+      canceled += count.getInteger("CANCELED");
+      running += count.getInteger("RUNNING");
+      reconciling += count.getInteger("RECONCILING");
+      deploying += count.getInteger("DEPLOYING");
+      failed += count.getInteger("FAILED");
+      scheduled += count.getInteger("SCHEDULED");
+      canceling += count.getInteger("CANCELING");
+      finished += count.getInteger("FINISHED");
+    }
+
+    JSONObject tasks = new JSONObject();
+    tasks.put("CREATED", created);
+    tasks.put("CANCELED", canceled);
+    tasks.put("RUNNING", running);
+    tasks.put("RECONCILING", reconciling);
+    tasks.put("DEPLOYING", deploying);
+    tasks.put("FAILED", failed);
+    tasks.put("SCHEDULED", scheduled);
+    tasks.put("CANCELING", canceling);
+    tasks.put("FINISHED", finished);
+    tasks.put(
+            "TOTAL",
+            created
+                    + canceled
+                    + running
+                    + reconciling
+                    + deploying
+                    + failed
+                    + scheduled
+                    + canceling
+                    + finished);
+
+    return tasks;
+  }
 
   private List<JSONObject> getJobList(String clusterUri, String clusterName, String status) {
     List<JSONObject> result = new ArrayList<>();
@@ -34,11 +83,10 @@ public class FlinkRestServiceImpl implements FlinkRestService {
       jobInfo.put("id", job.get("id"));
       jobInfo.put("status", job.get("status"));
 
-      JSONObject jobDetail =
-          JSON.parseObject(doGet(clusterUri + "/v1/jobs/" + job.get("id")));
+      JSONObject jobDetail = JSON.parseObject(doGet(clusterUri + "/v1/jobs/" + job.get("id")));
 
       jobInfo.put("name", jobDetail.get("name"));
-      jobInfo.put("tasks", jobDetail.getJSONArray("vertices").size());
+      jobInfo.put("tasks", getVerticesTasks(jobDetail.getJSONArray("vertices")));
 
       SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
       jobInfo.put(

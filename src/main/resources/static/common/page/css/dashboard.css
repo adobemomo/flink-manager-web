@@ -7,6 +7,58 @@ body {
     padding-top: 50px;
 }
 
+.created {
+    background-color: #1b6d85;
+}
+
+.canceled {
+    background-color: #5e5e5e;
+}
+
+.running {
+    background-color: #4cae4c;
+}
+
+.reconciling {
+    background-color: #ec971f;
+}
+
+.deploying {
+    background-color: indianred;
+}
+
+.failed {
+    background-color: red;
+}
+
+.scheduled {
+    background-color: purple;
+}
+
+.canceling {
+    background-color: #23527c;
+}
+
+.finished {
+    background-color: #428bca;
+}
+
+.total {
+    background-color: #000000;
+}
+
+.little-box {
+    box-sizing: border-box;
+    padding: 1px 5px;
+
+    color: #FFFFFF;
+    font-family: monospace, "Courier New";
+    font-weight: normal;
+    font-size: medium;
+
+    cursor: default;
+}
+
 .navi-font {
     font-family: 'DejaVu Sans', Arial, Helvetica, sans-serif;
     /*font-weight: bold;*/
