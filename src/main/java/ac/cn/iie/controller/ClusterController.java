@@ -1,7 +1,9 @@
 package ac.cn.iie.controller;
 
 import ac.cn.iie.entity.Cluster;
+import ac.cn.iie.entity.ClusterInputInfo;
 import ac.cn.iie.service.ClusterService;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
@@ -12,19 +14,15 @@ import java.util.List;
 import java.util.Map;
 
 @Controller
+@Slf4j
 public class ClusterController {
   @Autowired private ClusterService clusterService;
 
   @GetMapping("/")
   public String page() {
+    log.info("Load dashboard.html.");
     return "dashboard";
   }
-
-  //    @GetMapping("/detail")
-  //    public String detail(@RequestParam(name = "id")String id, Model model){
-  //        model.addAttribute("id",id);
-  //        return "detail";
-  //    }
 
   @GetMapping("/cluster")
   @ResponseBody
@@ -33,6 +31,7 @@ public class ClusterController {
     Map map = new HashMap(2);
     map.put("total", clusters.getTotalElements());
     map.put("rows", clusters.getContent());
+    log.info("Return Cluster List.");
     return map;
   }
 
@@ -49,20 +48,30 @@ public class ClusterController {
 
   @PostMapping("/cluster")
   @ResponseBody
-  public Cluster addClusterInformation(Cluster cluster) {
-    cluster.setUri("http://"+cluster.getUri());
+  public Cluster addClusterInformation(ClusterInputInfo info) {
+    Cluster cluster = new Cluster();
+    cluster.setId(info.getId());
+    cluster.setUri(info.getUri());
+    cluster.setName(info.getSysId() + "_" + info.getProvince() + "_" + info.getFlinkTaskName());
+    log.info("Add cluster " + cluster + " to database.");
     return clusterService.insertCluster(cluster);
   }
 
   @PutMapping("/cluster")
   @ResponseBody
-  public Cluster updatePlayerInformation(Cluster cluster){
+  public Cluster updatePlayerInformation(ClusterInputInfo info) {
+    Cluster cluster = new Cluster();
+    cluster.setUri(info.getUri());
+    cluster.setId(info.getId());
+    cluster.setName(info.getSysId() + "_" + info.getProvince() + "_" + info.getFlinkTaskName());
+    log.info("Update cluster " + cluster + " in database.");
     return clusterService.updateCluster(cluster);
   }
 
   @DeleteMapping("/cluster/{id}")
   @ResponseBody
   public Boolean deletePlayerInformation(@PathVariable Integer id) {
+    log.info("Delete cluster by id " + id);
     return clusterService.deleteCluster(id);
   }
 }

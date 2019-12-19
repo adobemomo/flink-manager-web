@@ -23,3 +23,8 @@ spring:
     hibernate:
       ddl-auto: update
     show-sql: false
+
+##日志
+logging:
+  file:
+    name: flink_manager_web.log

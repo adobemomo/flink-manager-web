@@ -38,17 +38,10 @@ $(function () {
         // },
 
         columns: [
-            // {
-            //     title: 'id',
-            //     field: 'id',
-            //     align: 'center',
-            //     valign: 'middle',
-            //     width: 14
-            // },
             {
                 title: 'URI',
                 field: 'uri',
-                align: 'center',
+                align: 'left',
                 width: 14,
                 formatter: function (value, row, index) {
                     return '<a href="' + value + '" target="_Blank">' + value + '</a>'
@@ -57,7 +50,7 @@ $(function () {
             {
                 title: 'name',
                 field: 'name',
-                align: 'center',
+                align: 'left',
                 width: 14
             },
             {
