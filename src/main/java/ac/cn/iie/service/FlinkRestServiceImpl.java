@@ -1,24 +1,25 @@
 package ac.cn.iie.service;
 
+import static ac.cn.iie.util.HttpClientUtil.doGet;
+
 import ac.cn.iie.entity.Cluster;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
-
-import static ac.cn.iie.util.HttpClientUtil.doGet;
+import org.springframework.stereotype.Service;
 
 @Service
 public class FlinkRestServiceImpl implements FlinkRestService {
-  @Autowired
-  private ClusterService clusterService;
+  private final ClusterService clusterService;
+
+  public FlinkRestServiceImpl(ClusterService clusterService) {
+    this.clusterService = clusterService;
+  }
 
   private JSONObject getVerticesTasks(JSONArray vertices) {
     Integer created = 0;
@@ -55,16 +56,16 @@ public class FlinkRestServiceImpl implements FlinkRestService {
     tasks.put("CANCELING", canceling);
     tasks.put("FINISHED", finished);
     tasks.put(
-            "TOTAL",
-            created
-                    + canceled
-                    + running
-                    + reconciling
-                    + deploying
-                    + failed
-                    + scheduled
-                    + canceling
-                    + finished);
+        "TOTAL",
+        created
+            + canceled
+            + running
+            + reconciling
+            + deploying
+            + failed
+            + scheduled
+            + canceling
+            + finished);
 
     return tasks;
   }

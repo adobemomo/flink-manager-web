@@ -2,20 +2,22 @@ package ac.cn.iie.service;
 
 import ac.cn.iie.entity.Cluster;
 import ac.cn.iie.repository.ClusterRepository;
-import org.springframework.beans.factory.annotation.Autowired;
+import java.util.List;
+import java.util.Optional;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
-import java.util.Optional;
-
 @Service
 public class ClusterServiceImpl implements ClusterService {
 
-  @Autowired private ClusterRepository clusterRepository;
+  private final ClusterRepository clusterRepository;
+
+  public ClusterServiceImpl(ClusterRepository clusterRepository) {
+    this.clusterRepository = clusterRepository;
+  }
 
   @Override
   public Cluster insertCluster(Cluster cluster) {
@@ -35,9 +37,9 @@ public class ClusterServiceImpl implements ClusterService {
   @Override
   public Cluster updateCluster(Cluster cluster) {
     Optional<Cluster> old = clusterRepository.findById(cluster.getId());
-    if(old.isPresent()){
+    if (old.isPresent()) {
       return clusterRepository.save(cluster);
-    }else{
+    } else {
       return null;
     }
   }

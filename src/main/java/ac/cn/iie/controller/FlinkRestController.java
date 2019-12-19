@@ -7,19 +7,24 @@ import ac.cn.iie.util.HttpClientUtil;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
+
 @Controller
 public class FlinkRestController {
-  @Autowired private ClusterService clusterService;
-  @Autowired private FlinkRestService flinkRestService;
+  private final ClusterService clusterService;
+  private final FlinkRestService flinkRestService;
+
+  public FlinkRestController(ClusterService clusterService, FlinkRestService flinkRestService) {
+    this.clusterService = clusterService;
+    this.flinkRestService = flinkRestService;
+  }
+
   /**
    * 返回值： 正在运行的集群总数 已添加的集群总数 正在运行的TaskManager数量 正在运行的Job数 已完成的Job数 已取消的Job数
    *
@@ -42,8 +47,8 @@ public class FlinkRestController {
       if (HttpClientUtil.doGet(c.getUri() + "/v1/jobmanager/config") != null) runningCluster++;
       else continue;
 
-      String taskmanaers = HttpClientUtil.doGet(c.getUri() + "/v1/taskmanagers");
-      JSONObject tmObject = JSON.parseObject(taskmanaers);
+      String taskManagers = HttpClientUtil.doGet(c.getUri() + "/v1/taskmanagers");
+      JSONObject tmObject = JSON.parseObject(taskManagers);
       JSONArray tmList = JSON.parseArray(tmObject.get("taskmanagers").toString());
       runningTaskManager += tmList.size();
 

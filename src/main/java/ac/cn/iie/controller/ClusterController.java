@@ -3,20 +3,27 @@ package ac.cn.iie.controller;
 import ac.cn.iie.entity.Cluster;
 import ac.cn.iie.entity.ClusterInputInfo;
 import ac.cn.iie.service.ClusterService;
-import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
-import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.*;
-
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 @Controller
 @Slf4j
 public class ClusterController {
-  @Autowired private ClusterService clusterService;
+  private final ClusterService clusterService;
+
+  public ClusterController(ClusterService clusterService) {
+    this.clusterService = clusterService;
+  }
 
   @GetMapping("/")
   public String page() {
@@ -28,7 +35,7 @@ public class ClusterController {
   @ResponseBody
   public Map<String, Object> getClusterList(Integer page, Integer size) {
     Page<Cluster> clusters = clusterService.selectCluster(page, size);
-    Map map = new HashMap(2);
+    Map<String, Object> map = new HashMap<>(2);
     map.put("total", clusters.getTotalElements());
     map.put("rows", clusters.getContent());
     log.info("Return Cluster List.");
@@ -46,6 +53,7 @@ public class ClusterController {
     return res;
   }
 
+  /** . */
   @PostMapping("/cluster")
   @ResponseBody
   public Cluster addClusterInformation(ClusterInputInfo info) {
