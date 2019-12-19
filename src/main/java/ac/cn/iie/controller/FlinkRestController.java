@@ -3,17 +3,17 @@ package ac.cn.iie.controller;
 import ac.cn.iie.entity.Cluster;
 import ac.cn.iie.service.ClusterService;
 import ac.cn.iie.service.FlinkRestService;
-import ac.cn.iie.util.HttpClientUtil;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
-
+import kong.unirest.Unirest;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
 
 @Controller
 public class FlinkRestController {
@@ -44,15 +44,17 @@ public class FlinkRestController {
     List<Cluster> clusters = clusterService.selectCluster();
     totalCluster = clusters.size();
     for (Cluster c : clusters) {
-      if (HttpClientUtil.doGet(c.getUri() + "/v1/jobmanager/config") != null) runningCluster++;
+      if (Unirest.get(c.getUri() + "/v1/jobmanager/config").asJson().getBody().toString() != null)
+        runningCluster++;
       else continue;
 
-      String taskManagers = HttpClientUtil.doGet(c.getUri() + "/v1/taskmanagers");
+      String taskManagers =
+              Unirest.get(c.getUri() + "/v1/taskmanagers").asJson().getBody().toString();
       JSONObject tmObject = JSON.parseObject(taskManagers);
       JSONArray tmList = JSON.parseArray(tmObject.get("taskmanagers").toString());
       runningTaskManager += tmList.size();
 
-      String jobs = HttpClientUtil.doGet(c.getUri() + "/v1/jobs");
+      String jobs = Unirest.get(c.getUri() + "/v1/jobs").asJson().getBody().toString();
       JSONArray jobsList = (JSONArray) JSON.parseObject(jobs).get("jobs");
       for (int i = 0; i < jobsList.size(); i++) {
         switch (jobsList.getJSONObject(i).get("status").toString()) {
@@ -92,8 +94,10 @@ public class FlinkRestController {
     }
     Optional<Cluster> cluster = clusterService.selectCluster(id);
     if (cluster.isPresent()) {
-      Cluster c = cluster.get();
-      return HttpClientUtil.doGet(c.getUri() + "/v1/jobmanager/config");
+      return Unirest.get(cluster.get().getUri() + "/v1/jobmanager/config")
+              .asJson()
+              .getBody()
+              .toString();
     } else {
       return null;
     }
@@ -109,19 +113,21 @@ public class FlinkRestController {
       List<Object> taskmanagerInfo = new ArrayList<>();
       for (Cluster cluster : clusterList) {
         JSONObject object =
-            JSON.parseObject(HttpClientUtil.doGet(cluster.getUri() + "/v1/taskmanagers"));
+                JSON.parseObject(
+                        Unirest.get(cluster.getUri() + "/v1/taskmanagers").asJson().getBody().toString());
         List<Object> tmList = (List<Object>) object.get("taskmanagers");
-        for (Object tm : tmList) {
-          taskmanagerInfo.add(tm);
-        }
+        taskmanagerInfo.addAll(tmList);
       }
       return taskmanagerInfo;
     } else {
       Optional<Cluster> cluster = clusterService.selectCluster(id);
       if (cluster.isPresent()) {
-        Cluster c = cluster.get();
-        JSONObject object = JSON.parseObject(HttpClientUtil.doGet(c.getUri() + "/v1/taskmanagers"));
-        return object.get("taskmanagers");
+        return JSON.parseObject(
+                Unirest.get(cluster.get().getUri() + "/v1/taskmanagers")
+                        .asJson()
+                        .getBody()
+                        .toString())
+                .get("taskmanagers");
       } else {
         return null;
       }
@@ -133,8 +139,10 @@ public class FlinkRestController {
   public Object getTmDetail(Integer cluster_id, String tmId) {
     Optional<Cluster> cluster = clusterService.selectCluster(cluster_id);
     if (cluster.isPresent()) {
-      Cluster c = cluster.get();
-      return HttpClientUtil.doGet(c.getUri() + "/v1/taskmanagers/" + tmId);
+      return Unirest.get(cluster.get().getUri() + "/v1/taskmanagers/" + tmId)
+              .asJson()
+              .getBody()
+              .toString();
     } else {
       return null;
     }

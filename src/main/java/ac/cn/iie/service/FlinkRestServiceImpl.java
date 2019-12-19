@@ -1,17 +1,17 @@
 package ac.cn.iie.service;
 
-import static ac.cn.iie.util.HttpClientUtil.doGet;
-
 import ac.cn.iie.entity.Cluster;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
+import kong.unirest.Unirest;
+import org.springframework.stereotype.Service;
+
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
-import org.springframework.stereotype.Service;
 
 @Service
 public class FlinkRestServiceImpl implements FlinkRestService {
@@ -73,7 +73,11 @@ public class FlinkRestServiceImpl implements FlinkRestService {
   private List<JSONObject> getJobList(String clusterUri, String clusterName, String status) {
     List<JSONObject> result = new ArrayList<>();
     String uri = clusterUri + "/v1/jobs";
-    JSONArray jobOverview = JSON.parseArray(JSON.parseObject(doGet(uri)).get("jobs").toString());
+    JSONArray jobOverview =
+            JSON.parseArray(
+                    JSON.parseObject(Unirest.get(uri).asJson().getBody().toString())
+                            .get("jobs")
+                            .toString());
     for (Object obj : jobOverview) {
       JSONObject job = (JSONObject) obj;
       if (!job.get("status").equals(status)) continue;
@@ -84,15 +88,17 @@ public class FlinkRestServiceImpl implements FlinkRestService {
       jobInfo.put("id", job.get("id"));
       jobInfo.put("status", job.get("status"));
 
-      JSONObject jobDetail = JSON.parseObject(doGet(clusterUri + "/v1/jobs/" + job.get("id")));
+      JSONObject jobDetail =
+              JSON.parseObject(
+                      Unirest.get(clusterUri + "/v1/jobs/" + job.get("id")).asJson().getBody().toString());
 
       jobInfo.put("name", jobDetail.get("name"));
       jobInfo.put("tasks", getVerticesTasks(jobDetail.getJSONArray("vertices")));
 
       SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
       jobInfo.put(
-          "start-time",
-          format.format(new Date(Long.parseLong(String.valueOf(jobDetail.get("start-time"))))));
+              "start-time",
+              format.format(new Date(Long.parseLong(String.valueOf(jobDetail.get("start-time"))))));
       if (!jobDetail.get("end-time").toString().equals("-1")) {
         jobInfo.put(
             "end-time",
@@ -120,13 +126,21 @@ public class FlinkRestServiceImpl implements FlinkRestService {
     } else if (id == -1) { // jobs of all clusters
       List<Cluster> clusters = clusterService.selectCluster();
       for (Cluster c : clusters) {
-        result.addAll(getJobList(c.getUri(), c.getName(), status));
+        result.addAll(
+                getJobList(
+                        c.getUri(),
+                        c.getSysId() + "_" + c.getProvince() + "_" + c.getFlinkTaskName(),
+                        status));
       }
     } else { // jobs of cluster with given id
       Optional<Cluster> cluster = clusterService.selectCluster(id);
       if (cluster.isPresent()) {
         Cluster c = cluster.get();
-        result.addAll(getJobList(c.getUri(), c.getName(), status));
+        result.addAll(
+                getJobList(
+                        c.getUri(),
+                        c.getSysId() + "_" + c.getProvince() + "_" + c.getFlinkTaskName(),
+                        status));
       } else {
         return null;
       }

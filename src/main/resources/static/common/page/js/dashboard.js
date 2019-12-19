@@ -48,8 +48,20 @@ $(function () {
                 }
             },
             {
-                title: 'name',
-                field: 'name',
+                title: 'System ID',
+                field: 'sysId',
+                align: 'left',
+                width: 14
+            },
+            {
+                title: 'Province',
+                field: 'province',
+                align: 'left',
+                width: 14
+            },
+            {
+                title: 'Flink Task Name',
+                field: 'flinkTaskName',
                 align: 'left',
                 width: 14
             },
@@ -211,20 +223,20 @@ $(function () {
             {
                 title: '所属集群',
                 field: 'cluster',
-                align: 'center',
+                align: 'left',
                 width: 14
             },
 
             {
                 title: 'Job Name',
                 field: 'name',
-                align: 'center',
+                align: 'left',
                 width: 14
             },
             {
                 title: 'Start Time',
                 field: 'start-time',
-                align: 'center',
+                align: 'left',
                 width: 14
             },
             {
@@ -236,13 +248,13 @@ $(function () {
             {
                 title: 'End Time',
                 field: 'end-time',
-                align: 'center',
+                align: 'left',
                 width: 14
             },
             {
                 title: 'Tasks',
                 field: 'tasks',
-                align: 'center',
+                align: 'left',
                 width: 14,
                 formatter: function (value, row, index) {
                     let html = '';
@@ -261,7 +273,7 @@ $(function () {
             {
                 title: 'Status',
                 field: 'status',
-                align: 'center',
+                align: 'left',
                 width: 14
             }
         ]
@@ -286,38 +298,38 @@ $(function () {
             {
                 title: '所属集群',
                 field: 'cluster',
-                align: 'center',
+                align: 'left',
                 width: 5
             },
 
             {
                 title: 'Job Name',
                 field: 'name',
-                align: 'center',
+                align: 'left',
                 width: 14
             },
             {
                 title: 'Start Time',
                 field: 'start-time',
-                align: 'center',
+                align: 'left',
                 width: 14
             },
             {
                 title: 'Duration',
                 field: 'duration',
-                align: 'center',
+                align: 'left',
                 width: 7
             },
             {
                 title: 'End Time',
                 field: 'end-time',
-                align: 'center',
+                align: 'left',
                 width: 14
             },
             {
                 title: 'Tasks',
                 field: 'tasks',
-                align: 'center',
+                align: 'left',
                 width: 30,
                 formatter: function (value, row, index) {
                     let html = '';
@@ -336,7 +348,7 @@ $(function () {
             {
                 title: 'Status',
                 field: 'status',
-                align: 'center',
+                align: 'left',
                 width: 14
             }
         ]

@@ -1,20 +1,15 @@
 package ac.cn.iie.controller;
 
 import ac.cn.iie.entity.Cluster;
-import ac.cn.iie.entity.ClusterInputInfo;
 import ac.cn.iie.service.ClusterService;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 @Controller
 @Slf4j
@@ -48,30 +43,26 @@ public class ClusterController {
     List<Cluster> clusterList = clusterService.selectCluster();
     Map<Integer, String> res = new HashMap<>();
     for (Cluster cluster : clusterList) {
-      res.put(cluster.getId(), cluster.getName());
+      res.put(
+              cluster.getId(),
+              cluster.getSysId() + "_" + cluster.getProvince() + "_" + cluster.getFlinkTaskName());
     }
     return res;
   }
 
-  /** . */
+  /**
+   * .
+   */
   @PostMapping("/cluster")
   @ResponseBody
-  public Cluster addClusterInformation(ClusterInputInfo info) {
-    Cluster cluster = new Cluster();
-    cluster.setId(info.getId());
-    cluster.setUri(info.getUri());
-    cluster.setName(info.getSysId() + "_" + info.getProvince() + "_" + info.getFlinkTaskName());
+  public Cluster addClusterInformation(Cluster cluster) {
     log.info("Add cluster " + cluster + " to database.");
     return clusterService.insertCluster(cluster);
   }
 
   @PutMapping("/cluster")
   @ResponseBody
-  public Cluster updatePlayerInformation(ClusterInputInfo info) {
-    Cluster cluster = new Cluster();
-    cluster.setUri(info.getUri());
-    cluster.setId(info.getId());
-    cluster.setName(info.getSysId() + "_" + info.getProvince() + "_" + info.getFlinkTaskName());
+  public Cluster updatePlayerInformation(Cluster cluster) {
     log.info("Update cluster " + cluster + " in database.");
     return clusterService.updateCluster(cluster);
   }
