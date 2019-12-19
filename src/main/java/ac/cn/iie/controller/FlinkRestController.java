@@ -150,12 +150,20 @@ public class FlinkRestController {
   @GetMapping("/jobs/running_list")
   @ResponseBody
   public Object getJobRunningList(Integer id) {
-    return flinkRestService.getJobList(id, "RUNNING");
+    if (id == null) {
+      return null;
+    } else {
+      return flinkRestService.getJobList(id, "RUNNING");
+    }
   }
 
   @GetMapping("/jobs/completed_list")
   @ResponseBody
   public Object getJobCompletedList(Integer id) {
-    return flinkRestService.getJobList(id, "FINISHED");
+    if (id == null) {
+      return null;
+    } else {
+      return flinkRestService.getJobList(id, "FINISHED");
+    }
   }
 }
