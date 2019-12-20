@@ -1,4 +1,9 @@
-venderNavi();
+$(document).ready(function () {
+    getOverallCnt();
+    $("#cluster_list").bootstrapTable("refresh")
+    setInterval('getOverallCnt()', 60000);
+});
+
 
 $(function () {
     $("#cluster_list").bootstrapTable({
@@ -36,7 +41,9 @@ $(function () {
         //     style={classes:'danger',css:{'color':'#ed5565'}};
         //     return style;
         // },
-
+        // responseHandler: function (res) {
+        //     return eval(res)
+        // },
         columns: [
             {
                 title: 'URI',
@@ -66,13 +73,19 @@ $(function () {
                 width: 14
             },
             {
+                title: 'Running Job',
+                field: 'runningJobCnt',
+                align: 'left',
+                width: 14
+            },
+            {
                 title: '操作',
                 field: 'id',
                 align: 'center',
                 width: 14,
                 formatter: function (value, row, index) {
                     let param = value.toString() + ',&quot;' + row.uri + '&quot;,&quot;' + row.name + '&quot;';
-                    return '<span><a href="javascript:void(0)" onclick="delCluster(' + value + ')">删除</a></span>'
+                    return '<span><a href="javascript:void(0)" id="del-btn" onclick="delCluster(' + value + ')">删除</a></span>'
                         + '<span> </span>'
                         + '<span><a href="javascript:void(0)" onclick="updateCluster(' + param + ')">修改</a></span>';
                 }
@@ -114,6 +127,12 @@ $(function () {
         url: '/taskmanagers',                     //请求后台的URL
         method: 'get',                      //请求方式
         striped: true,                      //是否显示行间隔色
+        pagination: true,                   //是否显示分页
+        sidePagination: 'client',           //分页方式：client客户端分页，server服务端分页
+        pageNumber: 1,                       //初始化显示第几页，默认第一页
+        pageSize: 10,                       //每页显示数据的条数
+        pageList: [5, 10, 20],              //可供选择的每页的行数
+
         queryParams: function () {
             if ($('li.active.tm_ds').attr('id') !== undefined) {
                 return {
@@ -130,8 +149,7 @@ $(function () {
             {
                 title: 'id',
                 field: 'id',
-                align: 'center',
-                valign: 'middle',
+                align: 'left',
                 width: 14,
                 // formatter: function (value, row, index) {
                 //     return '<a href="javascript:void(0)" onclick="getTmDetail(\'' + value + '\')">' + value + '</a>'
@@ -140,65 +158,56 @@ $(function () {
             {
                 title: 'path',
                 field: 'path',
-                align: 'center',
-                valign: 'middle',
+                align: 'left',
                 width: 14
             },
 
             {
                 title: 'LastHeartbeat',
                 field: 'timeSinceLastHeartbeat',
-                align: 'center',
-                valign: 'middle',
+                align: 'left',
                 width: 14
             },
             {
                 title: 'freeSlots',
                 field: 'freeSlots',
-                align: 'center',
-                valign: 'middle',
+                align: 'left',
                 width: 14
             },
             {
                 title: 'slotsNum',
                 field: 'slotsNum',
-                align: 'center',
-                valign: 'middle',
+                align: 'left',
                 width: 14
             },
             {
                 title: 'dataPort',
                 field: 'dataPort',
-                align: 'center',
-                valign: 'middle',
+                align: 'left',
                 width: 14
             },
             {
                 title: 'cpuCores',
                 field: 'hardware.cpuCores',
-                align: 'center',
-                valign: 'middle',
+                align: 'left',
                 width: 14
             },
             {
                 title: 'managedMem',
                 field: 'hardware.managedMemory',
-                align: 'center',
-                valign: 'middle',
+                align: 'left',
                 width: 14
             },
             {
                 title: 'freeMem',
                 field: 'hardware.freeMemory',
-                align: 'center',
-                valign: 'middle',
+                align: 'left',
                 width: 14
             },
             {
                 title: 'physicalMem',
                 field: 'hardware.physicalMemory',
-                align: 'center',
-                valign: 'middle',
+                align: 'left',
                 width: 14
             }
         ]
@@ -242,7 +251,7 @@ $(function () {
             {
                 title: 'Duration',
                 field: 'duration',
-                align: 'center',
+                align: 'left',
                 width: 14
             },
             {
@@ -357,7 +366,8 @@ $(function () {
     $("#insert-btn").on('click', function () {
         $.post("/cluster", $("#insert-form").serialize(), function (response) {
             $("#myModal").modal("hide");
-            refresh()
+            getOverallCnt()
+            $("#cluster_list").bootstrapTable("refresh")
         })
     });
 
@@ -377,7 +387,8 @@ $(function () {
                 }
             }
         });
-        refresh();
+        getOverallCnt()
+        $("#cluster_list").bootstrapTable("refresh")
     });
 
     /**
@@ -401,9 +412,34 @@ $(function () {
         $(this).addClass('active');
         $("#running_jobs_table").bootstrapTable("refresh");
     })
+
     $('#completed_job_datasourcelist').on('click', 'li', function () {
         $(this).parent().find('li.active').removeClass('active');
         $(this).addClass('active');
+        $("#completed_jobs_table").bootstrapTable("refresh");
+    })
+
+    /**
+     * 点击tab键刷新
+     */
+    $("#navi_overview").on('click', function () {
+        getOverallCnt();
+        $("#cluster_list").bootstrapTable("refresh");
+    })
+    $("#navi_clusters").on('click', function () {
+        venderNavi('jm')
+        $("#jmconfigtable").bootstrapTable("refresh");
+    })
+    $("#navi_taskmanagers").on('click', function () {
+        venderNavi('tm')
+        $("#taskmanager_list").bootstrapTable("refresh");
+    })
+    $("#navi_running_jobs").on('click', function () {
+        venderNavi('running_job')
+        $("#running_jobs_table").bootstrapTable("refresh");
+    })
+    $("#navi_completed_jobs").on('click', function () {
+        venderNavi('completed_job')
         $("#completed_jobs_table").bootstrapTable("refresh");
     })
 });
@@ -413,64 +449,51 @@ $(function () {
  * 导航内容渲染
  * @param obj
  */
-function venderNavi() {
+function venderNavi(obj) {
     $.ajax({
         url: "/cluster_name", method: "get", async: false, success: function (result) {
             let keys = Object.keys(result);
-            //jmconfig navi
+
             let init = true
-            let list = $('#jm_datasourcelist')
+            let list = $('#' + obj + '_datasourcelist')
             list.empty()
             keys.forEach(function (key) {
                 let li;
                 if (init) {
-                    init = false
-                    li = $('<li/>')
-                        .addClass('active')
-                        .addClass('jm_ds')
-                        .attr('id', 'jm_ds_' + key)
-                        .appendTo(list);
-                } else {
-                    li = $('<li/>')
-                        .addClass('jm_ds')
-                        .attr('id', 'jm_ds_' + key)
-                        .appendTo(list);
-                }
-
-
-                $('<a/>')
-                    .attr('href', '#')
-                    .text(result[key])
-                    .appendTo(li);
-            });
-
-            //other navi
-            let objs = ['tm', 'running_job', 'completed_job']
-            objs.forEach(function (obj) {
-                let list = $('#' + obj + '_datasourcelist')
-                list.empty()
-                let all = $('<li/>')
-                    .addClass(obj + '_ds')
-                    .addClass('active')
-                    .attr('id', obj + '_ds_-1')
-                    .appendTo(list);
-                $('<a/>')
-                    .attr('href', '#')
-                    .text('All')
-                    .appendTo(all);
-                keys.forEach(function (key) {
-                    let li;
                     li = $('<li/>')
                         .addClass(obj + '_ds')
                         .attr('id', obj + '_ds_' + key)
+                        .attr('class', 'active less-padding')
                         .appendTo(list);
+                    init = false;
+                } else {
+                    li = $('<li/>')
+                        .addClass(obj + '_ds')
+                        .attr('id', obj + '_ds_' + key)
+                        .attr('class', 'less-padding')
+                        .appendTo(list);
+                }
 
-                    $('<a/>')
-                        .attr('href', '#')
-                        .text(result[key])
-                        .appendTo(li);
-                });
-            })
+                let a = $('<a/>')
+                    .attr('href', '#')
+                    .text(result[key].name)
+                    .attr('class', 'less-padding')
+                    .appendTo(li);
+
+                /*标签*/
+                if (obj === 'tm') {
+
+                } else if (obj === 'running_job') {
+                    // $('<span/>')
+                    //     .attr('class', 'badge')
+                    //     .text(result[key].runningJob)
+                    //     .appendTo(a);
+                } else if (obj === 'completed_job') {
+
+                }
+
+            });
+
         }
     });
 }
@@ -480,19 +503,32 @@ function venderNavi() {
  * @param id
  */
 function delCluster(id) {
-    $.ajax({
-        url: "/cluster/" + id,
-        method: "DELETE",
-        success: function (result) {
-            if (result) {
-                layer.msg("删除成功");
-                refresh()
+    $("#del-btn").confirmation({
+        placement: "bottom",        //弹层在哪里出现（默认top）
+        title: "确定删除吗？",     //弹层展现的内容（默认Are you sure?）
+        btnOkLabel: '确定',      //确认按钮的显示的内容（默认Yes）
+        btnCancelLabel: '取消',  //取消按钮的显示的内容（默认No）
+        onConfirm: function () {  //点击确认按钮的事件
+            $.ajax({
+                url: "/cluster/" + id,
+                method: "DELETE",
+                success: function (result) {
+                    if (result) {
+                        layer.msg("删除成功");
+                        getOverallCnt()
+                        $("#cluster_list").bootstrapTable("refresh")
+                    } else {
+                        layer.msg("删除失败");
+                    }
+                }
+            });
+        },
+        onCancel: function () {    //点击取消按钮的事件
+            $('#del-btn').confirmation('hide')   //隐藏弹层
 
-            } else {
-                layer.msg("删除失败");
-            }
         }
-    });
+    })
+
 }
 
 /**
@@ -543,7 +579,10 @@ function getOverallCnt() {
 
 function refresh() {
     getOverallCnt();
-    venderNavi();
+    venderNavi('jm');
+    venderNavi('tm');
+    venderNavi('running_job');
+    venderNavi('completed_job');
 
     $("#cluster_list").bootstrapTable("refresh");
     $("#jmconfigtable").bootstrapTable("refresh");
@@ -552,13 +591,4 @@ function refresh() {
     $("#completed_jobs_table").bootstrapTable("refresh");
 
 }
-
-$(document).ready(function () {
-    getOverallCnt();
-    $("#taskmanager_list").bootstrapTable("refresh")
-    $("#running_jobs_table").bootstrapTable("refresh")
-    $("#completed_jobs_table").bootstrapTable("refresh")
-    setInterval('getOverallCnt()', 60000);
-    setInterval('$("#running_jobs_table").bootstrapTable("refresh")', 60000);
-});
 

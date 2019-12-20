@@ -7,6 +7,11 @@ body {
     padding-top: 50px;
 }
 
+.less-padding {
+    padding-left: 0px;
+    padding-right: 0px;
+}
+
 .created {
     background-color: #1b6d85;
 }
@@ -127,7 +132,7 @@ body {
 
 .nav-sidebar > li > a {
     padding-right: 20px;
-    padding-left: 20px;
+    padding-left: 10px;
 }
 
 .nav-sidebar > .active > a,

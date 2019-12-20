@@ -13,6 +13,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
+
 @Service
 public class FlinkRestServiceImpl implements FlinkRestService {
   private final ClusterService clusterService;
@@ -80,7 +81,9 @@ public class FlinkRestServiceImpl implements FlinkRestService {
                             .toString());
     for (Object obj : jobOverview) {
       JSONObject job = (JSONObject) obj;
-      if (!job.get("status").equals(status)) continue;
+      if (!job.get("status").equals(status)) {
+        continue;
+      }
 
       JSONObject jobInfo = new JSONObject();
 
@@ -90,7 +93,8 @@ public class FlinkRestServiceImpl implements FlinkRestService {
 
       JSONObject jobDetail =
               JSON.parseObject(
-                      Unirest.get(clusterUri + "/v1/jobs/" + job.get("id")).asJson().getBody().toString());
+                      Unirest.get(clusterUri + "/v1/jobs/"
+                              + job.get("id")).asJson().getBody().toString());
 
       jobInfo.put("name", jobDetail.get("name"));
       jobInfo.put("tasks", getVerticesTasks(jobDetail.getJSONArray("vertices")));
