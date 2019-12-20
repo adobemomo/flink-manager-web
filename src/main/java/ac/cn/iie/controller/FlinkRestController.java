@@ -44,39 +44,43 @@ public class FlinkRestController {
 
     List<Cluster> clusters = clusterService.selectCluster();
     totalCluster = clusters.size();
-    for (Cluster c : clusters) {
-      if (Unirest.get(c.getUri() + "/v1/jobmanager/config").asJson().getBody().toString() != null) {
-        runningCluster++;
-      } else {
-        continue;
-      }
+    try {
+      for (Cluster c : clusters) {
+        if (Unirest.get(c.getUri() + "/v1/jobmanager/config").asJson().getBody().toString() != null) {
+          runningCluster++;
+        } else {
+          continue;
+        }
 
-      String taskManagers =
-              Unirest.get(c.getUri() + "/v1/taskmanagers").asJson().getBody().toString();
-      JSONObject tmObject = JSON.parseObject(taskManagers);
-      JSONArray tmList = JSON.parseArray(tmObject.get("taskmanagers").toString());
-      runningTaskManager += tmList.size();
+        String taskManagers =
+                Unirest.get(c.getUri() + "/v1/taskmanagers").asJson().getBody().toString();
+        JSONObject tmObject = JSON.parseObject(taskManagers);
+        JSONArray tmList = JSON.parseArray(tmObject.get("taskmanagers").toString());
+        runningTaskManager += tmList.size();
 
-      String jobs = Unirest.get(c.getUri() + "/v1/jobs").asJson().getBody().toString();
-      JSONArray jobsList = (JSONArray) JSON.parseObject(jobs).get("jobs");
-      for (int i = 0; i < jobsList.size(); i++) {
-        switch (jobsList.getJSONObject(i).get("status").toString()) {
-          case "RUNNING":
-            runningJob++;
-            break;
-          case "FINISHED":
-            completedJob++;
-            break;
-          case "CANCELED":
-            canceledJob++;
-            break;
-          case "FAILED":
-            failedJob++;
-            break;
-          default:
-            break;
+        String jobs = Unirest.get(c.getUri() + "/v1/jobs").asJson().getBody().toString();
+        JSONArray jobsList = (JSONArray) JSON.parseObject(jobs).get("jobs");
+        for (int i = 0; i < jobsList.size(); i++) {
+          switch (jobsList.getJSONObject(i).get("status").toString()) {
+            case "RUNNING":
+              runningJob++;
+              break;
+            case "FINISHED":
+              completedJob++;
+              break;
+            case "CANCELED":
+              canceledJob++;
+              break;
+            case "FAILED":
+              failedJob++;
+              break;
+            default:
+              break;
+          }
         }
       }
+    } catch (Exception e) {
+      e.printStackTrace();
     }
 
     JSONObject res = new JSONObject();
@@ -206,9 +210,11 @@ public class FlinkRestController {
   @GetMapping("/jobs/running_list")
   @ResponseBody
   public Object getJobRunningList(Integer id) {
+    System.out.println(id);
     if (id == null) {
       return null;
     } else {
+      System.out.println(flinkRestService.getJobList(id, "RUNNING"));
       return flinkRestService.getJobList(id, "RUNNING");
     }
   }

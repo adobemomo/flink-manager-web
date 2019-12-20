@@ -6,6 +6,7 @@ import ac.cn.iie.service.FlinkRestService;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
+import kong.unirest.Unirest;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
@@ -39,7 +40,7 @@ public class ClusterController {
   }
 
   /**
-   * .
+   * 获取集群列表.
    *
    * @param page 页码
    * @param size 每页容量
@@ -56,6 +57,13 @@ public class ClusterController {
     for (Cluster c : clusters) {
       JSONObject obj = (JSONObject) JSON.toJSON(c);
       obj.put("runningJobCnt", flinkRestService.getJobList(c.getId(), "RUNNING").size());
+      String status;
+      if (Unirest.get(c.getUri() + "/v1/config").asJson().getStatus() == 200) {
+        status = "alive";
+      } else {
+        status = "dead";
+      }
+      obj.put("status", status);
       rows.add(obj);
     }
     map.put("total", clustersPage.getTotalElements());
@@ -95,7 +103,9 @@ public class ClusterController {
     return res;
   }
 
-  /** . */
+  /**
+   * 添加集群.
+   */
   @PostMapping("/cluster")
   @ResponseBody
   public Cluster addClusterInformation(Cluster cluster) {

@@ -31,6 +31,7 @@ $(function () {
         detailView: false,                  //是否显示父子表
         singleSelect: true,                 //是否只支持单选
         showExport: true,                    //是否展示导出按钮
+        tableResponsive: true,
         exportDataType: "basic",            //导出表格方式（默认basic：只导出当前页的表格数据；all：导出所有数据；selected：导出选中的数据）
         exportTypes: ['csv', 'excel'], //导出文件类型
         dataType: "json",                   //服务器返回的数据类型
@@ -49,7 +50,7 @@ $(function () {
                 title: 'URI',
                 field: 'uri',
                 align: 'left',
-                width: 14,
+                width: 200,
                 formatter: function (value, row, index) {
                     return '<a href="' + value + '" target="_Blank">' + value + '</a>'
                 }
@@ -58,31 +59,37 @@ $(function () {
                 title: 'System ID',
                 field: 'sysId',
                 align: 'left',
-                width: 14
+                width: 50
             },
             {
                 title: 'Province',
                 field: 'province',
                 align: 'left',
-                width: 14
+                width: 70
             },
             {
                 title: 'Flink Task Name',
                 field: 'flinkTaskName',
                 align: 'left',
-                width: 14
+                width: 100
             },
             {
                 title: 'Running Job',
                 field: 'runningJobCnt',
                 align: 'left',
-                width: 14
+                width: 50
+            },
+            {
+                title: 'Status',
+                field: 'status',
+                align: 'left',
+                width: 100
             },
             {
                 title: '操作',
                 field: 'id',
                 align: 'center',
-                width: 14,
+                width: 100,
                 formatter: function (value, row, index) {
                     let param = value.toString() + ',&quot;' + row.uri + '&quot;,&quot;' + row.name + '&quot;';
                     return '<span><a href="javascript:void(0)" id="del-btn" onclick="delCluster(' + value + ')">删除</a></span>'
@@ -462,22 +469,23 @@ function venderNavi(obj) {
                 if (init) {
                     li = $('<li/>')
                         .addClass(obj + '_ds')
+                        .addClass('less-padding')
+                        .addClass('active')
                         .attr('id', obj + '_ds_' + key)
-                        .attr('class', 'active less-padding')
                         .appendTo(list);
                     init = false;
                 } else {
                     li = $('<li/>')
                         .addClass(obj + '_ds')
+                        .addClass('less-padding')
                         .attr('id', obj + '_ds_' + key)
-                        .attr('class', 'less-padding')
                         .appendTo(list);
                 }
 
                 let a = $('<a/>')
                     .attr('href', '#')
                     .text(result[key].name)
-                    .attr('class', 'less-padding')
+                    .addClass('less-padding')
                     .appendTo(li);
 
                 /*标签*/

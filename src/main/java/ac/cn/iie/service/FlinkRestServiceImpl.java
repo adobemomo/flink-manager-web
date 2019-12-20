@@ -73,50 +73,54 @@ public class FlinkRestServiceImpl implements FlinkRestService {
 
   private List<JSONObject> getJobList(String clusterUri, String clusterName, String status) {
     List<JSONObject> result = new ArrayList<>();
-    String uri = clusterUri + "/v1/jobs";
-    JSONArray jobOverview =
-            JSON.parseArray(
-                    JSON.parseObject(Unirest.get(uri).asJson().getBody().toString())
-                            .get("jobs")
-                            .toString());
-    for (Object obj : jobOverview) {
-      JSONObject job = (JSONObject) obj;
-      if (!job.get("status").equals(status)) {
-        continue;
-      }
+    try {
+      String uri = clusterUri + "/v1/jobs";
+      JSONArray jobOverview =
+              JSON.parseArray(
+                      JSON.parseObject(Unirest.get(uri).asJson().getBody().toString())
+                              .get("jobs")
+                              .toString());
+      for (Object obj : jobOverview) {
+        JSONObject job = (JSONObject) obj;
+        if (!job.get("status").equals(status)) {
+          continue;
+        }
 
-      JSONObject jobInfo = new JSONObject();
+        JSONObject jobInfo = new JSONObject();
 
-      jobInfo.put("cluster", clusterName);
-      jobInfo.put("id", job.get("id"));
-      jobInfo.put("status", job.get("status"));
+        jobInfo.put("cluster", clusterName);
+        jobInfo.put("id", job.get("id"));
+        jobInfo.put("status", job.get("status"));
 
-      JSONObject jobDetail =
-              JSON.parseObject(
-                      Unirest.get(clusterUri + "/v1/jobs/"
-                              + job.get("id")).asJson().getBody().toString());
+        JSONObject jobDetail =
+                JSON.parseObject(
+                        Unirest.get(clusterUri + "/v1/jobs/"
+                                + job.get("id")).asJson().getBody().toString());
 
-      jobInfo.put("name", jobDetail.get("name"));
-      jobInfo.put("tasks", getVerticesTasks(jobDetail.getJSONArray("vertices")));
+        jobInfo.put("name", jobDetail.get("name"));
+        jobInfo.put("tasks", getVerticesTasks(jobDetail.getJSONArray("vertices")));
 
-      SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
-      jobInfo.put(
-              "start-time",
-              format.format(new Date(Long.parseLong(String.valueOf(jobDetail.get("start-time"))))));
-      if (!jobDetail.get("end-time").toString().equals("-1")) {
+        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
         jobInfo.put(
-            "end-time",
-            format.format(new Date(Long.parseLong(String.valueOf(jobDetail.get("end-time"))))));
-      } else {
-        jobInfo.put("end-time", "-");
+                "start-time",
+                format.format(new Date(Long.parseLong(String.valueOf(jobDetail.get("start-time"))))));
+        if (!jobDetail.get("end-time").toString().equals("-1")) {
+          jobInfo.put(
+                  "end-time",
+                  format.format(new Date(Long.parseLong(String.valueOf(jobDetail.get("end-time"))))));
+        } else {
+          jobInfo.put("end-time", "-");
+        }
+
+        SimpleDateFormat ft = new SimpleDateFormat("hh:mm:ss");
+        jobInfo.put(
+                "duration",
+                ft.format(new Date(Long.parseLong(String.valueOf(jobDetail.get("duration"))))));
+
+        result.add(jobInfo);
       }
-
-      SimpleDateFormat ft = new SimpleDateFormat("hh:mm:ss");
-      jobInfo.put(
-          "duration",
-          ft.format(new Date(Long.parseLong(String.valueOf(jobDetail.get("duration"))))));
-
-      result.add(jobInfo);
+    } catch (Exception e) {
+      e.printStackTrace();
     }
 
     return result;
