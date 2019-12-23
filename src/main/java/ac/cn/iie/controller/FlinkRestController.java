@@ -3,8 +3,8 @@ package ac.cn.iie.controller;
 import ac.cn.iie.entity.Cluster;
 import ac.cn.iie.service.ClusterService;
 import ac.cn.iie.service.FlinkRestService;
+import ac.cn.iie.service.InfoService;
 import com.alibaba.fastjson.JSON;
-import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import kong.unirest.Unirest;
 import lombok.extern.slf4j.Slf4j;
@@ -20,10 +20,13 @@ import java.util.Optional;
 public class FlinkRestController {
   private final ClusterService clusterService;
   private final FlinkRestService flinkRestService;
+  private final InfoService infoService;
 
-  public FlinkRestController(ClusterService clusterService, FlinkRestService flinkRestService) {
+  public FlinkRestController(
+          ClusterService clusterService, FlinkRestService flinkRestService, InfoService infoService) {
     this.clusterService = clusterService;
     this.flinkRestService = flinkRestService;
+    this.infoService = infoService;
   }
 
   /**
@@ -34,64 +37,12 @@ public class FlinkRestController {
   @GetMapping("overall_count")
   @ResponseBody
   public Object getOverallCount() {
-    Integer totalCluster;
-    Integer runningCluster = 0;
-    Integer runningTaskManager = 0;
-    Integer runningJob = 0;
-    Integer completedJob = 0;
-    Integer canceledJob = 0;
-    Integer failedJob = 0;
+    int totalCluster;
 
     List<Cluster> clusters = clusterService.selectCluster();
     totalCluster = clusters.size();
-    try {
-      for (Cluster c : clusters) {
-        if (Unirest.get(c.getUri() + "/v1/jobmanager/config").asJson().getBody().toString()
-                != null) {
-          runningCluster++;
-        } else {
-          continue;
-        }
-
-        String taskManagers =
-                Unirest.get(c.getUri() + "/v1/taskmanagers").asJson().getBody().toString();
-        JSONObject tmObject = JSON.parseObject(taskManagers);
-        JSONArray tmList = JSON.parseArray(tmObject.get("taskmanagers").toString());
-        runningTaskManager += tmList.size();
-
-        String jobs = Unirest.get(c.getUri() + "/v1/jobs").asJson().getBody().toString();
-        JSONArray jobsList = (JSONArray) JSON.parseObject(jobs).get("jobs");
-        for (int i = 0; i < jobsList.size(); i++) {
-          switch (jobsList.getJSONObject(i).get("status").toString()) {
-            case "RUNNING":
-              runningJob++;
-              break;
-            case "FINISHED":
-              completedJob++;
-              break;
-            case "CANCELED":
-              canceledJob++;
-              break;
-            case "FAILED":
-              failedJob++;
-              break;
-            default:
-              break;
-          }
-        }
-      }
-    } catch (Exception e) {
-      e.printStackTrace();
-    }
-
-    JSONObject res = new JSONObject();
+    JSONObject res = infoService.selectOverallCount();
     res.put("totcalCluster", totalCluster);
-    res.put("runningCluster", runningCluster);
-    res.put("runningTaskManager", runningTaskManager);
-    res.put("runningJob", runningJob);
-    res.put("completedJob", completedJob);
-    res.put("canceledJob", canceledJob);
-    res.put("failedJob", failedJob);
 
     log.info("Return overall count.");
     return res;
@@ -152,7 +103,7 @@ public class FlinkRestController {
    * 获得task manager详情.
    *
    * @param clusterId cluster id
-   * @param tmId      task manager id
+   * @param tmId task manager id
    * @return
    */
   @GetMapping("/taskmanagers/detail")
@@ -186,7 +137,7 @@ public class FlinkRestController {
    * 获得指定job detail.
    *
    * @param clusterId cluster id
-   * @param jobId     job id
+   * @param jobId job id
    * @return
    */
   @GetMapping("/jobs/detail")

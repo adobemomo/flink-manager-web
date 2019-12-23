@@ -571,7 +571,7 @@ function getOverallCnt() {
         let json = cnt;
         $("#total_cluster_cnt").text(json.totcalCluster);
         $("#running_cluster_cnt").text(json.runningCluster);
-        $("#running_tm_cnt").text(json.runningTaskManager);
+        $("#running_tm_cnt").text(json.runningTaskmanager);
         $("#running_job_cnt").text(json.runningJob);
         $("#finished_job_cnt").text(json.completedJob);
         $("#canceled_job_cnt").text(json.canceledJob);

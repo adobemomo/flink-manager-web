@@ -14,6 +14,10 @@ public class Info {
     private int id;
 
     private String uri;
-    private int runningJob;
     private String status;
+    private int runningTaskmanager;
+    private int runningJob;
+    private int completedJob;
+    private int canceledJob;
+    private int failedJob;
 }
