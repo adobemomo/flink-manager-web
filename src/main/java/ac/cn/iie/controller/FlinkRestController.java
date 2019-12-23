@@ -7,16 +7,16 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import kong.unirest.Unirest;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-
 @Controller
+@Slf4j
 public class FlinkRestController {
   private final ClusterService clusterService;
   private final FlinkRestService flinkRestService;
@@ -46,7 +46,8 @@ public class FlinkRestController {
     totalCluster = clusters.size();
     try {
       for (Cluster c : clusters) {
-        if (Unirest.get(c.getUri() + "/v1/jobmanager/config").asJson().getBody().toString() != null) {
+        if (Unirest.get(c.getUri() + "/v1/jobmanager/config").asJson().getBody().toString()
+                != null) {
           runningCluster++;
         } else {
           continue;
@@ -92,6 +93,7 @@ public class FlinkRestController {
     res.put("canceledJob", canceledJob);
     res.put("failedJob", failedJob);
 
+    log.info("Return overall count.");
     return res;
   }
 
@@ -109,6 +111,7 @@ public class FlinkRestController {
     }
     Optional<Cluster> cluster = clusterService.selectCluster(id);
     if (cluster.isPresent()) {
+      log.info("Return Job Manager configuration of cluster " + id + ".");
       return Unirest.get(cluster.get().getUri() + "/v1/jobmanager/config")
               .asJson()
               .getBody()
@@ -129,20 +132,10 @@ public class FlinkRestController {
   public Object getTmOverview(Integer id) {
     if (id == null) {
       return null;
-    } else if (id == -1) {
-      List<Cluster> clusterList = clusterService.selectCluster();
-      List<Object> taskmanagerInfo = new ArrayList<>();
-      for (Cluster cluster : clusterList) {
-        JSONObject object =
-                JSON.parseObject(
-                        Unirest.get(cluster.getUri() + "/v1/taskmanagers").asJson().getBody().toString());
-        List<Object> tmList = (List<Object>) object.get("taskmanagers");
-        taskmanagerInfo.addAll(tmList);
-      }
-      return taskmanagerInfo;
     } else {
       Optional<Cluster> cluster = clusterService.selectCluster(id);
       if (cluster.isPresent()) {
+        log.info("Return Task Manager list in cluster " + id + ".");
         return JSON.parseObject(
                 Unirest.get(cluster.get().getUri() + "/v1/taskmanagers")
                         .asJson()
@@ -167,6 +160,7 @@ public class FlinkRestController {
   public Object getTmDetail(Integer clusterId, String tmId) {
     Optional<Cluster> cluster = clusterService.selectCluster(clusterId);
     if (cluster.isPresent()) {
+      log.info("Return Task Manager detail of " + tmId + " in cluster " + clusterId + ".");
       return Unirest.get(cluster.get().getUri() + "/v1/taskmanagers/" + tmId)
               .asJson()
               .getBody()
@@ -210,11 +204,10 @@ public class FlinkRestController {
   @GetMapping("/jobs/running_list")
   @ResponseBody
   public Object getJobRunningList(Integer id) {
-    System.out.println(id);
     if (id == null) {
       return null;
     } else {
-      System.out.println(flinkRestService.getJobList(id, "RUNNING"));
+      log.info("Return running job list of cluster " + id + ".");
       return flinkRestService.getJobList(id, "RUNNING");
     }
   }
@@ -231,6 +224,7 @@ public class FlinkRestController {
     if (id == null) {
       return null;
     } else {
+      log.info("Return finished job list of cluster " + id + ".");
       return flinkRestService.getJobList(id, "FINISHED");
     }
   }

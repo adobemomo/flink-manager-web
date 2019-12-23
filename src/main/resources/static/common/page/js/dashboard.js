@@ -36,15 +36,7 @@ $(function () {
         exportTypes: ['csv', 'excel'], //导出文件类型
         dataType: "json",                   //服务器返回的数据类型
         contentType: "application/x-www-form-urlencoded", //发送到服务器的数据编码类型
-        // rowStyle: function (row, index) {
-        //     //这里有5个取值代表5中颜色['active', 'success', 'info', 'warning', 'danger'];
-        //     var style = {};
-        //     style={classes:'danger',css:{'color':'#ed5565'}};
-        //     return style;
-        // },
-        // responseHandler: function (res) {
-        //     return eval(res)
-        // },
+
         columns: [
             {
                 title: 'URI',
@@ -92,7 +84,7 @@ $(function () {
                 width: 100,
                 formatter: function (value, row, index) {
                     let param = value.toString() + ',&quot;' + row.uri + '&quot;,&quot;' + row.name + '&quot;';
-                    return '<span><a href="javascript:void(0)" id="del-btn" onclick="delCluster(' + value + ')">删除</a></span>'
+                    return '<span><a href="javascript:void(0)" id="del-btn-' + value + '" onclick="delCluster(' + value + ')">删除</a></span>'
                         + '<span> </span>'
                         + '<span><a href="javascript:void(0)" onclick="updateCluster(' + param + ')">修改</a></span>';
                 }
@@ -511,7 +503,7 @@ function venderNavi(obj) {
  * @param id
  */
 function delCluster(id) {
-    $("#del-btn").confirmation({
+    $("#del-btn-" + id).confirmation({
         placement: "bottom",        //弹层在哪里出现（默认top）
         title: "确定删除吗？",     //弹层展现的内容（默认Are you sure?）
         btnOkLabel: '确定',      //确认按钮的显示的内容（默认Yes）
@@ -536,8 +528,10 @@ function delCluster(id) {
 
         }
     })
+    $("#del-btn-" + id).confirmation('show')
 
 }
+
 
 /**
  * 修改集群信息
@@ -583,20 +577,5 @@ function getOverallCnt() {
         $("#canceled_job_cnt").text(json.canceledJob);
         $("#failed_job_cnt").text(json.failedJob)
     }
-}
-
-function refresh() {
-    getOverallCnt();
-    venderNavi('jm');
-    venderNavi('tm');
-    venderNavi('running_job');
-    venderNavi('completed_job');
-
-    $("#cluster_list").bootstrapTable("refresh");
-    $("#jmconfigtable").bootstrapTable("refresh");
-    $("#taskmanager_list").bootstrapTable("refresh");
-    $("#running_jobs_table").bootstrapTable("refresh");
-    $("#completed_jobs_table").bootstrapTable("refresh");
-
 }
 
