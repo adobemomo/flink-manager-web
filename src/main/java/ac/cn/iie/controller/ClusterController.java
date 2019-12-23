@@ -60,16 +60,25 @@ public class ClusterController {
     JSONArray rows = new JSONArray();
     for (Cluster c : clusters) {
       JSONObject obj = (JSONObject) JSON.toJSON(c);
-      Optional<Info> info = infoService.selectInfo(c.getId());
-      if (info.isPresent()) {
-        obj.put("runningJobCnt", info.get().getRunningJob());
-        obj.put("status", info.get().getStatus());
-      } else {
-        obj.put("runningJobCnt", "N/A");
-        obj.put("status", "N/A");
+      Info info;
+      try {
+        Optional<Info> infoOptional = infoService.selectInfo(c.getId());
+        if (infoOptional.isPresent()) {
+          info = infoOptional.get();
+        } else {
+          info = infoService.insertInfo(c.getId(), c.getUri());
+        }
+        obj.put("runningJobCnt", info.getRunningJob());
+        obj.put("status", info.getStatus());
+        rows.add(obj);
+      } catch (Exception e) {
+        log.error(e.getMessage());
+        rows.add(obj);
+        map.put("total", clustersPage.getTotalElements());
+        map.put("rows", rows);
+        log.info("Return Cluster List.(No Info)");
+        return map;
       }
-
-      rows.add(obj);
     }
     map.put("total", clustersPage.getTotalElements());
     map.put("rows", rows);
