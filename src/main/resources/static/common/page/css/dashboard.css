@@ -7,6 +7,26 @@ body {
     padding-top: 50px;
 }
 
+.nav-a {
+    color: #FFFFFF;
+}
+
+.col-offset-less-half-1 {
+    margin-left: 3%;
+}
+
+.col-more-half-11 {
+    width: 97%;
+}
+
+.col-less-half-1 {
+    width: 3%;
+}
+
+.hand-mouse {
+    cursor: pointer;
+}
+
 .less-padding {
     padding-left: 0px;
     padding-right: 0px;
@@ -118,7 +138,7 @@ body {
         padding: 20px;
         overflow-x: hidden;
         overflow-y: auto; /* Scrollable contents if viewport is shorter than content. */
-        background-color: #222;
+        background-color: #404040;
         /*border-right: 1px solid #eee;*/
     }
 }

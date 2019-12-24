@@ -2,6 +2,10 @@ $(document).ready(function () {
     getOverallCnt();
     $("#cluster_list").bootstrapTable("refresh")
     setInterval('getOverallCnt()', 60000);
+    setInterval('$("#cluster_list").bootstrapTable("refresh")', 60000);
+    setInterval('$("#jmconfigtable").bootstrapTable("refresh")', 60000);
+    setInterval('$("#taskmanager_list").bootstrapTable("refresh")', 60000);
+    setInterval('$("#running_jobs_table").bootstrapTable("refresh");', 60000);
 });
 
 
@@ -287,81 +291,6 @@ $(function () {
         ]
     });
 
-    $("#completed_jobs_table").bootstrapTable({
-        url: '/jobs/completed_list',                     //请求后台的URL
-        method: 'get',                      //请求方式
-        striped: true,                      //是否显示行间隔色
-        queryParams: function () {
-            if ($('li.active.completed_job_ds').attr('id') !== undefined) {
-                return {
-                    id: $('li.active.completed_job_ds').attr('id').substr(17)
-                };
-            }
-        },                                 //请求后台传递的参数
-        queryParamsType: '',
-        showColumns: true,                  //是否展示所有列
-        dataType: "json",                   //服务器返回的数据类型
-        contentType: "application/x-www-form-urlencoded", //发送到服务器的数据编码类型
-        columns: [
-            {
-                title: '所属集群',
-                field: 'cluster',
-                align: 'left',
-                width: 5
-            },
-
-            {
-                title: 'Job Name',
-                field: 'name',
-                align: 'left',
-                width: 14
-            },
-            {
-                title: 'Start Time',
-                field: 'start-time',
-                align: 'left',
-                width: 14
-            },
-            {
-                title: 'Duration',
-                field: 'duration',
-                align: 'left',
-                width: 7
-            },
-            {
-                title: 'End Time',
-                field: 'end-time',
-                align: 'left',
-                width: 14
-            },
-            {
-                title: 'Tasks',
-                field: 'tasks',
-                align: 'left',
-                width: 30,
-                formatter: function (value, row, index) {
-                    let html = '';
-                    let status = ["TOTAL", "CREATED", "CANCELED", "RUNNING", "RECONCILING",
-                        "DEPLOYING", "FAILED", "SCHEDULED", "CANCELING", "FINISHED"];
-                    for (let i = 0; i < status.length; i++) {
-                        html += '<span class="little-box ' + status[i].toLowerCase()
-                            + '" data-toggle="popover" title="' + status[i]
-                            + '"> '
-                            + value[status[i]]
-                            + ' </span>'
-                    }
-                    return html
-                }
-            },
-            {
-                title: 'Status',
-                field: 'status',
-                align: 'left',
-                width: 14
-            }
-        ]
-    });
-
     $("#insert-btn").on('click', function () {
         $.post("/cluster", $("#insert-form").serialize(), function (response) {
             $("#myModal").modal("hide");
@@ -422,24 +351,53 @@ $(function () {
      * 点击tab键刷新
      */
     $("#navi_overview").on('click', function () {
-        getOverallCnt();
-        $("#cluster_list").bootstrapTable("refresh");
+        $("#icon-side-ul").find('li.active').removeClass('active');
+        $("#navi_overview_icon").addClass('active');
     })
     $("#navi_clusters").on('click', function () {
         venderNavi('jm')
-        $("#jmconfigtable").bootstrapTable("refresh");
+        $("#icon-side-ul").find('li.active').removeClass('active');
+        $("#navi_clusters_icon").addClass('active');
     })
     $("#navi_taskmanagers").on('click', function () {
         venderNavi('tm')
-        $("#taskmanager_list").bootstrapTable("refresh");
+        $("#icon-side-ul").find('li.active').removeClass('active');
+        $("#navi_taskmanagers_icon").addClass('active');
     })
     $("#navi_running_jobs").on('click', function () {
         venderNavi('running_job')
-        $("#running_jobs_table").bootstrapTable("refresh");
+        $("#icon-side-ul").find('li.active').removeClass('active');
+        $("#navi_running_jobs_icon").addClass('active');
     })
-    $("#navi_completed_jobs").on('click', function () {
-        venderNavi('completed_job')
-        $("#completed_jobs_table").bootstrapTable("refresh");
+
+    $("#navi_overview_icon").on('click', function () {
+        $("#full-side-ul").find('li.active').removeClass('active');
+        $("#navi_overview").addClass('active');
+    })
+    $("#navi_clusters_icon").on('click', function () {
+        venderNavi('jm')
+        $("#full-side-ul").find('li.active').removeClass('active');
+        $("#navi_clusters").addClass('active');
+    })
+    $("#navi_taskmanagers_icon").on('click', function () {
+        venderNavi('tm')
+        $("#full-side-ul").find('li.active').removeClass('active');
+        $("#navi_taskmanagers").addClass('active');
+    })
+    $("#navi_running_jobs_icon").on('click', function () {
+        venderNavi('running_job')
+        $("#full-side-ul").find('li.active').removeClass('active');
+        $("#navi_running_jobs").addClass('active');
+    })
+
+    $("#flinkmanager").on('click', function () {
+        if ($("#full-side-bar").hasClass('hide')) {
+            $("#full-side-bar").removeClass('hide');
+            $("#icon-side-bar").addClass('hide');
+        } else {
+            $("#icon-side-bar").removeClass('hide');
+            $("#full-side-bar").addClass('hide');
+        }
     })
 });
 
