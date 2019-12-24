@@ -1,12 +1,12 @@
 package ac.cn.iie.service.impl;
 
+import ac.cn.iie.constant.JavaScriptConstant;
 import ac.cn.iie.entity.Cluster;
 import ac.cn.iie.service.ClusterService;
 import ac.cn.iie.service.FlinkRestService;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
-import kong.unirest.Unirest;
 import org.springframework.stereotype.Service;
 
 import java.text.SimpleDateFormat;
@@ -15,6 +15,9 @@ import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
+import static ac.cn.iie.constant.FlinkRestApiConstant.JOBS_OVERVIEW;
+import static ac.cn.iie.constant.FlinkRestJsonConstant.*;
+import static ac.cn.iie.util.HttpUtil.doGet;
 
 @Service
 public class FlinkRestServiceImpl implements FlinkRestService {
@@ -25,50 +28,50 @@ public class FlinkRestServiceImpl implements FlinkRestService {
   }
 
   private JSONObject getVerticesTasks(JSONArray vertices) {
-    Integer created = 0;
-    Integer canceled = 0;
-    Integer running = 0;
-    Integer reconciling = 0;
-    Integer deploying = 0;
-    Integer failed = 0;
-    Integer scheduled = 0;
-    Integer canceling = 0;
-    Integer finished = 0;
+    int created = 0;
+    int canceled = 0;
+    int running = 0;
+    int reconciling = 0;
+    int deploying = 0;
+    int failed = 0;
+    int scheduled = 0;
+    int canceling = 0;
+    int finished = 0;
 
     for (Object obj : vertices) {
-      JSONObject count = (JSONObject) ((JSONObject) obj).get("tasks");
-      created += count.getInteger("CREATED");
-      canceled += count.getInteger("CANCELED");
-      running += count.getInteger("RUNNING");
-      reconciling += count.getInteger("RECONCILING");
-      deploying += count.getInteger("DEPLOYING");
-      failed += count.getInteger("FAILED");
-      scheduled += count.getInteger("SCHEDULED");
-      canceling += count.getInteger("CANCELING");
-      finished += count.getInteger("FINISHED");
+      JSONObject count = (JSONObject) ((JSONObject) obj).get(KEY_JOB_VERTICES_TASKS);
+      created += count.getInteger(VERTICES_TASKS_STATUS_CREATED);
+      canceled += count.getInteger(VERTICES_TASKS_STATUS_CANCELED);
+      running += count.getInteger(VERTICES_TASKS_STATUS_RUNNING);
+      reconciling += count.getInteger(VERTICES_TASKS_STATUS_RECONCILING);
+      deploying += count.getInteger(VERTICES_TASKS_STATUS_DEPLOYING);
+      failed += count.getInteger(VERTICES_TASKS_STATUS_FAILED);
+      scheduled += count.getInteger(VERTICES_TASKS_STATUS_SCHEDULED);
+      canceling += count.getInteger(VERTICES_TASKS_STATUS_CANCELING);
+      finished += count.getInteger(VERTICES_TASKS_STATUS_FINISHED);
     }
 
     JSONObject tasks = new JSONObject();
-    tasks.put("CREATED", created);
-    tasks.put("CANCELED", canceled);
-    tasks.put("RUNNING", running);
-    tasks.put("RECONCILING", reconciling);
-    tasks.put("DEPLOYING", deploying);
-    tasks.put("FAILED", failed);
-    tasks.put("SCHEDULED", scheduled);
-    tasks.put("CANCELING", canceling);
-    tasks.put("FINISHED", finished);
+    tasks.put(VERTICES_TASKS_STATUS_CREATED, created);
+    tasks.put(VERTICES_TASKS_STATUS_CANCELED, canceled);
+    tasks.put(VERTICES_TASKS_STATUS_RUNNING, running);
+    tasks.put(VERTICES_TASKS_STATUS_RECONCILING, reconciling);
+    tasks.put(VERTICES_TASKS_STATUS_DEPLOYING, deploying);
+    tasks.put(VERTICES_TASKS_STATUS_FAILED, failed);
+    tasks.put(VERTICES_TASKS_STATUS_SCHEDULED, scheduled);
+    tasks.put(VERTICES_TASKS_STATUS_CANCELING, canceling);
+    tasks.put(VERTICES_TASKS_STATUS_FINISHED, finished);
     tasks.put(
-        "TOTAL",
-        created
-            + canceled
-            + running
-            + reconciling
-            + deploying
-            + failed
-            + scheduled
-            + canceling
-            + finished);
+            JavaScriptConstant.JOB_TASKS_TOTAL,
+            created
+                    + canceled
+                    + running
+                    + reconciling
+                    + deploying
+                    + failed
+                    + scheduled
+                    + canceling
+                    + finished);
 
     return tasks;
   }
@@ -76,48 +79,46 @@ public class FlinkRestServiceImpl implements FlinkRestService {
   private List<JSONObject> getJobList(String clusterUri, String clusterName, String status) {
     List<JSONObject> result = new ArrayList<>();
     try {
-      String uri = clusterUri + "/v1/jobs";
+      String uri = clusterUri + JOBS_OVERVIEW;
       JSONArray jobOverview =
-              JSON.parseArray(
-                      JSON.parseObject(Unirest.get(uri).asJson().getBody().toString())
-                              .get("jobs")
-                              .toString());
+              JSON.parseArray(JSON.parseObject(doGet(uri)).get(KEY_JOBS).toString());
       for (Object obj : jobOverview) {
         JSONObject job = (JSONObject) obj;
-        if (!job.get("status").equals(status)) {
+        if (!job.get(KEY_JOB_STATUS).equals(status)) {
           continue;
         }
 
         JSONObject jobInfo = new JSONObject();
 
-        jobInfo.put("cluster", clusterName);
-        jobInfo.put("id", job.get("id"));
-        jobInfo.put("status", job.get("status"));
+        jobInfo.put(JavaScriptConstant.JOB_INFO_CLUSTER, clusterName);
+        jobInfo.put(JavaScriptConstant.JOB_INFO_ID, job.get(KEY_JOB_ID));
+        jobInfo.put(JavaScriptConstant.JOB_INFO_STATUS, job.get(KEY_JOB_STATUS));
 
         JSONObject jobDetail =
-                JSON.parseObject(
-                        Unirest.get(clusterUri + "/v1/jobs/"
-                                + job.get("id")).asJson().getBody().toString());
+                JSON.parseObject(doGet(clusterUri + JOBS_OVERVIEW + job.get(KEY_JOB_ID)));
 
-        jobInfo.put("name", jobDetail.get("name"));
-        jobInfo.put("tasks", getVerticesTasks(jobDetail.getJSONArray("vertices")));
+        jobInfo.put(JavaScriptConstant.JOB_INFO_NAME, jobDetail.get(KEY_JOB_NAME));
+        jobInfo.put(JavaScriptConstant.JOB_INFO_TASKS,
+                getVerticesTasks(jobDetail.getJSONArray(KEY_JOB_VERTICES)));
 
         SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
         jobInfo.put(
-                "start-time",
-                format.format(new Date(Long.parseLong(String.valueOf(jobDetail.get("start-time"))))));
-        if (!jobDetail.get("end-time").toString().equals("-1")) {
+                JavaScriptConstant.JOB_INFO_START_TIME,
+                format.format(
+                        new Date(Long.parseLong(String.valueOf(jobDetail.get(KEY_JOB_START_TIME))))));
+        if (!jobDetail.get(KEY_JOB_END_TIME).toString().equals("-1")) {
           jobInfo.put(
-                  "end-time",
-                  format.format(new Date(Long.parseLong(String.valueOf(jobDetail.get("end-time"))))));
+                  JavaScriptConstant.JOB_INFO_END_TIME,
+                  format.format(
+                          new Date(Long.parseLong(String.valueOf(jobDetail.get(KEY_JOB_END_TIME))))));
         } else {
-          jobInfo.put("end-time", "-");
+          jobInfo.put(JavaScriptConstant.JOB_INFO_END_TIME, "-");
         }
 
         SimpleDateFormat ft = new SimpleDateFormat("hh:mm:ss");
         jobInfo.put(
-                "duration",
-                ft.format(new Date(Long.parseLong(String.valueOf(jobDetail.get("duration"))))));
+                JavaScriptConstant.JOB_INFO_DURATION,
+                ft.format(new Date(Long.parseLong(String.valueOf(jobDetail.get(KEY_JOB_DURATION))))));
 
         result.add(jobInfo);
       }

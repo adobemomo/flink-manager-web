@@ -8,15 +8,15 @@ import org.springframework.stereotype.Component;
 @Component
 @Slf4j
 public class FlinkUptodateSchedule {
-    private final InfoService infoService;
+  private final InfoService infoService;
 
-    public FlinkUptodateSchedule(InfoService infoService) {
-        this.infoService = infoService;
-    }
+  public FlinkUptodateSchedule(InfoService infoService) {
+    this.infoService = infoService;
+  }
 
-    @Scheduled(fixedRate = 60000)
-    public void updateInfoWithFlink() {
-        log.info("Update info with Flink.");
-        infoService.updateInfo();
-    }
+  @Scheduled(fixedRate = 60000)
+  public void updateInfoWithFlink() {
+    log.info("Update info with Flink.");
+    infoService.updateInfo();
+  }
 }

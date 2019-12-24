@@ -18,6 +18,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
+import static ac.cn.iie.constant.JavaScriptConstant.*;
+
 @Controller
 @Slf4j
 public class ClusterController {
@@ -25,6 +27,13 @@ public class ClusterController {
   private final FlinkRestService flinkRestService;
   private final InfoService infoService;
 
+  /**
+   * Constructor.
+   *
+   * @param clusterService   .
+   * @param flinkRestService .
+   * @param infoService      .
+   */
   public ClusterController(
           ClusterService clusterService, FlinkRestService flinkRestService, InfoService infoService) {
     this.clusterService = clusterService;
@@ -68,20 +77,20 @@ public class ClusterController {
         } else {
           info = infoService.insertInfo(c.getId(), c.getUri());
         }
-        obj.put("runningJobCnt", info.getRunningJob());
-        obj.put("status", info.getStatus());
+        obj.put(CLUSTER_INFO_RUNNING_JOB_CNT, info.getRunningJob());
+        obj.put(CLUSTER_INFO_STATUS, info.getStatus());
         rows.add(obj);
       } catch (Exception e) {
         log.error(e.getMessage());
         rows.add(obj);
-        map.put("total", clustersPage.getTotalElements());
-        map.put("rows", rows);
+        map.put(BS_TABLE_PAGE_TOTAL, clustersPage.getTotalElements());
+        map.put(BS_TABLE_PAGE_ROWS, rows);
         log.info("Return Cluster List.(No Info)");
         return map;
       }
     }
-    map.put("total", clustersPage.getTotalElements());
-    map.put("rows", rows);
+    map.put(BS_TABLE_PAGE_TOTAL, clustersPage.getTotalElements());
+    map.put(BS_TABLE_PAGE_ROWS, rows);
     log.info("Return Cluster List.");
     return map;
   }
@@ -111,15 +120,25 @@ public class ClusterController {
   @ResponseBody
   public Cluster addClusterInformation(Cluster cluster) {
     Cluster c = clusterService.insertCluster(cluster);
-    infoService.insertInfo(c.getId(), c.getUri());
-    log.info("Add info of " + cluster + " to database.");
+    try {
+      infoService.insertInfo(c.getId(), c.getUri());
+      log.info("Add info of " + cluster + " to database.");
+    } catch (Exception e) {
+      log.warn(e.getMessage());
+    }
     log.info("Add cluster " + cluster + " to database.");
     return c;
   }
 
+  /**
+   * Update cluster information with given cluster.
+   *
+   * @param cluster cluster to be updated.
+   * @return updated cluster.
+   */
   @PutMapping("/cluster")
   @ResponseBody
-  public Cluster updatePlayerInformation(Cluster cluster) {
+  public Cluster updateClusterInformation(Cluster cluster) {
     Cluster c = clusterService.updateCluster(cluster);
     log.info("Update info of cluster " + cluster + " in database.");
     infoService.updateInfo(c.getId(), c.getUri());
@@ -127,6 +146,12 @@ public class ClusterController {
     return c;
   }
 
+  /**
+   * Delete cluster record with given id.
+   *
+   * @param id id of cluster to be deleted.
+   * @return
+   */
   @DeleteMapping("/cluster/{id}")
   @ResponseBody
   public Boolean deletePlayerInformation(@PathVariable Integer id) {

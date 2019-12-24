@@ -6,7 +6,6 @@ import ac.cn.iie.service.FlinkRestService;
 import ac.cn.iie.service.InfoService;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
-import kong.unirest.Unirest;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -15,6 +14,13 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import java.util.List;
 import java.util.Optional;
 
+import static ac.cn.iie.constant.FlinkRestApiConstant.JOB_MANAGER_CONFIG;
+import static ac.cn.iie.constant.FlinkRestApiConstant.TASK_MANAGER_OVERVIEW;
+import static ac.cn.iie.constant.FlinkRestJsonConstant.JOB_STATUS_RUNNING;
+import static ac.cn.iie.constant.FlinkRestJsonConstant.KEY_TASK_MANAGERS;
+import static ac.cn.iie.constant.OverallCountConstant.OVERALL_TOTAL_CLUSTER;
+import static ac.cn.iie.util.HttpUtil.doGet;
+
 @Controller
 @Slf4j
 public class FlinkRestController {
@@ -22,6 +28,13 @@ public class FlinkRestController {
   private final FlinkRestService flinkRestService;
   private final InfoService infoService;
 
+  /**
+   * Constructor.
+   *
+   * @param clusterService   .
+   * @param flinkRestService .
+   * @param infoService      .
+   */
   public FlinkRestController(
           ClusterService clusterService, FlinkRestService flinkRestService, InfoService infoService) {
     this.clusterService = clusterService;
@@ -42,7 +55,7 @@ public class FlinkRestController {
     List<Cluster> clusters = clusterService.selectCluster();
     totalCluster = clusters.size();
     JSONObject res = infoService.selectOverallCount();
-    res.put("totcalCluster", totalCluster);
+    res.put(OVERALL_TOTAL_CLUSTER, totalCluster);
 
     log.info("Return overall count.");
     return res;
@@ -63,10 +76,7 @@ public class FlinkRestController {
     Optional<Cluster> cluster = clusterService.selectCluster(id);
     if (cluster.isPresent()) {
       log.info("Return Job Manager configuration of cluster " + id + ".");
-      return Unirest.get(cluster.get().getUri() + "/v1/jobmanager/config")
-              .asJson()
-              .getBody()
-              .toString();
+      return doGet(cluster.get().getUri() + JOB_MANAGER_CONFIG);
     } else {
       return null;
     }
@@ -87,12 +97,8 @@ public class FlinkRestController {
       Optional<Cluster> cluster = clusterService.selectCluster(id);
       if (cluster.isPresent()) {
         log.info("Return Task Manager list in cluster " + id + ".");
-        return JSON.parseObject(
-                Unirest.get(cluster.get().getUri() + "/v1/taskmanagers")
-                        .asJson()
-                        .getBody()
-                        .toString())
-                .get("taskmanagers");
+        return JSON.parseObject(doGet(cluster.get().getUri() + TASK_MANAGER_OVERVIEW))
+                .get(KEY_TASK_MANAGERS);
       } else {
         return null;
       }
@@ -112,38 +118,10 @@ public class FlinkRestController {
     Optional<Cluster> cluster = clusterService.selectCluster(clusterId);
     if (cluster.isPresent()) {
       log.info("Return Task Manager detail of " + tmId + " in cluster " + clusterId + ".");
-      return Unirest.get(cluster.get().getUri() + "/v1/taskmanagers/" + tmId)
-              .asJson()
-              .getBody()
-              .toString();
+      return doGet(cluster.get().getUri() + TASK_MANAGER_OVERVIEW + tmId);
     } else {
       return null;
     }
-  }
-
-  /**
-   * 获得所有job概览.
-   *
-   * @param id id
-   * @return
-   */
-  @GetMapping("/jobs/overview")
-  @ResponseBody
-  public Object getJobOverview(Integer id) {
-    return null;
-  }
-
-  /**
-   * 获得指定job detail.
-   *
-   * @param clusterId cluster id
-   * @param jobId job id
-   * @return
-   */
-  @GetMapping("/jobs/detail")
-  @ResponseBody
-  public Object geJobDetail(Integer clusterId, String jobId) {
-    return null;
   }
 
   /**
@@ -159,24 +137,7 @@ public class FlinkRestController {
       return null;
     } else {
       log.info("Return running job list of cluster " + id + ".");
-      return flinkRestService.getJobList(id, "RUNNING");
-    }
-  }
-
-  /**
-   * 获取已完成job的列表.
-   *
-   * @param id id
-   * @return
-   */
-  @GetMapping("/jobs/completed_list")
-  @ResponseBody
-  public Object getJobCompletedList(Integer id) {
-    if (id == null) {
-      return null;
-    } else {
-      log.info("Return finished job list of cluster " + id + ".");
-      return flinkRestService.getJobList(id, "FINISHED");
+      return flinkRestService.getJobList(id, JOB_STATUS_RUNNING);
     }
   }
 }

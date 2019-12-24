@@ -8,17 +8,17 @@ import java.util.Optional;
 
 public interface InfoService {
 
-    Info insertInfo(int id, String uri);
+  Info insertInfo(int id, String uri);
 
-    Boolean deleteInfo(int id);
+  Boolean deleteInfo(int id);
 
-    Info updateInfo(int id, String uri);
+  Info updateInfo(int id, String uri);
 
-    List<Info> updateInfo();
+  List<Info> updateInfo();
 
-    List<Info> selectInfo();
+  List<Info> selectInfo();
 
-    Optional<Info> selectInfo(int id);
+  Optional<Info> selectInfo(int id);
 
-    JSONObject selectOverallCount();
+  JSONObject selectOverallCount();
 }

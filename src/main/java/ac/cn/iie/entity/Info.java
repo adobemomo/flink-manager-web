@@ -10,14 +10,14 @@ import javax.persistence.Table;
 @Data
 @Table(name = "info")
 public class Info {
-    @Id
-    private int id;
+  @Id
+  private int id;
 
-    private String uri;
-    private String status;
-    private int runningTaskmanager;
-    private int runningJob;
-    private int completedJob;
-    private int canceledJob;
-    private int failedJob;
+  private String uri;
+  private String status;
+  private int runningTaskmanager;
+  private int runningJob;
+  private int completedJob;
+  private int canceledJob;
+  private int failedJob;
 }

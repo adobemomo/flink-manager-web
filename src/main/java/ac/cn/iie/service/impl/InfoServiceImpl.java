@@ -13,6 +13,12 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.Optional;
 
+import static ac.cn.iie.constant.FlinkRestApiConstant.TASK_MANAGER_OVERVIEW;
+import static ac.cn.iie.constant.FlinkRestApiConstant.WEB_CONFIG;
+import static ac.cn.iie.constant.FlinkRestJsonConstant.*;
+import static ac.cn.iie.constant.OverallCountConstant.*;
+import static ac.cn.iie.util.HttpUtil.doGet;
+
 @Service
 public class InfoServiceImpl implements InfoService {
   private final InfoRepository infoRepository;
@@ -28,23 +34,23 @@ public class InfoServiceImpl implements InfoService {
 
     String status = "dead";
     try {
-      if (Unirest.get(uri + "/v1/config").asJson().getStatus() == 200) {
+      if (Unirest.get(uri + WEB_CONFIG).asJson().getStatus() == 200) {
         status = "alive";
       }
     } catch (Exception e) {
       e.printStackTrace();
     }
-    String taskManagers = Unirest.get(uri + "/v1/taskmanagers").asJson().getBody().toString();
+    String taskManagers = doGet(uri + TASK_MANAGER_OVERVIEW);
     JSONObject tmObject = JSON.parseObject(taskManagers);
-    JSONArray tmList = JSON.parseArray(tmObject.get("taskmanagers").toString());
+    JSONArray tmList = JSON.parseArray(tmObject.get(KEY_TASK_MANAGERS).toString());
 
     info.setId(id);
     info.setUri(uri);
     info.setStatus(status);
-    info.setRunningJob(flinkRestService.getJobList(id, "RUNNING").size());
-    info.setCompletedJob(flinkRestService.getJobList(id, "FINISHED").size());
-    info.setCanceledJob(flinkRestService.getJobList(id, "CANCELED").size());
-    info.setFailedJob(flinkRestService.getJobList(id, "FAILED").size());
+    info.setRunningJob(flinkRestService.getJobList(id, JOB_STATUS_RUNNING).size());
+    info.setCompletedJob(flinkRestService.getJobList(id, JOB_STATUS_FINISHED).size());
+    info.setCanceledJob(flinkRestService.getJobList(id, JOB_STATUS_CANCELED).size());
+    info.setFailedJob(flinkRestService.getJobList(id, JOB_STATUS_FAILED).size());
     info.setRunningTaskmanager(tmList.size());
 
     return info;
@@ -99,23 +105,23 @@ public class InfoServiceImpl implements InfoService {
     JSONObject object = new JSONObject();
 
     if (infoRepository.count() == 0) {
-      object.put("runningCluster", 0);
-      object.put("runningTaskmanager", 0);
-      object.put("runningJob", 0);
-      object.put("completedJob", 0);
-      object.put("canceledJob", 0);
-      object.put("failedJob", 0);
+      object.put(OVERALL_RUNNING_CLUSTER, 0);
+      object.put(OVERALL_RUNNING_TASK_MANAGER, 0);
+      object.put(OVERALL_RUNNING_JOB, 0);
+      object.put(OVERALL_COMPLETED_JOB, 0);
+      object.put(OVERALL_CANCELED_JOB, 0);
+      object.put(OVERALL_FAILED_JOB, 0);
     } else {
       List<Object> overallCountList = infoRepository.selectStatics();
 
       Object[] objects = ((Object[]) overallCountList.get(0));
 
-      object.put("runningCluster", objects[0]);
-      object.put("runningTaskmanager", objects[1]);
-      object.put("runningJob", objects[2]);
-      object.put("completedJob", objects[3]);
-      object.put("canceledJob", objects[4]);
-      object.put("failedJob", objects[5]);
+      object.put(OVERALL_RUNNING_CLUSTER, objects[0]);
+      object.put(OVERALL_RUNNING_TASK_MANAGER, objects[1]);
+      object.put(OVERALL_RUNNING_JOB, objects[2]);
+      object.put(OVERALL_COMPLETED_JOB, objects[3]);
+      object.put(OVERALL_CANCELED_JOB, objects[4]);
+      object.put(OVERALL_FAILED_JOB, objects[5]);
     }
 
     return object;

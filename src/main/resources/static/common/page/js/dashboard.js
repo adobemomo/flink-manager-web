@@ -391,12 +391,23 @@ $(function () {
     })
 
     $("#flinkmanager").on('click', function () {
-        if ($("#full-side-bar").hasClass('hide')) {
-            $("#full-side-bar").removeClass('hide');
-            $("#icon-side-bar").addClass('hide');
+        let mainBody = $("#main-body");
+        let fullSideBar = $("#full-side-bar");
+        let iconSideBar = $("#icon-side-bar");
+        if (fullSideBar.hasClass('hide')) {
+            fullSideBar.removeClass('hide');
+            iconSideBar.addClass('hide');
+            mainBody.removeClass('col-more-half-11');
+            mainBody.removeClass('col-offset-less-half-1');
+            mainBody.addClass('col-sm-11');
+            mainBody.addClass('col-sm-offset-1');
         } else {
-            $("#icon-side-bar").removeClass('hide');
-            $("#full-side-bar").addClass('hide');
+            iconSideBar.removeClass('hide');
+            fullSideBar.addClass('hide');
+            mainBody.removeClass('col-sm-11');
+            mainBody.removeClass('col-sm-offset-1');
+            mainBody.addClass('col-more-half-11');
+            mainBody.addClass('col-offset-less-half-1');
         }
     })
 });
