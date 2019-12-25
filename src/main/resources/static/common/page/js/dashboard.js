@@ -358,16 +358,19 @@ $(function () {
         venderNavi('jm')
         $("#icon-side-ul").find('li.active').removeClass('active');
         $("#navi_clusters_icon").addClass('active');
+        $("#jmconfigtable").bootstrapTable("refresh");
     })
     $("#navi_taskmanagers").on('click', function () {
         venderNavi('tm')
         $("#icon-side-ul").find('li.active').removeClass('active');
         $("#navi_taskmanagers_icon").addClass('active');
+        $("#taskmanager_list").bootstrapTable("refresh");
     })
     $("#navi_running_jobs").on('click', function () {
         venderNavi('running_job')
         $("#icon-side-ul").find('li.active').removeClass('active');
         $("#navi_running_jobs_icon").addClass('active');
+        $("#running_jobs_table").bootstrapTable("refresh");
     })
 
     $("#navi_overview_icon").on('click', function () {
@@ -378,16 +381,20 @@ $(function () {
         venderNavi('jm')
         $("#full-side-ul").find('li.active').removeClass('active');
         $("#navi_clusters").addClass('active');
+        $("#jmconfigtable").bootstrapTable("refresh");
     })
     $("#navi_taskmanagers_icon").on('click', function () {
         venderNavi('tm')
         $("#full-side-ul").find('li.active').removeClass('active');
         $("#navi_taskmanagers").addClass('active');
+        $("#taskmanager_list").bootstrapTable("refresh");
     })
     $("#navi_running_jobs_icon").on('click', function () {
         venderNavi('running_job')
         $("#full-side-ul").find('li.active').removeClass('active');
         $("#navi_running_jobs").addClass('active');
+        $("#running_jobs_table").bootstrapTable("refresh");
+
     })
 
     $("#flinkmanager").on('click', function () {

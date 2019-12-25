@@ -74,7 +74,7 @@ body {
 
 .little-box {
     box-sizing: border-box;
-    padding: 1px 5px;
+    padding: 1px 0px;
 
     color: #FFFFFF;
     font-family: monospace, "Courier New";
