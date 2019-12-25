@@ -21,4 +21,6 @@ public interface InfoService {
   Optional<Info> selectInfo(int id);
 
   JSONObject selectOverallCount();
+
+  Boolean isTableExist();
 }

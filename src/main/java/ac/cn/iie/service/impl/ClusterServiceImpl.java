@@ -9,9 +9,9 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-
 
 @Service
 public class ClusterServiceImpl implements ClusterService {
@@ -50,6 +50,23 @@ public class ClusterServiceImpl implements ClusterService {
   @Override
   public List<Cluster> selectCluster() {
     return clusterRepository.findAll();
+  }
+
+  @Override
+  public List<Cluster> selectAliveCluster() {
+    List<Object> objectList = clusterRepository.selectAvliceCluster();
+    List<Cluster> res = new ArrayList<>();
+    for (Object obj : objectList) {
+      Object[] objArray = (Object[]) obj;
+      Cluster cluster = new Cluster();
+      cluster.setId((int) objArray[0]);
+      cluster.setUri((String) objArray[1]);
+      cluster.setSysId((String) objArray[2]);
+      cluster.setProvince((String) objArray[3]);
+      cluster.setFlinkTaskName((String) objArray[4]);
+      res.add(cluster);
+    }
+    return res;
   }
 
   @Override

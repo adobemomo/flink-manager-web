@@ -1,6 +1,9 @@
 package ac.cn.iie.constant;
 
 public class FlinkRestJsonConstant {
+  public static final String CLUSTER_STATUS_ALIVE = "alive";
+  public static final String CLUSTER_STATUS_DEAD = "dead";
+
   public static final String KEY_TASK_MANAGERS = "taskmanagers";
   public static final String KEY_JOBS = "jobs";
 

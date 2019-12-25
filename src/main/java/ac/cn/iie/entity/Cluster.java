@@ -10,7 +10,7 @@ import javax.persistence.*;
 public class Cluster {
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
-  private Integer id;
+  private int id;
 
   private String uri;
   private String sysId;

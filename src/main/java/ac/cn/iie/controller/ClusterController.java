@@ -103,9 +103,10 @@ public class ClusterController {
   @GetMapping("/cluster_name")
   @ResponseBody
   public JSONObject getClusterNameList() {
-    List<Cluster> clusterList = clusterService.selectCluster();
+    List<Cluster> clusterList = clusterService.selectAliveCluster();
     JSONObject res = new JSONObject();
     for (Cluster cluster : clusterList) {
+      System.out.println(cluster.toString());
       JSONObject attr = new JSONObject();
       attr.put(
               "name",

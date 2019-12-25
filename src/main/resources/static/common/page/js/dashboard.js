@@ -87,7 +87,12 @@ $(function () {
                 align: 'center',
                 width: 100,
                 formatter: function (value, row, index) {
-                    let param = value.toString() + ',&quot;' + row.uri + '&quot;,&quot;' + row.name + '&quot;';
+                    let param = value.toString()
+                        + ',&quot;' + row.uri
+                        + '&quot;,&quot;' + row.sysId
+                        + '&quot;,&quot;' + row.province
+                        + '&quot;,&quot;' + row.flinkTaskName + '&quot;';
+                    console.log(param)
                     return '<span><a href="javascript:void(0)" id="del-btn-' + value + '" onclick="delCluster(' + value + ')">删除</a></span>'
                         + '<span> </span>'
                         + '<span><a href="javascript:void(0)" onclick="updateCluster(' + param + ')">修改</a></span>';
@@ -309,7 +314,6 @@ $(function () {
                 if (result) {
                     layer.msg("修改成功");
                     $("#myModal2").modal("hide");
-                    refresh()
                 } else {
                     layer.msg("修改失败");
                 }
@@ -513,11 +517,12 @@ function delCluster(id) {
  * 修改集群信息
  * @param id
  */
-function updateCluster(value, uri, name) {
+function updateCluster(value, uri, sysId, province, flinkTaskName) {
     $("#edit-uri").attr('value', uri);
-    $("#edit-name").attr('value', name);
+    $("#edit-sysid").val(sysId);
+    $("#edit-province").val(province);
+    $("#edit-flinktaskname").attr('value', flinkTaskName);
     $("#edit-btn").attr('current-id', value);
-    $("#edit-form")[0].reset();
     $("#myModal2").modal("show");
 }
 
