@@ -79,7 +79,12 @@ $(function () {
                 title: 'Status',
                 field: 'status',
                 align: 'left',
-                width: 100
+                width: 100,
+                formatter: function (value, row, index) {
+                    return '<div><div class="alert-status-' + value + '">'
+                        + '<span class="status-text" ">' + value + '</span>'
+                        + '</div></div>';
+                }
             },
             {
                 title: '操作',
@@ -92,7 +97,6 @@ $(function () {
                         + '&quot;,&quot;' + row.sysId
                         + '&quot;,&quot;' + row.province
                         + '&quot;,&quot;' + row.flinkTaskName + '&quot;';
-                    console.log(param)
                     return '<span><a href="javascript:void(0)" id="del-btn-' + value + '" onclick="delCluster(' + value + ')">删除</a></span>'
                         + '<span> </span>'
                         + '<span><a href="javascript:void(0)" onclick="updateCluster(' + param + ')">修改</a></span>';
