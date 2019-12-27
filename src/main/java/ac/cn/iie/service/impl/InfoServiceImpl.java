@@ -13,6 +13,7 @@ import kong.unirest.Unirest;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
+import java.math.BigInteger;
 import java.util.List;
 import java.util.Optional;
 
@@ -33,9 +34,9 @@ public class InfoServiceImpl implements InfoService {
           InfoRepository infoRepository,
           FlinkRestService flinkRestService,
           ClusterService clusterService) {
-      this.infoRepository = infoRepository;
-      this.flinkRestService = flinkRestService;
-      this.clusterService = clusterService;
+    this.infoRepository = infoRepository;
+    this.flinkRestService = flinkRestService;
+    this.clusterService = clusterService;
   }
 
   private Info updateInfoWithFlink(int id, String uri) {
@@ -65,25 +66,24 @@ public class InfoServiceImpl implements InfoService {
       info.setFailedJob(0);
       info.setRunningTaskmanager(0);
     }
-
     return info;
   }
 
   @Override
   public Info insertInfo(int id, String uri) {
-      Info info = infoRepository.save(updateInfoWithFlink(id, uri));
-      log.info("Add info of cluster " + id + " to database.");
-      return info;
+    Info info = infoRepository.save(updateInfoWithFlink(id, uri));
+    log.info("Add info of cluster " + id + " to database.");
+    return info;
   }
 
   @Override
   public Boolean deleteInfo(int id) {
     if (infoRepository.findById(id).isPresent()) {
-        infoRepository.deleteById(id);
-        log.info("Delete info of cluster " + id + " in database.");
+      infoRepository.deleteById(id);
+      log.info("Delete info of cluster " + id + " in database.");
       return true;
     } else {
-        log.info("Info of cluster " + id + " does not exist.");
+      log.info("Info of cluster " + id + " does not exist.");
       return false;
     }
   }
@@ -96,14 +96,14 @@ public class InfoServiceImpl implements InfoService {
       try {
         info = infoRepository.save(updateInfoWithFlink(id, uri));
       } catch (Exception e) {
-          log.info("Failed to update cluster info.");
-          log.warn(e.getMessage());
+        log.info("Failed to update cluster info.");
+        log.warn(e.getMessage());
       }
-        log.info("Update info of cluster " + id + " in database.");
+      log.info("Update info of cluster " + id + " in database.");
       return info;
     } else {
       Info info = updateInfoWithFlink(id, uri);
-        log.info("Add info of cluster " + id + " into database.");
+      log.info("Add info of cluster " + id + " into database.");
       return info;
     }
   }
@@ -150,21 +150,32 @@ public class InfoServiceImpl implements InfoService {
       Object[] objects = ((Object[]) overallCountList.get(0));
 
       object.put(OVERALL_RUNNING_CLUSTER, objects[0]);
-      object.put(OVERALL_RUNNING_TASK_MANAGER, objects[1]);
-      object.put(OVERALL_RUNNING_JOB, objects[2]);
-      object.put(OVERALL_COMPLETED_JOB, objects[3]);
-      object.put(OVERALL_CANCELED_JOB, objects[4]);
-      object.put(OVERALL_FAILED_JOB, objects[5]);
+      if (objects[0] == BigInteger.ZERO) {
+        object.put(OVERALL_RUNNING_TASK_MANAGER, 0);
+        object.put(OVERALL_RUNNING_JOB, 0);
+        object.put(OVERALL_COMPLETED_JOB, 0);
+        object.put(OVERALL_CANCELED_JOB, 0);
+        object.put(OVERALL_FAILED_JOB, 0);
+      } else {
+        object.put(OVERALL_RUNNING_TASK_MANAGER, objects[1]);
+        object.put(OVERALL_RUNNING_JOB, objects[2]);
+        object.put(OVERALL_COMPLETED_JOB, objects[3]);
+        object.put(OVERALL_CANCELED_JOB, objects[4]);
+        object.put(OVERALL_FAILED_JOB, objects[5]);
+      }
     }
+
     return object;
   }
 
   @Override
   public Boolean isTableExist() {
-    if (infoRepository.count() == 0) {
-      return false;
-    } else {
+    try {
+      infoRepository.count();
       return true;
+    } catch (Exception e) {
+      log.warn(e.getMessage());
+      return false;
     }
   }
 }
