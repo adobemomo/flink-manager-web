@@ -106,7 +106,6 @@ public class ClusterController {
     List<Cluster> clusterList = clusterService.selectAliveCluster();
     JSONObject res = new JSONObject();
     for (Cluster cluster : clusterList) {
-      System.out.println(cluster.toString());
       JSONObject attr = new JSONObject();
       attr.put(
               "name",
@@ -123,11 +122,9 @@ public class ClusterController {
     Cluster c = clusterService.insertCluster(cluster);
     try {
       infoService.insertInfo(c.getId(), c.getUri());
-      log.info("Add info of " + cluster + " to database.");
     } catch (Exception e) {
       log.warn(e.getMessage());
     }
-    log.info("Add cluster " + cluster + " to database.");
     return c;
   }
 
@@ -141,9 +138,7 @@ public class ClusterController {
   @ResponseBody
   public Cluster updateClusterInformation(Cluster cluster) {
     Cluster c = clusterService.updateCluster(cluster);
-    log.info("Update info of cluster " + cluster + " in database.");
     infoService.updateInfo(c.getId(), c.getUri());
-    log.info("Update cluster " + cluster + " in database.");
     return c;
   }
 
@@ -156,8 +151,6 @@ public class ClusterController {
   @DeleteMapping("/cluster/{id}")
   @ResponseBody
   public Boolean deletePlayerInformation(@PathVariable Integer id) {
-    log.info("Delete info of cluster " + id + " in database.");
-    log.info("Delete cluster by id " + id);
     return clusterService.deleteCluster(id) && infoService.deleteInfo(id);
   }
 }

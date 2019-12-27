@@ -1,16 +1,24 @@
+let clusterListTable = $("#cluster_list");
+let jobManagerConfigTable = $("#jmconfigtable");
+let taskManagerListTable = $("#taskmanager_list");
+let runningJobListTable = $("#running_jobs_table");
+
+let addClusterModal = $("#myModal");
+
+
 $(document).ready(function () {
     getOverallCnt();
-    $("#cluster_list").bootstrapTable("refresh")
+    clusterListTable.bootstrapTable("refresh")
     setInterval('getOverallCnt()', 60000);
-    setInterval('$("#cluster_list").bootstrapTable("refresh")', 60000);
-    setInterval('$("#jmconfigtable").bootstrapTable("refresh")', 60000);
-    setInterval('$("#taskmanager_list").bootstrapTable("refresh")', 60000);
-    setInterval('$("#running_jobs_table").bootstrapTable("refresh");', 60000);
+    setInterval('clusterListTable.bootstrapTable("refresh")', 60000);
+    setInterval('jobManagerConfigTable.bootstrapTable("refresh")', 60000);
+    setInterval('taskManagerListTable.bootstrapTable("refresh")', 60000);
+    setInterval('runningJobListTable.bootstrapTable("refresh")', 60000);
 });
 
 
 $(function () {
-    $("#cluster_list").bootstrapTable({
+    clusterListTable.bootstrapTable({
         url: '/cluster',                     //请求后台的URL
         method: 'get',                      //请求方式
         toolbar: '#toolbar',                //工具按钮栏
@@ -48,7 +56,7 @@ $(function () {
                 align: 'left',
                 width: 200,
                 formatter: function (value, row, index) {
-                    return '<a href="' + value + '" target="_Blank">' + value + '</a>'
+                    return `<a href="${value}" target="_Blank">${value}</a>`
                 }
             },
             {
@@ -81,9 +89,7 @@ $(function () {
                 align: 'left',
                 width: 100,
                 formatter: function (value, row, index) {
-                    return '<div><div class="alert-status-' + value + '">'
-                        + '<span class="status-text" ">' + value + '</span>'
-                        + '</div></div>';
+                    return `<div><div class="alert-status-${value}"><span class="status-text" ">${value}</span></div></div>`;
                 }
             },
             {
@@ -97,22 +103,21 @@ $(function () {
                         + '&quot;,&quot;' + row.sysId
                         + '&quot;,&quot;' + row.province
                         + '&quot;,&quot;' + row.flinkTaskName + '&quot;';
-                    return '<span><a href="javascript:void(0)" id="del-btn-' + value + '" onclick="delCluster(' + value + ')">删除</a></span>'
-                        + '<span> </span>'
-                        + '<span><a href="javascript:void(0)" onclick="updateCluster(' + param + ')">修改</a></span>';
+                    return `<span><a href="javascript:void(0)" id="del-btn-${value}" onclick="delCluster(${value})">删除</a></span><span> </span><span><a href="javascript:void(0)" onclick="updateCluster(${param})">修改</a></span>`;
                 }
             }
         ]
     });
 
-    $('#jmconfigtable').bootstrapTable({
+    jobManagerConfigTable.bootstrapTable({
         url: '/jobmanager/config',                     //请求后台的URL
         method: 'get',                      //请求方式
 
         queryParams: function () {
-            if ($('li.active.jm_ds').attr('id') !== undefined) {
+            let jobManagerDataSrc = $('li.active.jm_ds');
+            if (jobManagerDataSrc.attr('id') !== undefined) {
                 return {
-                    id: $('li.active.jm_ds').attr('id').substr(6)
+                    id: jobManagerDataSrc.attr('id').substr(6)
                 };
             }
         },                                  //请求后台传递的参数
@@ -135,7 +140,7 @@ $(function () {
         ]
     });
 
-    $("#taskmanager_list").bootstrapTable({
+    taskManagerListTable.bootstrapTable({
         url: '/taskmanagers',                     //请求后台的URL
         method: 'get',                      //请求方式
         striped: true,                      //是否显示行间隔色
@@ -146,9 +151,10 @@ $(function () {
         pageList: [5, 10, 20],              //可供选择的每页的行数
 
         queryParams: function () {
-            if ($('li.active.tm_ds').attr('id') !== undefined) {
+            let taskManagerDataSrc = $("li.active.tm_ds");
+            if (taskManagerDataSrc.attr('id') !== undefined) {
                 return {
-                    id: $('li.active.tm_ds').attr('id').substr(6)
+                    id: taskManagerDataSrc.attr('id').substr(6)
                 };
             }
         },                                 //请求后台传递的参数
@@ -225,14 +231,15 @@ $(function () {
         ]
     });
 
-    $("#running_jobs_table").bootstrapTable({
+    runningJobListTable.bootstrapTable({
         url: '/jobs/running_list',                     //请求后台的URL
         method: 'get',                      //请求方式
         striped: true,                      //是否显示行间隔色
         queryParams: function () {
-            if ($('li.active.running_job_ds').attr('id') !== undefined) {
+            let runningJobDataSrc = $('li.active.running_job_ds');
+            if (runningJobDataSrc.attr('id') !== undefined) {
                 return {
-                    id: $('li.active.running_job_ds').attr('id').substr(15)
+                    id: runningJobDataSrc.attr('id').substr(15)
                 };
             }
         },                                 //请求后台传递的参数
@@ -302,9 +309,9 @@ $(function () {
 
     $("#insert-btn").on('click', function () {
         $.post("/cluster", $("#insert-form").serialize(), function (response) {
-            $("#myModal").modal("hide");
+            addClusterModal.modal("hide");
             getOverallCnt()
-            $("#cluster_list").bootstrapTable("refresh")
+            clusterListTable.bootstrapTable("refresh")
         })
     });
 
@@ -324,7 +331,7 @@ $(function () {
             }
         });
         getOverallCnt()
-        $("#cluster_list").bootstrapTable("refresh")
+        clusterListTable.bootstrapTable("refresh")
     });
 
     /**
@@ -334,19 +341,19 @@ $(function () {
         $(this).parent().find('li.active').removeClass('active');
         $(this).addClass('active');
         $('#logheading').html($(this).children().text() + 'jobmanager log')
-        $("#jmconfigtable").bootstrapTable("refresh");
+        jobManagerConfigTable.bootstrapTable("refresh");
     })
 
     $('#tm_datasourcelist').on('click', 'li', function () {
         $(this).parent().find('li.active').removeClass('active');
         $(this).addClass('active');
-        $("#taskmanager_list").bootstrapTable("refresh");
+        taskManagerListTable.bootstrapTable("refresh");
     })
 
     $('#running_job_datasourcelist').on('click', 'li', function () {
         $(this).parent().find('li.active').removeClass('active');
         $(this).addClass('active');
-        $("#running_jobs_table").bootstrapTable("refresh");
+        runningJobListTable.bootstrapTable("refresh");
     })
 
     $('#completed_job_datasourcelist').on('click', 'li', function () {
@@ -366,19 +373,19 @@ $(function () {
         venderNavi('jm')
         $("#icon-side-ul").find('li.active').removeClass('active');
         $("#navi_clusters_icon").addClass('active');
-        $("#jmconfigtable").bootstrapTable("refresh");
+        jobManagerConfigTable.bootstrapTable("refresh");
     })
     $("#navi_taskmanagers").on('click', function () {
         venderNavi('tm')
         $("#icon-side-ul").find('li.active').removeClass('active');
         $("#navi_taskmanagers_icon").addClass('active');
-        $("#taskmanager_list").bootstrapTable("refresh");
+        taskManagerListTable.bootstrapTable("refresh");
     })
     $("#navi_running_jobs").on('click', function () {
         venderNavi('running_job')
         $("#icon-side-ul").find('li.active').removeClass('active');
         $("#navi_running_jobs_icon").addClass('active');
-        $("#running_jobs_table").bootstrapTable("refresh");
+        runningJobListTable.bootstrapTable("refresh");
     })
 
     $("#navi_overview_icon").on('click', function () {
@@ -389,19 +396,19 @@ $(function () {
         venderNavi('jm')
         $("#full-side-ul").find('li.active').removeClass('active');
         $("#navi_clusters").addClass('active');
-        $("#jmconfigtable").bootstrapTable("refresh");
+        jobManagerConfigTable.bootstrapTable("refresh");
     })
     $("#navi_taskmanagers_icon").on('click', function () {
         venderNavi('tm')
         $("#full-side-ul").find('li.active').removeClass('active');
         $("#navi_taskmanagers").addClass('active');
-        $("#taskmanager_list").bootstrapTable("refresh");
+        taskManagerListTable.bootstrapTable("refresh");
     })
     $("#navi_running_jobs_icon").on('click', function () {
         venderNavi('running_job')
         $("#full-side-ul").find('li.active').removeClass('active');
         $("#navi_running_jobs").addClass('active');
-        $("#running_jobs_table").bootstrapTable("refresh");
+        runningJobListTable.bootstrapTable("refresh");
 
     })
 
@@ -500,7 +507,7 @@ function delCluster(id) {
                     if (result) {
                         layer.msg("删除成功");
                         getOverallCnt()
-                        $("#cluster_list").bootstrapTable("refresh")
+                        clusterListTable.bootstrapTable("refresh")
                     } else {
                         layer.msg("删除失败");
                     }

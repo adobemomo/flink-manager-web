@@ -33,9 +33,9 @@ public class InfoServiceImpl implements InfoService {
           InfoRepository infoRepository,
           FlinkRestService flinkRestService,
           ClusterService clusterService) {
-    this.infoRepository = infoRepository;
-    this.flinkRestService = flinkRestService;
-    this.clusterService = clusterService;
+      this.infoRepository = infoRepository;
+      this.flinkRestService = flinkRestService;
+      this.clusterService = clusterService;
   }
 
   private Info updateInfoWithFlink(int id, String uri) {
@@ -71,15 +71,19 @@ public class InfoServiceImpl implements InfoService {
 
   @Override
   public Info insertInfo(int id, String uri) {
-    return infoRepository.save(updateInfoWithFlink(id, uri));
+      Info info = infoRepository.save(updateInfoWithFlink(id, uri));
+      log.info("Add info of cluster " + id + " to database.");
+      return info;
   }
 
   @Override
   public Boolean deleteInfo(int id) {
     if (infoRepository.findById(id).isPresent()) {
-      infoRepository.deleteById(id);
+        infoRepository.deleteById(id);
+        log.info("Delete info of cluster " + id + " in database.");
       return true;
     } else {
+        log.info("Info of cluster " + id + " does not exist.");
       return false;
     }
   }
@@ -92,11 +96,14 @@ public class InfoServiceImpl implements InfoService {
       try {
         info = infoRepository.save(updateInfoWithFlink(id, uri));
       } catch (Exception e) {
-        log.warn(e.getMessage());
+          log.info("Failed to update cluster info.");
+          log.warn(e.getMessage());
       }
+        log.info("Update info of cluster " + id + " in database.");
       return info;
     } else {
       Info info = updateInfoWithFlink(id, uri);
+        log.info("Add info of cluster " + id + " into database.");
       return info;
     }
   }
@@ -149,8 +156,6 @@ public class InfoServiceImpl implements InfoService {
       object.put(OVERALL_CANCELED_JOB, objects[4]);
       object.put(OVERALL_FAILED_JOB, objects[5]);
     }
-
-    System.out.println(object.toJSONString());
     return object;
   }
 

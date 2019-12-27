@@ -180,6 +180,41 @@
     </div>
 </div>
 
+<!-- 修改集群信息模态框 -->
+<div class="modal fade" id="add-guide">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <!-- 模态框头部 -->
+            <div class="modal-header" style="border: 0">
+                <h4 class="modal-title">URI说明</h4>
+            </div>
+
+            <!-- 模态框主体 -->
+            <div class="modal-body">
+                <div>
+                    <ul>
+                        <li><b>协议</b>
+                            <p></p>
+                            <p>http://头部需要在录入的URI中体现</p></li>
+                        <li><b>路径</b>
+                            <p></p>
+                            <p>进入部署Flink集群的Yarn页面，取Yarn所运行的地址和端口号。</p>
+                            <p>进入所要添加Flink集群的Web Monitor，取<u>/proxy</u>及其后的资源路径，拼接到Yarn地址后面。</p></li>
+                        <p>记得在URI末尾添加反斜杠/，否则点击URI无法正确跳转到对应的Web Monitor</p>
+                        <li><b>示例</b>
+                            <p></p>
+                            <p><u>http://10.0.0.1:8088/proxy/123456679/</u></p></li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- 模态框底部 -->
+            <div class="modal-footer" style="border: 0"></div>
+
+        </div>
+    </div>
+</div>
+
 
 <!-- 顶部固定栏 -->
 <nav class="navbar navbar-inverse navbar-fixed-top">
@@ -313,6 +348,11 @@
                                         <button id="btn-add" type="button" class="btn btn-default icon-user"
                                                 data-toggle="modal"
                                                 data-target="#myModal"> 增加
+                                        </button>
+                                        <button class="btn"
+                                                data-toggle="modal"
+                                                data-target="#add-guide">
+                                            ?
                                         </button>
                                     </div>
                                 </div>
