@@ -494,7 +494,8 @@ function venderNavi(obj) {
  * @param id
  */
 function delCluster(id) {
-    $("#del-btn-" + id).confirmation({
+    let delBtn = '#del-btn-' + id;
+    $(delBtn).confirmation({
         placement: "bottom",        //弹层在哪里出现（默认top）
         title: "确定删除吗？",     //弹层展现的内容（默认Are you sure?）
         btnOkLabel: '确定',      //确认按钮的显示的内容（默认Yes）
@@ -515,11 +516,10 @@ function delCluster(id) {
             });
         },
         onCancel: function () {    //点击取消按钮的事件
-            $('#del-btn').confirmation('hide')   //隐藏弹层
-
+            $(delBtn).confirmation('hide')   //隐藏弹层
         }
     })
-    $("#del-btn-" + id).confirmation('show')
+    $(delBtn).confirmation('show');
 
 }
 
