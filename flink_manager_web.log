@@ -1,0 +1,296 @@
+2020-01-24 18:54:52.834  INFO 2702 --- [restartedMain] ac.cn.iie.FlinkManagerWebApplication     : Starting FlinkManagerWebApplication on xps13bbb with PID 2702 (/home/adobemomo/Desktop/workspace/code/flink_manager_web/target/classes started by adobemomo in /home/adobemomo/Desktop/workspace/code/flink_manager_web)
+2020-01-24 18:54:52.905  INFO 2702 --- [restartedMain] ac.cn.iie.FlinkManagerWebApplication     : No active profile set, falling back to default profiles: default
+2020-01-24 18:54:53.033  INFO 2702 --- [restartedMain] o.s.b.devtools.restart.ChangeableUrls    : The Class-Path manifest attribute in /home/adobemomo/.m2/repository/org/glassfish/jaxb/jaxb-runtime/2.3.2/jaxb-runtime-2.3.2.jar referenced one or more files that do not exist: file:/home/adobemomo/.m2/repository/org/glassfish/jaxb/jaxb-runtime/2.3.2/jakarta.xml.bind-api-2.3.2.jar,file:/home/adobemomo/.m2/repository/org/glassfish/jaxb/jaxb-runtime/2.3.2/txw2-2.3.2.jar,file:/home/adobemomo/.m2/repository/org/glassfish/jaxb/jaxb-runtime/2.3.2/istack-commons-runtime-3.0.8.jar,file:/home/adobemomo/.m2/repository/org/glassfish/jaxb/jaxb-runtime/2.3.2/stax-ex-1.8.1.jar,file:/home/adobemomo/.m2/repository/org/glassfish/jaxb/jaxb-runtime/2.3.2/FastInfoset-1.2.16.jar,file:/home/adobemomo/.m2/repository/org/glassfish/jaxb/jaxb-runtime/2.3.2/jakarta.activation-api-1.2.1.jar
+2020-01-24 18:54:53.033  INFO 2702 --- [restartedMain] .e.DevToolsPropertyDefaultsPostProcessor : Devtools property defaults active! Set 'spring.devtools.add-properties' to 'false' to disable
+2020-01-24 18:54:53.033  INFO 2702 --- [restartedMain] .e.DevToolsPropertyDefaultsPostProcessor : For additional web related logging consider setting the 'logging.level.web' property to 'DEBUG'
+2020-01-24 18:54:54.498  INFO 2702 --- [restartedMain] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2020-01-24 18:54:54.608  INFO 2702 --- [restartedMain] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 92ms. Found 2 JPA repository interfaces.
+2020-01-24 18:54:54.951  INFO 2702 --- [restartedMain] trationDelegate$BeanPostProcessorChecker : Bean 'org.springframework.transaction.annotation.ProxyTransactionManagementConfiguration' of type [org.springframework.transaction.annotation.ProxyTransactionManagementConfiguration] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+2020-01-24 18:54:55.137  INFO 2702 --- [restartedMain] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port(s): 8092 (http)
+2020-01-24 18:54:55.143  INFO 2702 --- [restartedMain] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2020-01-24 18:54:55.143  INFO 2702 --- [restartedMain] org.apache.catalina.core.StandardEngine  : Starting Servlet engine: [Apache Tomcat/9.0.29]
+2020-01-24 18:54:55.213  INFO 2702 --- [restartedMain] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
+2020-01-24 18:54:55.213  INFO 2702 --- [restartedMain] o.s.web.context.ContextLoader            : Root WebApplicationContext: initialization completed in 2179 ms
+2020-01-24 18:54:55.468  INFO 2702 --- [restartedMain] o.hibernate.jpa.internal.util.LogHelper  : HHH000204: Processing PersistenceUnitInfo [name: default]
+2020-01-24 18:54:55.540  INFO 2702 --- [restartedMain] org.hibernate.Version                    : HHH000412: Hibernate Core {5.4.9.Final}
+2020-01-24 18:54:55.805  INFO 2702 --- [restartedMain] o.hibernate.annotations.common.Version   : HCANN000001: Hibernate Commons Annotations {5.1.0.Final}
+2020-01-24 18:54:55.905  INFO 2702 --- [restartedMain] com.alibaba.druid.pool.DruidDataSource   : {dataSource-1} inited
+2020-01-24 18:54:56.331  INFO 2702 --- [restartedMain] org.hibernate.dialect.Dialect            : HHH000400: Using dialect: org.hibernate.dialect.MySQL57Dialect
+2020-01-24 18:54:56.784  INFO 2702 --- [restartedMain] o.h.e.t.j.p.i.JtaPlatformInitiator       : HHH000490: Using JtaPlatform implementation: [org.hibernate.engine.transaction.jta.platform.internal.NoJtaPlatform]
+2020-01-24 18:54:56.790  INFO 2702 --- [restartedMain] j.LocalContainerEntityManagerFactoryBean : Initialized JPA EntityManagerFactory for persistence unit 'default'
+2020-01-24 18:54:56.819  INFO 2702 --- [restartedMain] o.s.b.d.a.OptionalLiveReloadServer       : LiveReload server is running on port 35729
+2020-01-24 18:54:57.101  WARN 2702 --- [restartedMain] JpaBaseConfiguration$JpaWebConfiguration : spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2020-01-24 18:54:57.205  INFO 2702 --- [restartedMain] o.s.s.concurrent.ThreadPoolTaskExecutor  : Initializing ExecutorService 'applicationTaskExecutor'
+2020-01-24 18:54:57.320  WARN 2702 --- [restartedMain] org.thymeleaf.templatemode.TemplateMode  : [THYMELEAF][restartedMain] Template Mode 'LEGACYHTML5' is deprecated. Using Template Mode 'HTML' instead.
+2020-01-24 18:54:57.395  INFO 2702 --- [restartedMain] o.s.s.c.ThreadPoolTaskScheduler          : Initializing ExecutorService 'taskScheduler'
+2020-01-24 18:54:57.440  INFO 2702 --- [scheduling-1] a.cn.iie.schedule.FlinkUptodateSchedule  : Update info with Flink.
+2020-01-24 18:54:57.459  INFO 2702 --- [restartedMain] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port(s): 8092 (http) with context path ''
+2020-01-24 18:54:57.463  INFO 2702 --- [restartedMain] ac.cn.iie.FlinkManagerWebApplication     : Started FlinkManagerWebApplication in 5.766 seconds (JVM running for 6.78)
+2020-01-24 18:54:57.712  INFO 2702 --- [scheduling-1] ac.cn.iie.service.impl.InfoServiceImpl   : Update info of cluster 1 in database.
+2020-01-24 18:54:57.718  INFO 2702 --- [scheduling-1] ac.cn.iie.service.impl.InfoServiceImpl   : Update info of cluster 2 in database.
+2020-01-24 18:55:08.013  INFO 2702 --- [http-nio-0.0.0.0-8092-exec-1] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring DispatcherServlet 'dispatcherServlet'
+2020-01-24 18:55:08.013  INFO 2702 --- [http-nio-0.0.0.0-8092-exec-1] o.s.web.servlet.DispatcherServlet        : Initializing Servlet 'dispatcherServlet'
+2020-01-24 18:55:08.019  INFO 2702 --- [http-nio-0.0.0.0-8092-exec-1] o.s.web.servlet.DispatcherServlet        : Completed initialization in 6 ms
+2020-01-24 18:55:08.037  INFO 2702 --- [http-nio-0.0.0.0-8092-exec-1] ac.cn.iie.controller.ClusterController   : Load dashboard.html.
+2020-01-24 18:55:08.603  INFO 2702 --- [http-nio-0.0.0.0-8092-exec-5] a.cn.iie.controller.FlinkRestController  : Return overall count.
+2020-01-24 18:55:08.796  INFO 2702 --- [http-nio-0.0.0.0-8092-exec-2] ac.cn.iie.controller.ClusterController   : Return Cluster List.
+2020-01-24 18:55:57.440  INFO 2702 --- [scheduling-1] a.cn.iie.schedule.FlinkUptodateSchedule  : Update info with Flink.
+2020-01-24 18:55:57.502  INFO 2702 --- [scheduling-1] ac.cn.iie.service.impl.InfoServiceImpl   : Update info of cluster 1 in database.
+2020-01-24 18:55:57.531  INFO 2702 --- [scheduling-1] ac.cn.iie.service.impl.InfoServiceImpl   : Update info of cluster 2 in database.
+2020-01-24 18:56:08.662  INFO 2702 --- [http-nio-0.0.0.0-8092-exec-4] a.cn.iie.controller.FlinkRestController  : Return overall count.
+2020-01-24 18:56:08.694  INFO 2702 --- [http-nio-0.0.0.0-8092-exec-5] ac.cn.iie.controller.ClusterController   : Return Cluster List.
+2020-01-24 18:56:57.440  INFO 2702 --- [scheduling-1] a.cn.iie.schedule.FlinkUptodateSchedule  : Update info with Flink.
+2020-01-24 18:56:57.472  INFO 2702 --- [scheduling-1] ac.cn.iie.service.impl.InfoServiceImpl   : Update info of cluster 1 in database.
+2020-01-24 18:56:57.491  INFO 2702 --- [scheduling-1] ac.cn.iie.service.impl.InfoServiceImpl   : Update info of cluster 2 in database.
+2020-01-24 18:57:08.680  INFO 2702 --- [http-nio-0.0.0.0-8092-exec-10] a.cn.iie.controller.FlinkRestController  : Return overall count.
+2020-01-24 18:57:08.708  INFO 2702 --- [http-nio-0.0.0.0-8092-exec-3] ac.cn.iie.controller.ClusterController   : Return Cluster List.
+2020-01-24 18:57:57.440  INFO 2702 --- [scheduling-1] a.cn.iie.schedule.FlinkUptodateSchedule  : Update info with Flink.
+2020-01-24 18:57:57.454  INFO 2702 --- [scheduling-1] ac.cn.iie.service.impl.InfoServiceImpl   : Update info of cluster 1 in database.
+2020-01-24 18:57:57.461  INFO 2702 --- [scheduling-1] ac.cn.iie.service.impl.InfoServiceImpl   : Update info of cluster 2 in database.
+2020-01-24 18:58:09.049  INFO 2702 --- [http-nio-0.0.0.0-8092-exec-2] a.cn.iie.controller.FlinkRestController  : Return overall count.
+2020-01-24 18:58:09.074  INFO 2702 --- [http-nio-0.0.0.0-8092-exec-10] ac.cn.iie.controller.ClusterController   : Return Cluster List.
+2020-01-24 18:58:57.440  INFO 2702 --- [scheduling-1] a.cn.iie.schedule.FlinkUptodateSchedule  : Update info with Flink.
+2020-01-24 18:58:57.477  INFO 2702 --- [scheduling-1] ac.cn.iie.service.impl.InfoServiceImpl   : Update info of cluster 1 in database.
+2020-01-24 18:58:57.487  INFO 2702 --- [scheduling-1] ac.cn.iie.service.impl.InfoServiceImpl   : Update info of cluster 2 in database.
+2020-01-24 18:59:08.678  INFO 2702 --- [http-nio-0.0.0.0-8092-exec-7] a.cn.iie.controller.FlinkRestController  : Return overall count.
+2020-01-24 18:59:08.723  INFO 2702 --- [http-nio-0.0.0.0-8092-exec-10] ac.cn.iie.controller.ClusterController   : Return Cluster List.
+2020-01-24 18:59:57.440  INFO 2702 --- [scheduling-1] a.cn.iie.schedule.FlinkUptodateSchedule  : Update info with Flink.
+2020-01-24 18:59:57.466  INFO 2702 --- [scheduling-1] ac.cn.iie.service.impl.InfoServiceImpl   : Update info of cluster 1 in database.
+2020-01-24 18:59:57.474  INFO 2702 --- [scheduling-1] ac.cn.iie.service.impl.InfoServiceImpl   : Update info of cluster 2 in database.
+2020-01-24 19:00:08.678  INFO 2702 --- [http-nio-0.0.0.0-8092-exec-9] a.cn.iie.controller.FlinkRestController  : Return overall count.
+2020-01-24 19:00:08.726  INFO 2702 --- [http-nio-0.0.0.0-8092-exec-5] ac.cn.iie.controller.ClusterController   : Return Cluster List.
+2020-01-24 19:00:57.440  INFO 2702 --- [scheduling-1] a.cn.iie.schedule.FlinkUptodateSchedule  : Update info with Flink.
+2020-01-24 19:00:57.456  INFO 2702 --- [scheduling-1] ac.cn.iie.service.impl.InfoServiceImpl   : Update info of cluster 1 in database.
+2020-01-24 19:00:57.461  INFO 2702 --- [scheduling-1] ac.cn.iie.service.impl.InfoServiceImpl   : Update info of cluster 2 in database.
+2020-01-24 19:01:09.060  INFO 2702 --- [http-nio-0.0.0.0-8092-exec-10] a.cn.iie.controller.FlinkRestController  : Return overall count.
+2020-01-24 19:01:09.100  INFO 2702 --- [http-nio-0.0.0.0-8092-exec-9] ac.cn.iie.controller.ClusterController   : Return Cluster List.
+2020-01-24 19:01:57.440  INFO 2702 --- [scheduling-1] a.cn.iie.schedule.FlinkUptodateSchedule  : Update info with Flink.
+2020-01-24 19:01:57.467  INFO 2702 --- [scheduling-1] ac.cn.iie.service.impl.InfoServiceImpl   : Update info of cluster 1 in database.
+2020-01-24 19:01:57.485  INFO 2702 --- [scheduling-1] ac.cn.iie.service.impl.InfoServiceImpl   : Update info of cluster 2 in database.
+2020-01-24 19:02:08.677  INFO 2702 --- [http-nio-0.0.0.0-8092-exec-7] a.cn.iie.controller.FlinkRestController  : Return overall count.
+2020-01-24 19:02:08.723  INFO 2702 --- [http-nio-0.0.0.0-8092-exec-8] ac.cn.iie.controller.ClusterController   : Return Cluster List.
+2020-01-24 19:02:57.440  INFO 2702 --- [scheduling-1] a.cn.iie.schedule.FlinkUptodateSchedule  : Update info with Flink.
+2020-01-24 19:02:57.450  INFO 2702 --- [scheduling-1] ac.cn.iie.service.impl.InfoServiceImpl   : Update info of cluster 1 in database.
+2020-01-24 19:02:57.456  INFO 2702 --- [scheduling-1] ac.cn.iie.service.impl.InfoServiceImpl   : Update info of cluster 2 in database.
+2020-01-24 19:03:08.679  INFO 2702 --- [http-nio-0.0.0.0-8092-exec-4] a.cn.iie.controller.FlinkRestController  : Return overall count.
+2020-01-24 19:03:08.723  INFO 2702 --- [http-nio-0.0.0.0-8092-exec-9] ac.cn.iie.controller.ClusterController   : Return Cluster List.
+2020-01-24 19:03:57.440  INFO 2702 --- [scheduling-1] a.cn.iie.schedule.FlinkUptodateSchedule  : Update info with Flink.
+2020-01-24 19:03:57.453  INFO 2702 --- [scheduling-1] ac.cn.iie.service.impl.InfoServiceImpl   : Update info of cluster 1 in database.
+2020-01-24 19:03:57.459  INFO 2702 --- [scheduling-1] ac.cn.iie.service.impl.InfoServiceImpl   : Update info of cluster 2 in database.
+2020-01-24 19:04:08.669  INFO 2702 --- [http-nio-0.0.0.0-8092-exec-3] a.cn.iie.controller.FlinkRestController  : Return overall count.
+2020-01-24 19:04:08.688  INFO 2702 --- [http-nio-0.0.0.0-8092-exec-10] ac.cn.iie.controller.ClusterController   : Return Cluster List.
+2020-01-24 19:04:57.440  INFO 2702 --- [scheduling-1] a.cn.iie.schedule.FlinkUptodateSchedule  : Update info with Flink.
+2020-01-24 19:04:57.448  INFO 2702 --- [scheduling-1] ac.cn.iie.service.impl.InfoServiceImpl   : Update info of cluster 1 in database.
+2020-01-24 19:04:57.454  INFO 2702 --- [scheduling-1] ac.cn.iie.service.impl.InfoServiceImpl   : Update info of cluster 2 in database.
+2020-01-24 19:05:08.680  INFO 2702 --- [http-nio-0.0.0.0-8092-exec-4] a.cn.iie.controller.FlinkRestController  : Return overall count.
+2020-01-24 19:05:08.724  INFO 2702 --- [http-nio-0.0.0.0-8092-exec-5] ac.cn.iie.controller.ClusterController   : Return Cluster List.
+2020-01-24 19:05:57.440  INFO 2702 --- [scheduling-1] a.cn.iie.schedule.FlinkUptodateSchedule  : Update info with Flink.
+2020-01-24 19:05:57.446  INFO 2702 --- [scheduling-1] ac.cn.iie.service.impl.InfoServiceImpl   : Update info of cluster 1 in database.
+2020-01-24 19:05:57.451  INFO 2702 --- [scheduling-1] ac.cn.iie.service.impl.InfoServiceImpl   : Update info of cluster 2 in database.
+2020-01-24 19:06:08.677  INFO 2702 --- [http-nio-0.0.0.0-8092-exec-3] a.cn.iie.controller.FlinkRestController  : Return overall count.
+2020-01-24 19:06:08.714  INFO 2702 --- [http-nio-0.0.0.0-8092-exec-2] ac.cn.iie.controller.ClusterController   : Return Cluster List.
+2020-01-24 19:06:57.440  INFO 2702 --- [scheduling-1] a.cn.iie.schedule.FlinkUptodateSchedule  : Update info with Flink.
+2020-01-24 19:06:57.463  INFO 2702 --- [scheduling-1] ac.cn.iie.service.impl.InfoServiceImpl   : Update info of cluster 1 in database.
+2020-01-24 19:06:57.514  INFO 2702 --- [scheduling-1] ac.cn.iie.service.impl.InfoServiceImpl   : Update info of cluster 2 in database.
+2020-01-24 19:07:08.659  INFO 2702 --- [http-nio-0.0.0.0-8092-exec-4] a.cn.iie.controller.FlinkRestController  : Return overall count.
+2020-01-24 19:07:08.675  INFO 2702 --- [http-nio-0.0.0.0-8092-exec-1] ac.cn.iie.controller.ClusterController   : Return Cluster List.
+2020-01-24 19:07:57.440  INFO 2702 --- [scheduling-1] a.cn.iie.schedule.FlinkUptodateSchedule  : Update info with Flink.
+2020-01-24 19:07:57.459  INFO 2702 --- [scheduling-1] ac.cn.iie.service.impl.InfoServiceImpl   : Update info of cluster 1 in database.
+2020-01-24 19:07:57.504  INFO 2702 --- [scheduling-1] ac.cn.iie.service.impl.InfoServiceImpl   : Update info of cluster 2 in database.
+2020-01-24 19:08:08.667  INFO 2702 --- [http-nio-0.0.0.0-8092-exec-3] a.cn.iie.controller.FlinkRestController  : Return overall count.
+2020-01-24 19:08:08.684  INFO 2702 --- [http-nio-0.0.0.0-8092-exec-8] ac.cn.iie.controller.ClusterController   : Return Cluster List.
+2020-01-24 19:08:57.440  INFO 2702 --- [scheduling-1] a.cn.iie.schedule.FlinkUptodateSchedule  : Update info with Flink.
+2020-01-24 19:08:57.458  INFO 2702 --- [scheduling-1] ac.cn.iie.service.impl.InfoServiceImpl   : Update info of cluster 1 in database.
+2020-01-24 19:08:57.462  INFO 2702 --- [scheduling-1] ac.cn.iie.service.impl.InfoServiceImpl   : Update info of cluster 2 in database.
+2020-01-24 19:09:08.669  INFO 2702 --- [http-nio-0.0.0.0-8092-exec-4] a.cn.iie.controller.FlinkRestController  : Return overall count.
+2020-01-24 19:09:08.707  INFO 2702 --- [http-nio-0.0.0.0-8092-exec-9] ac.cn.iie.controller.ClusterController   : Return Cluster List.
+2020-01-24 19:09:57.441  INFO 2702 --- [scheduling-1] a.cn.iie.schedule.FlinkUptodateSchedule  : Update info with Flink.
+2020-01-24 19:09:57.459  INFO 2702 --- [scheduling-1] ac.cn.iie.service.impl.InfoServiceImpl   : Update info of cluster 1 in database.
+2020-01-24 19:09:57.470  INFO 2702 --- [scheduling-1] ac.cn.iie.service.impl.InfoServiceImpl   : Update info of cluster 2 in database.
+2020-01-24 19:10:08.670  INFO 2702 --- [http-nio-0.0.0.0-8092-exec-3] a.cn.iie.controller.FlinkRestController  : Return overall count.
+2020-01-24 19:10:08.704  INFO 2702 --- [http-nio-0.0.0.0-8092-exec-6] ac.cn.iie.controller.ClusterController   : Return Cluster List.
+2020-01-24 19:10:57.440  INFO 2702 --- [scheduling-1] a.cn.iie.schedule.FlinkUptodateSchedule  : Update info with Flink.
+2020-01-24 19:10:57.458  INFO 2702 --- [scheduling-1] ac.cn.iie.service.impl.InfoServiceImpl   : Update info of cluster 1 in database.
+2020-01-24 19:10:57.470  INFO 2702 --- [scheduling-1] ac.cn.iie.service.impl.InfoServiceImpl   : Update info of cluster 2 in database.
+2020-01-24 19:11:08.664  INFO 2702 --- [http-nio-0.0.0.0-8092-exec-4] a.cn.iie.controller.FlinkRestController  : Return overall count.
+2020-01-24 19:11:08.691  INFO 2702 --- [http-nio-0.0.0.0-8092-exec-7] ac.cn.iie.controller.ClusterController   : Return Cluster List.
+2020-01-24 19:11:57.440  INFO 2702 --- [scheduling-1] a.cn.iie.schedule.FlinkUptodateSchedule  : Update info with Flink.
+2020-01-24 19:11:57.452  INFO 2702 --- [scheduling-1] ac.cn.iie.service.impl.InfoServiceImpl   : Update info of cluster 1 in database.
+2020-01-24 19:11:57.502  INFO 2702 --- [scheduling-1] ac.cn.iie.service.impl.InfoServiceImpl   : Update info of cluster 2 in database.
+2020-01-24 19:12:08.659  INFO 2702 --- [http-nio-0.0.0.0-8092-exec-3] a.cn.iie.controller.FlinkRestController  : Return overall count.
+2020-01-24 19:12:08.683  INFO 2702 --- [http-nio-0.0.0.0-8092-exec-10] ac.cn.iie.controller.ClusterController   : Return Cluster List.
+2020-01-24 19:12:57.441  INFO 2702 --- [scheduling-1] a.cn.iie.schedule.FlinkUptodateSchedule  : Update info with Flink.
+2020-01-24 19:12:57.459  INFO 2702 --- [scheduling-1] ac.cn.iie.service.impl.InfoServiceImpl   : Update info of cluster 1 in database.
+2020-01-24 19:12:57.464  INFO 2702 --- [scheduling-1] ac.cn.iie.service.impl.InfoServiceImpl   : Update info of cluster 2 in database.
+2020-01-24 19:13:08.668  INFO 2702 --- [http-nio-0.0.0.0-8092-exec-4] a.cn.iie.controller.FlinkRestController  : Return overall count.
+2020-01-24 19:13:08.687  INFO 2702 --- [http-nio-0.0.0.0-8092-exec-1] ac.cn.iie.controller.ClusterController   : Return Cluster List.
+2020-01-24 19:13:57.440  INFO 2702 --- [scheduling-1] a.cn.iie.schedule.FlinkUptodateSchedule  : Update info with Flink.
+2020-01-24 19:13:57.459  INFO 2702 --- [scheduling-1] ac.cn.iie.service.impl.InfoServiceImpl   : Update info of cluster 1 in database.
+2020-01-24 19:13:57.469  INFO 2702 --- [scheduling-1] ac.cn.iie.service.impl.InfoServiceImpl   : Update info of cluster 2 in database.
+2020-01-24 19:14:08.666  INFO 2702 --- [http-nio-0.0.0.0-8092-exec-6] a.cn.iie.controller.FlinkRestController  : Return overall count.
+2020-01-24 19:14:08.685  INFO 2702 --- [http-nio-0.0.0.0-8092-exec-2] ac.cn.iie.controller.ClusterController   : Return Cluster List.
+2020-01-24 19:14:57.440  INFO 2702 --- [scheduling-1] a.cn.iie.schedule.FlinkUptodateSchedule  : Update info with Flink.
+2020-01-24 19:14:57.457  INFO 2702 --- [scheduling-1] ac.cn.iie.service.impl.InfoServiceImpl   : Update info of cluster 1 in database.
+2020-01-24 19:14:57.469  INFO 2702 --- [scheduling-1] ac.cn.iie.service.impl.InfoServiceImpl   : Update info of cluster 2 in database.
+2020-01-24 19:15:08.678  INFO 2702 --- [http-nio-0.0.0.0-8092-exec-9] ac.cn.iie.controller.ClusterController   : Return Cluster List.
+2020-01-24 19:15:08.685  INFO 2702 --- [http-nio-0.0.0.0-8092-exec-3] a.cn.iie.controller.FlinkRestController  : Return overall count.
+2020-01-24 19:15:57.440  INFO 2702 --- [scheduling-1] a.cn.iie.schedule.FlinkUptodateSchedule  : Update info with Flink.
+2020-01-24 19:15:57.453  INFO 2702 --- [scheduling-1] ac.cn.iie.service.impl.InfoServiceImpl   : Update info of cluster 1 in database.
+2020-01-24 19:15:57.457  INFO 2702 --- [scheduling-1] ac.cn.iie.service.impl.InfoServiceImpl   : Update info of cluster 2 in database.
+2020-01-24 19:16:08.670  INFO 2702 --- [http-nio-0.0.0.0-8092-exec-10] a.cn.iie.controller.FlinkRestController  : Return overall count.
+2020-01-24 19:16:08.706  INFO 2702 --- [http-nio-0.0.0.0-8092-exec-4] ac.cn.iie.controller.ClusterController   : Return Cluster List.
+2020-01-24 19:16:57.441  INFO 2702 --- [scheduling-1] a.cn.iie.schedule.FlinkUptodateSchedule  : Update info with Flink.
+2020-01-24 19:16:57.459  INFO 2702 --- [scheduling-1] ac.cn.iie.service.impl.InfoServiceImpl   : Update info of cluster 1 in database.
+2020-01-24 19:16:57.469  INFO 2702 --- [scheduling-1] ac.cn.iie.service.impl.InfoServiceImpl   : Update info of cluster 2 in database.
+2020-01-24 19:17:08.668  INFO 2702 --- [http-nio-0.0.0.0-8092-exec-8] a.cn.iie.controller.FlinkRestController  : Return overall count.
+2020-01-24 19:17:08.709  INFO 2702 --- [http-nio-0.0.0.0-8092-exec-9] ac.cn.iie.controller.ClusterController   : Return Cluster List.
+2020-01-24 19:17:57.441  INFO 2702 --- [scheduling-1] a.cn.iie.schedule.FlinkUptodateSchedule  : Update info with Flink.
+2020-01-24 19:17:57.459  INFO 2702 --- [scheduling-1] ac.cn.iie.service.impl.InfoServiceImpl   : Update info of cluster 1 in database.
+2020-01-24 19:17:57.471  INFO 2702 --- [scheduling-1] ac.cn.iie.service.impl.InfoServiceImpl   : Update info of cluster 2 in database.
+2020-01-24 19:18:08.669  INFO 2702 --- [http-nio-0.0.0.0-8092-exec-2] a.cn.iie.controller.FlinkRestController  : Return overall count.
+2020-01-24 19:18:08.694  INFO 2702 --- [http-nio-0.0.0.0-8092-exec-7] ac.cn.iie.controller.ClusterController   : Return Cluster List.
+2020-01-24 19:18:57.440  INFO 2702 --- [scheduling-1] a.cn.iie.schedule.FlinkUptodateSchedule  : Update info with Flink.
+2020-01-24 19:18:57.458  INFO 2702 --- [scheduling-1] ac.cn.iie.service.impl.InfoServiceImpl   : Update info of cluster 1 in database.
+2020-01-24 19:18:57.507  INFO 2702 --- [scheduling-1] ac.cn.iie.service.impl.InfoServiceImpl   : Update info of cluster 2 in database.
+2020-01-24 19:19:08.668  INFO 2702 --- [http-nio-0.0.0.0-8092-exec-6] a.cn.iie.controller.FlinkRestController  : Return overall count.
+2020-01-24 19:19:08.703  INFO 2702 --- [http-nio-0.0.0.0-8092-exec-3] ac.cn.iie.controller.ClusterController   : Return Cluster List.
+2020-01-24 19:19:57.441  INFO 2702 --- [scheduling-1] a.cn.iie.schedule.FlinkUptodateSchedule  : Update info with Flink.
+2020-01-24 19:19:57.459  INFO 2702 --- [scheduling-1] ac.cn.iie.service.impl.InfoServiceImpl   : Update info of cluster 1 in database.
+2020-01-24 19:19:57.470  INFO 2702 --- [scheduling-1] ac.cn.iie.service.impl.InfoServiceImpl   : Update info of cluster 2 in database.
+2020-01-24 19:20:08.665  INFO 2702 --- [http-nio-0.0.0.0-8092-exec-2] a.cn.iie.controller.FlinkRestController  : Return overall count.
+2020-01-24 19:20:08.684  INFO 2702 --- [http-nio-0.0.0.0-8092-exec-1] ac.cn.iie.controller.ClusterController   : Return Cluster List.
+2020-01-24 19:20:57.440  INFO 2702 --- [scheduling-1] a.cn.iie.schedule.FlinkUptodateSchedule  : Update info with Flink.
+2020-01-24 19:20:57.456  INFO 2702 --- [scheduling-1] ac.cn.iie.service.impl.InfoServiceImpl   : Update info of cluster 1 in database.
+2020-01-24 19:20:57.461  INFO 2702 --- [scheduling-1] ac.cn.iie.service.impl.InfoServiceImpl   : Update info of cluster 2 in database.
+2020-01-24 19:21:08.668  INFO 2702 --- [http-nio-0.0.0.0-8092-exec-6] a.cn.iie.controller.FlinkRestController  : Return overall count.
+2020-01-24 19:21:08.693  INFO 2702 --- [http-nio-0.0.0.0-8092-exec-10] ac.cn.iie.controller.ClusterController   : Return Cluster List.
+2020-01-24 19:21:57.441  INFO 2702 --- [scheduling-1] a.cn.iie.schedule.FlinkUptodateSchedule  : Update info with Flink.
+2020-01-24 19:21:57.459  INFO 2702 --- [scheduling-1] ac.cn.iie.service.impl.InfoServiceImpl   : Update info of cluster 1 in database.
+2020-01-24 19:21:57.472  INFO 2702 --- [scheduling-1] ac.cn.iie.service.impl.InfoServiceImpl   : Update info of cluster 2 in database.
+2020-01-24 19:22:08.670  INFO 2702 --- [http-nio-0.0.0.0-8092-exec-2] a.cn.iie.controller.FlinkRestController  : Return overall count.
+2020-01-24 19:22:08.705  INFO 2702 --- [http-nio-0.0.0.0-8092-exec-4] ac.cn.iie.controller.ClusterController   : Return Cluster List.
+2020-01-24 19:22:57.440  INFO 2702 --- [scheduling-1] a.cn.iie.schedule.FlinkUptodateSchedule  : Update info with Flink.
+2020-01-24 19:22:57.448  INFO 2702 --- [scheduling-1] ac.cn.iie.service.impl.InfoServiceImpl   : Update info of cluster 1 in database.
+2020-01-24 19:22:57.454  INFO 2702 --- [scheduling-1] ac.cn.iie.service.impl.InfoServiceImpl   : Update info of cluster 2 in database.
+2020-01-24 19:23:08.668  INFO 2702 --- [http-nio-0.0.0.0-8092-exec-6] a.cn.iie.controller.FlinkRestController  : Return overall count.
+2020-01-24 19:23:08.690  INFO 2702 --- [http-nio-0.0.0.0-8092-exec-9] ac.cn.iie.controller.ClusterController   : Return Cluster List.
+2020-01-24 19:23:57.440  INFO 2702 --- [scheduling-1] a.cn.iie.schedule.FlinkUptodateSchedule  : Update info with Flink.
+2020-01-24 19:23:57.457  INFO 2702 --- [scheduling-1] ac.cn.iie.service.impl.InfoServiceImpl   : Update info of cluster 1 in database.
+2020-01-24 19:23:57.470  INFO 2702 --- [scheduling-1] ac.cn.iie.service.impl.InfoServiceImpl   : Update info of cluster 2 in database.
+2020-01-24 19:24:08.663  INFO 2702 --- [http-nio-0.0.0.0-8092-exec-2] a.cn.iie.controller.FlinkRestController  : Return overall count.
+2020-01-24 19:24:08.685  INFO 2702 --- [http-nio-0.0.0.0-8092-exec-8] ac.cn.iie.controller.ClusterController   : Return Cluster List.
+2020-01-24 19:24:57.440  INFO 2702 --- [scheduling-1] a.cn.iie.schedule.FlinkUptodateSchedule  : Update info with Flink.
+2020-01-24 19:24:57.449  INFO 2702 --- [scheduling-1] ac.cn.iie.service.impl.InfoServiceImpl   : Update info of cluster 1 in database.
+2020-01-24 19:24:57.453  INFO 2702 --- [scheduling-1] ac.cn.iie.service.impl.InfoServiceImpl   : Update info of cluster 2 in database.
+2020-01-24 19:25:08.664  INFO 2702 --- [http-nio-0.0.0.0-8092-exec-6] a.cn.iie.controller.FlinkRestController  : Return overall count.
+2020-01-24 19:25:08.693  INFO 2702 --- [http-nio-0.0.0.0-8092-exec-5] ac.cn.iie.controller.ClusterController   : Return Cluster List.
+2020-01-24 19:25:57.441  INFO 2702 --- [scheduling-1] a.cn.iie.schedule.FlinkUptodateSchedule  : Update info with Flink.
+2020-01-24 19:25:57.458  INFO 2702 --- [scheduling-1] ac.cn.iie.service.impl.InfoServiceImpl   : Update info of cluster 1 in database.
+2020-01-24 19:25:57.470  INFO 2702 --- [scheduling-1] ac.cn.iie.service.impl.InfoServiceImpl   : Update info of cluster 2 in database.
+2020-01-24 19:26:08.662  INFO 2702 --- [http-nio-0.0.0.0-8092-exec-2] a.cn.iie.controller.FlinkRestController  : Return overall count.
+2020-01-24 19:26:08.679  INFO 2702 --- [http-nio-0.0.0.0-8092-exec-7] ac.cn.iie.controller.ClusterController   : Return Cluster List.
+2020-01-24 19:26:57.440  INFO 2702 --- [scheduling-1] a.cn.iie.schedule.FlinkUptodateSchedule  : Update info with Flink.
+2020-01-24 19:26:57.451  INFO 2702 --- [scheduling-1] ac.cn.iie.service.impl.InfoServiceImpl   : Update info of cluster 1 in database.
+2020-01-24 19:26:57.455  INFO 2702 --- [scheduling-1] ac.cn.iie.service.impl.InfoServiceImpl   : Update info of cluster 2 in database.
+2020-01-24 19:27:08.670  INFO 2702 --- [http-nio-0.0.0.0-8092-exec-6] a.cn.iie.controller.FlinkRestController  : Return overall count.
+2020-01-24 19:27:08.693  INFO 2702 --- [http-nio-0.0.0.0-8092-exec-3] ac.cn.iie.controller.ClusterController   : Return Cluster List.
+2020-01-24 23:04:32.858  INFO 2702 --- [scheduling-1] a.cn.iie.schedule.FlinkUptodateSchedule  : Update info with Flink.
+2020-01-24 23:04:32.878  INFO 2702 --- [scheduling-1] ac.cn.iie.service.impl.InfoServiceImpl   : Update info of cluster 1 in database.
+2020-01-24 23:04:32.882  INFO 2702 --- [scheduling-1] ac.cn.iie.service.impl.InfoServiceImpl   : Update info of cluster 2 in database.
+2020-01-24 23:04:44.087  INFO 2702 --- [http-nio-0.0.0.0-8092-exec-4] a.cn.iie.controller.FlinkRestController  : Return overall count.
+2020-01-24 23:04:44.123  INFO 2702 --- [http-nio-0.0.0.0-8092-exec-7] ac.cn.iie.controller.ClusterController   : Return Cluster List.
+2020-01-24 23:05:32.859  INFO 2702 --- [scheduling-1] a.cn.iie.schedule.FlinkUptodateSchedule  : Update info with Flink.
+2020-01-24 23:05:32.868  INFO 2702 --- [scheduling-1] ac.cn.iie.service.impl.InfoServiceImpl   : Update info of cluster 1 in database.
+2020-01-24 23:05:32.872  INFO 2702 --- [scheduling-1] ac.cn.iie.service.impl.InfoServiceImpl   : Update info of cluster 2 in database.
+2020-01-24 23:05:44.084  INFO 2702 --- [http-nio-0.0.0.0-8092-exec-5] a.cn.iie.controller.FlinkRestController  : Return overall count.
+2020-01-24 23:05:44.109  INFO 2702 --- [http-nio-0.0.0.0-8092-exec-3] ac.cn.iie.controller.ClusterController   : Return Cluster List.
+2020-01-24 23:06:32.858  INFO 2702 --- [scheduling-1] a.cn.iie.schedule.FlinkUptodateSchedule  : Update info with Flink.
+2020-01-24 23:06:32.868  INFO 2702 --- [scheduling-1] ac.cn.iie.service.impl.InfoServiceImpl   : Update info of cluster 1 in database.
+2020-01-24 23:06:32.873  INFO 2702 --- [scheduling-1] ac.cn.iie.service.impl.InfoServiceImpl   : Update info of cluster 2 in database.
+2020-01-24 23:06:44.087  INFO 2702 --- [http-nio-0.0.0.0-8092-exec-4] a.cn.iie.controller.FlinkRestController  : Return overall count.
+2020-01-24 23:06:44.125  INFO 2702 --- [http-nio-0.0.0.0-8092-exec-6] ac.cn.iie.controller.ClusterController   : Return Cluster List.
+2020-01-24 23:07:32.859  INFO 2702 --- [scheduling-1] a.cn.iie.schedule.FlinkUptodateSchedule  : Update info with Flink.
+2020-01-24 23:07:32.868  INFO 2702 --- [scheduling-1] ac.cn.iie.service.impl.InfoServiceImpl   : Update info of cluster 1 in database.
+2020-01-24 23:07:32.873  INFO 2702 --- [scheduling-1] ac.cn.iie.service.impl.InfoServiceImpl   : Update info of cluster 2 in database.
+2020-01-24 23:07:44.087  INFO 2702 --- [http-nio-0.0.0.0-8092-exec-5] a.cn.iie.controller.FlinkRestController  : Return overall count.
+2020-01-24 23:07:44.105  INFO 2702 --- [http-nio-0.0.0.0-8092-exec-2] ac.cn.iie.controller.ClusterController   : Return Cluster List.
+2020-01-24 23:08:32.858  INFO 2702 --- [scheduling-1] a.cn.iie.schedule.FlinkUptodateSchedule  : Update info with Flink.
+2020-01-24 23:08:32.875  INFO 2702 --- [scheduling-1] ac.cn.iie.service.impl.InfoServiceImpl   : Update info of cluster 1 in database.
+2020-01-24 23:08:32.884  INFO 2702 --- [scheduling-1] ac.cn.iie.service.impl.InfoServiceImpl   : Update info of cluster 2 in database.
+2020-01-24 23:08:44.086  INFO 2702 --- [http-nio-0.0.0.0-8092-exec-4] a.cn.iie.controller.FlinkRestController  : Return overall count.
+2020-01-24 23:08:44.123  INFO 2702 --- [http-nio-0.0.0.0-8092-exec-10] ac.cn.iie.controller.ClusterController   : Return Cluster List.
+2020-01-24 23:09:32.859  INFO 2702 --- [scheduling-1] a.cn.iie.schedule.FlinkUptodateSchedule  : Update info with Flink.
+2020-01-24 23:09:32.875  INFO 2702 --- [scheduling-1] ac.cn.iie.service.impl.InfoServiceImpl   : Update info of cluster 1 in database.
+2020-01-24 23:09:32.887  INFO 2702 --- [scheduling-1] ac.cn.iie.service.impl.InfoServiceImpl   : Update info of cluster 2 in database.
+2020-01-24 23:09:44.076  INFO 2702 --- [http-nio-0.0.0.0-8092-exec-1] a.cn.iie.controller.FlinkRestController  : Return overall count.
+2020-01-24 23:09:44.096  INFO 2702 --- [http-nio-0.0.0.0-8092-exec-8] ac.cn.iie.controller.ClusterController   : Return Cluster List.
+2020-01-24 23:10:32.859  INFO 2702 --- [scheduling-1] a.cn.iie.schedule.FlinkUptodateSchedule  : Update info with Flink.
+2020-01-24 23:10:32.874  INFO 2702 --- [scheduling-1] ac.cn.iie.service.impl.InfoServiceImpl   : Update info of cluster 1 in database.
+2020-01-24 23:10:32.886  INFO 2702 --- [scheduling-1] ac.cn.iie.service.impl.InfoServiceImpl   : Update info of cluster 2 in database.
+2020-01-24 23:10:44.085  INFO 2702 --- [http-nio-0.0.0.0-8092-exec-7] a.cn.iie.controller.FlinkRestController  : Return overall count.
+2020-01-24 23:10:44.116  INFO 2702 --- [http-nio-0.0.0.0-8092-exec-9] ac.cn.iie.controller.ClusterController   : Return Cluster List.
+2020-01-24 23:11:32.858  INFO 2702 --- [scheduling-1] a.cn.iie.schedule.FlinkUptodateSchedule  : Update info with Flink.
+2020-01-24 23:11:32.867  INFO 2702 --- [scheduling-1] ac.cn.iie.service.impl.InfoServiceImpl   : Update info of cluster 1 in database.
+2020-01-24 23:11:32.870  INFO 2702 --- [scheduling-1] ac.cn.iie.service.impl.InfoServiceImpl   : Update info of cluster 2 in database.
+2020-01-24 23:11:44.080  INFO 2702 --- [http-nio-0.0.0.0-8092-exec-1] a.cn.iie.controller.FlinkRestController  : Return overall count.
+2020-01-24 23:11:44.094  INFO 2702 --- [http-nio-0.0.0.0-8092-exec-3] ac.cn.iie.controller.ClusterController   : Return Cluster List.
+2020-01-24 23:12:33.981  INFO 2702 --- [scheduling-1] a.cn.iie.schedule.FlinkUptodateSchedule  : Update info with Flink.
+2020-01-24 23:12:33.990  INFO 2702 --- [scheduling-1] ac.cn.iie.service.impl.InfoServiceImpl   : Update info of cluster 1 in database.
+2020-01-24 23:12:33.994  INFO 2702 --- [scheduling-1] ac.cn.iie.service.impl.InfoServiceImpl   : Update info of cluster 2 in database.
+2020-01-24 23:12:45.210  INFO 2702 --- [http-nio-0.0.0.0-8092-exec-5] a.cn.iie.controller.FlinkRestController  : Return overall count.
+2020-01-24 23:12:45.247  INFO 2702 --- [http-nio-0.0.0.0-8092-exec-9] ac.cn.iie.controller.ClusterController   : Return Cluster List.
+2020-01-24 23:13:33.982  INFO 2702 --- [scheduling-1] a.cn.iie.schedule.FlinkUptodateSchedule  : Update info with Flink.
+2020-01-24 23:13:33.990  INFO 2702 --- [scheduling-1] ac.cn.iie.service.impl.InfoServiceImpl   : Update info of cluster 1 in database.
+2020-01-24 23:13:33.995  INFO 2702 --- [scheduling-1] ac.cn.iie.service.impl.InfoServiceImpl   : Update info of cluster 2 in database.
+2020-01-24 23:13:45.206  INFO 2702 --- [http-nio-0.0.0.0-8092-exec-8] a.cn.iie.controller.FlinkRestController  : Return overall count.
+2020-01-24 23:13:45.223  INFO 2702 --- [http-nio-0.0.0.0-8092-exec-3] ac.cn.iie.controller.ClusterController   : Return Cluster List.
+2020-01-24 23:14:33.982  INFO 2702 --- [scheduling-1] a.cn.iie.schedule.FlinkUptodateSchedule  : Update info with Flink.
+2020-01-24 23:14:33.998  INFO 2702 --- [scheduling-1] ac.cn.iie.service.impl.InfoServiceImpl   : Update info of cluster 1 in database.
+2020-01-24 23:14:34.004  INFO 2702 --- [scheduling-1] ac.cn.iie.service.impl.InfoServiceImpl   : Update info of cluster 2 in database.
+2020-01-24 23:14:45.209  INFO 2702 --- [http-nio-0.0.0.0-8092-exec-5] a.cn.iie.controller.FlinkRestController  : Return overall count.
+2020-01-24 23:14:45.247  INFO 2702 --- [http-nio-0.0.0.0-8092-exec-1] ac.cn.iie.controller.ClusterController   : Return Cluster List.
+2020-01-24 23:15:33.981  INFO 2702 --- [scheduling-1] a.cn.iie.schedule.FlinkUptodateSchedule  : Update info with Flink.
+2020-01-24 23:15:33.997  INFO 2702 --- [scheduling-1] ac.cn.iie.service.impl.InfoServiceImpl   : Update info of cluster 1 in database.
+2020-01-24 23:15:34.007  INFO 2702 --- [scheduling-1] ac.cn.iie.service.impl.InfoServiceImpl   : Update info of cluster 2 in database.
+2020-01-24 23:15:45.204  INFO 2702 --- [http-nio-0.0.0.0-8092-exec-8] a.cn.iie.controller.FlinkRestController  : Return overall count.
+2020-01-24 23:15:45.225  INFO 2702 --- [http-nio-0.0.0.0-8092-exec-7] ac.cn.iie.controller.ClusterController   : Return Cluster List.
+2020-01-24 23:16:33.981  INFO 2702 --- [scheduling-1] a.cn.iie.schedule.FlinkUptodateSchedule  : Update info with Flink.
+2020-01-24 23:16:33.997  INFO 2702 --- [scheduling-1] ac.cn.iie.service.impl.InfoServiceImpl   : Update info of cluster 1 in database.
+2020-01-24 23:16:34.009  INFO 2702 --- [scheduling-1] ac.cn.iie.service.impl.InfoServiceImpl   : Update info of cluster 2 in database.
+2020-01-24 23:16:45.208  INFO 2702 --- [http-nio-0.0.0.0-8092-exec-5] a.cn.iie.controller.FlinkRestController  : Return overall count.
+2020-01-24 23:16:45.269  INFO 2702 --- [http-nio-0.0.0.0-8092-exec-4] ac.cn.iie.controller.ClusterController   : Return Cluster List.
+2020-01-24 23:17:33.981  INFO 2702 --- [scheduling-1] a.cn.iie.schedule.FlinkUptodateSchedule  : Update info with Flink.
+2020-01-24 23:17:33.997  INFO 2702 --- [scheduling-1] ac.cn.iie.service.impl.InfoServiceImpl   : Update info of cluster 1 in database.
+2020-01-24 23:17:34.007  INFO 2702 --- [scheduling-1] ac.cn.iie.service.impl.InfoServiceImpl   : Update info of cluster 2 in database.
+2020-01-24 23:17:45.203  INFO 2702 --- [http-nio-0.0.0.0-8092-exec-6] a.cn.iie.controller.FlinkRestController  : Return overall count.
+2020-01-24 23:17:45.219  INFO 2702 --- [http-nio-0.0.0.0-8092-exec-3] ac.cn.iie.controller.ClusterController   : Return Cluster List.
+2020-01-24 23:18:33.981  INFO 2702 --- [scheduling-1] a.cn.iie.schedule.FlinkUptodateSchedule  : Update info with Flink.
+2020-01-24 23:18:33.996  INFO 2702 --- [scheduling-1] ac.cn.iie.service.impl.InfoServiceImpl   : Update info of cluster 1 in database.
+2020-01-24 23:18:34.000  INFO 2702 --- [scheduling-1] ac.cn.iie.service.impl.InfoServiceImpl   : Update info of cluster 2 in database.
+2020-01-24 23:18:45.203  INFO 2702 --- [http-nio-0.0.0.0-8092-exec-2] a.cn.iie.controller.FlinkRestController  : Return overall count.
+2020-01-24 23:18:45.225  INFO 2702 --- [http-nio-0.0.0.0-8092-exec-9] ac.cn.iie.controller.ClusterController   : Return Cluster List.
+2020-01-24 23:19:33.982  INFO 2702 --- [scheduling-1] a.cn.iie.schedule.FlinkUptodateSchedule  : Update info with Flink.
+2020-01-24 23:19:33.998  INFO 2702 --- [scheduling-1] ac.cn.iie.service.impl.InfoServiceImpl   : Update info of cluster 1 in database.
+2020-01-24 23:19:34.008  INFO 2702 --- [scheduling-1] ac.cn.iie.service.impl.InfoServiceImpl   : Update info of cluster 2 in database.
+2020-01-24 23:19:45.204  INFO 2702 --- [http-nio-0.0.0.0-8092-exec-6] a.cn.iie.controller.FlinkRestController  : Return overall count.
+2020-01-24 23:19:45.222  INFO 2702 --- [http-nio-0.0.0.0-8092-exec-10] ac.cn.iie.controller.ClusterController   : Return Cluster List.
+2020-01-24 23:20:33.981  INFO 2702 --- [scheduling-1] a.cn.iie.schedule.FlinkUptodateSchedule  : Update info with Flink.
+2020-01-24 23:20:33.998  INFO 2702 --- [scheduling-1] ac.cn.iie.service.impl.InfoServiceImpl   : Update info of cluster 1 in database.
+2020-01-24 23:20:34.002  INFO 2702 --- [scheduling-1] ac.cn.iie.service.impl.InfoServiceImpl   : Update info of cluster 2 in database.
+2020-01-24 23:20:45.206  INFO 2702 --- [http-nio-0.0.0.0-8092-exec-2] a.cn.iie.controller.FlinkRestController  : Return overall count.
+2020-01-24 23:20:45.222  INFO 2702 --- [http-nio-0.0.0.0-8092-exec-1] ac.cn.iie.controller.ClusterController   : Return Cluster List.
+2020-01-24 23:21:33.982  INFO 2702 --- [scheduling-1] a.cn.iie.schedule.FlinkUptodateSchedule  : Update info with Flink.
+2020-01-24 23:21:33.997  INFO 2702 --- [scheduling-1] ac.cn.iie.service.impl.InfoServiceImpl   : Update info of cluster 1 in database.
+2020-01-24 23:21:34.007  INFO 2702 --- [scheduling-1] ac.cn.iie.service.impl.InfoServiceImpl   : Update info of cluster 2 in database.
+2020-01-24 23:21:45.209  INFO 2702 --- [http-nio-0.0.0.0-8092-exec-6] a.cn.iie.controller.FlinkRestController  : Return overall count.
+2020-01-24 23:21:45.234  INFO 2702 --- [http-nio-0.0.0.0-8092-exec-7] ac.cn.iie.controller.ClusterController   : Return Cluster List.
+2020-01-24 23:22:33.981  INFO 2702 --- [scheduling-1] a.cn.iie.schedule.FlinkUptodateSchedule  : Update info with Flink.
+2020-01-24 23:22:33.991  INFO 2702 --- [scheduling-1] ac.cn.iie.service.impl.InfoServiceImpl   : Update info of cluster 1 in database.
+2020-01-24 23:22:33.998  INFO 2702 --- [scheduling-1] ac.cn.iie.service.impl.InfoServiceImpl   : Update info of cluster 2 in database.
+2020-01-24 23:22:45.203  INFO 2702 --- [http-nio-0.0.0.0-8092-exec-2] a.cn.iie.controller.FlinkRestController  : Return overall count.
+2020-01-24 23:22:45.220  INFO 2702 --- [http-nio-0.0.0.0-8092-exec-4] ac.cn.iie.controller.ClusterController   : Return Cluster List.
+2020-01-24 23:23:33.981  INFO 2702 --- [scheduling-1] a.cn.iie.schedule.FlinkUptodateSchedule  : Update info with Flink.
+2020-01-24 23:23:33.990  INFO 2702 --- [scheduling-1] ac.cn.iie.service.impl.InfoServiceImpl   : Update info of cluster 1 in database.
+2020-01-24 23:23:33.994  INFO 2702 --- [scheduling-1] ac.cn.iie.service.impl.InfoServiceImpl   : Update info of cluster 2 in database.
+2020-01-24 23:23:45.207  INFO 2702 --- [http-nio-0.0.0.0-8092-exec-5] a.cn.iie.controller.FlinkRestController  : Return overall count.
+2020-01-24 23:23:45.227  INFO 2702 --- [http-nio-0.0.0.0-8092-exec-3] ac.cn.iie.controller.ClusterController   : Return Cluster List.

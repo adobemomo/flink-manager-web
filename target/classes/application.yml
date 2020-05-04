@@ -1,0 +1,30 @@
+##project
+server:
+  address: 0.0.0.0
+  port: 8092
+
+##spring配置
+spring:
+  ##thymeleaf
+  thymeleaf:
+    prefix: classpath:/templates/
+    suffix: .html
+    mode: LEGACYHTML5
+    encoding: UTF-8
+    cache: false
+  ##数据源
+  datasource:
+    url: jdbc:mysql://localhost:3306/flink_manager?useUnicode=true&characterEncoding=UTF-8
+    username: root
+    password: 111111
+    driver-class-name: com.mysql.jdbc.Driver
+    type: com.alibaba.druid.pool.DruidDataSource
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: false
+
+##日志
+logging:
+  file:
+    name: flink_manager_web.log

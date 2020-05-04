@@ -1,0 +1,443 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <link rel="icon" href="https://v3.bootcss.com/favicon.ico">
+
+    <title>Flink Manager Web</title>
+
+    <!-- Bootstrap core CSS -->
+    <link th:href="@{common/bootstrap/css/bootstrap.min.css}" rel="stylesheet">
+
+    <!-- Custom styles for this template -->
+    <link th:href="@{common/page/css/dashboard.css}" rel="stylesheet">
+
+    <!--<link th:href="@{common/bootstrap/css/bootstrap.css}" rel="stylesheet">-->
+    <link th:href="@{common/bootstrap-table/src/bootstrap-table.css}" rel="stylesheet">
+    <!--<link th:href="@{common/font-awesome/css/font-awesome.min.css}" rel="stylesheet">-->
+</head>
+
+<body>
+<!--  新增集群信息模态框 -->
+<div class="modal fade" id="myModal">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <!-- 模态框头部 -->
+            <div class="modal-header" style="border: 0">
+                <h4 class="modal-title">新增集群信息</h4>
+            </div>
+
+            <!-- 模态框主体 -->
+            <div class="modal-body">
+                <form id="insert-form">
+                    <div class="form-group col-md-5">
+                        <label for="insert-uri">URI:</label>
+                        <input type="text" class="form-control" id="insert-uri" name="uri">
+                    </div>
+                    <div class="form-group col-md-2">
+                        <label for="insert-sysid">系统号:</label>
+                        <select class="form-control" id="insert-sysid" name="sysId">
+                            <option value="sy">sy</option>
+                            <option value="six">six</option>
+                        </select>
+                    </div>
+                    <div class="form-group col-md-2">
+                        <label for="insert-province">省份:</label>
+                        <select class="form-control" id="insert-province" name="province">
+                            <option value="gjzx">gjzx</option>
+                            <option value="anhui">anhui</option>
+                            <option value="beijing">beijing</option>
+                            <option value="chongqing">chongqing</option>
+                            <option value="fujian">fujian</option>
+                            <option value="gansu">gansu</option>
+                            <option value="guangdong">guangdong</option>
+                            <option value="guangxi">guangxi</option>
+                            <option value="guizhou">guizhou</option>
+                            <option value="hainan">hainan</option>
+                            <option value="hebei">hebei</option>
+                            <option value="henan">henan</option>
+                            <option value="heilongjiang">heilongjiang</option>
+                            <option value="hubei">hubei</option>
+                            <option value="hunan">hunan</option>
+                            <option value="jiangsu">jiangsu</option>
+                            <option value="jiangxi">jiangxi</option>
+                            <option value="jilin">jilin</option>
+                            <option value="liaoning">liaoning</option>
+                            <option value="neimenggu">neimenggu</option>
+                            <option value="ningxia">ningxia</option>
+                            <option value="qinghai">qinghai</option>
+                            <option value="shaanxi">shaanxi</option>
+                            <option value="shandong">shandong</option>
+                            <option value="shanghai">shanghai</option>
+                            <option value="shanxi">shanxi</option>
+                            <option value="sichuan">sichuan</option>
+                            <option value="tianjin">tianjin</option>
+                            <option value="xinjiang">xinjiang</option>
+                            <option value="xizang">xizang</option>
+                            <option value="yunnan">yunnan</option>
+                            <option value="zhejiang">zhejiang</option>
+                        </select>
+                    </div>
+                    <div class="form-group col-md-3">
+                        <label for="insert-flinktaskname">Flink任务名称:</label>
+                        <input type="text" class="form-control" id="insert-flinktaskname" name="flinkTaskName">
+                    </div>
+                </form>
+            </div>
+
+            <!-- 模态框底部 -->
+            <div class="modal-footer" style="border: 0">
+                <div class="col-md-12">
+                    <button type="button" class="btn btn-success" id="insert-btn">确定</button>
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">关闭</button>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+<!-- 修改集群信息模态框 -->
+<div class="modal fade" id="myModal2">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <!-- 模态框头部 -->
+            <div class="modal-header" style="border: 0">
+                <h4 class="modal-title">修改集群信息</h4>
+            </div>
+
+            <!-- 模态框主体 -->
+            <div class="modal-body">
+                <form id="edit-form">
+                    <div class="form-group col-md-5">
+                        <label for="edit-uri">URI:</label>
+                        <input type="text" class="form-control" id="edit-uri" name="uri">
+                    </div>
+                    <div class="form-group col-md-2">
+                        <label for="edit-sysid">系统号:</label>
+                        <select class="form-control" id="edit-sysid" name="sysId">
+                            <option value="sy">sy</option>
+                            <option value="six">six</option>
+                        </select>
+                    </div>
+                    <div class="form-group col-md-2">
+                        <label for="edit-province">省份:</label>
+                        <select class="form-control" id="edit-province" name="province">
+                            <option value="gjzx">gjzx</option>
+                            <option value="anhui">anhui</option>
+                            <option value="beijing">beijing</option>
+                            <option value="chongqing">chongqing</option>
+                            <option value="fujian">fujian</option>
+                            <option value="gansu">gansu</option>
+                            <option value="guangdong">guangdong</option>
+                            <option value="guangxi">guangxi</option>
+                            <option value="guizhou">guizhou</option>
+                            <option value="hainan">hainan</option>
+                            <option value="hebei">hebei</option>
+                            <option value="henan">henan</option>
+                            <option value="heilongjiang">heilongjiang</option>
+                            <option value="hubei">hubei</option>
+                            <option value="hunan">hunan</option>
+                            <option value="jiangsu">jiangsu</option>
+                            <option value="jiangxi">jiangxi</option>
+                            <option value="jilin">jilin</option>
+                            <option value="liaoning">liaoning</option>
+                            <option value="neimenggu">neimenggu</option>
+                            <option value="ningxia">ningxia</option>
+                            <option value="qinghai">qinghai</option>
+                            <option value="shaanxi">shaanxi</option>
+                            <option value="shandong">shandong</option>
+                            <option value="shanghai">shanghai</option>
+                            <option value="shanxi">shanxi</option>
+                            <option value="sichuan">sichuan</option>
+                            <option value="tianjin">tianjin</option>
+                            <option value="xinjiang">xinjiang</option>
+                            <option value="xizang">xizang</option>
+                            <option value="yunnan">yunnan</option>
+                            <option value="zhejiang">zhejiang</option>
+                        </select>
+                    </div>
+                    <div class="form-group col-md-3">
+                        <label for="edit-flinktaskname">Flink任务名称:</label>
+                        <input type="text" class="form-control" id="edit-flinktaskname" name="flinkTaskName">
+                    </div>
+                </form>
+            </div>
+
+            <!-- 模态框底部 -->
+            <div class="modal-footer" style="border: 0">
+                <div class="col-md-12">
+                    <button type="button" class="btn btn-success" id="edit-btn">确定</button>
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">关闭</button>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<!-- 修改集群信息模态框 -->
+<div class="modal fade" id="add-guide">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <!-- 模态框头部 -->
+            <div class="modal-header" style="border: 0">
+                <h4 class="modal-title">URI说明</h4>
+            </div>
+
+            <!-- 模态框主体 -->
+            <div class="modal-body">
+                <div>
+                    <ul>
+                        <li><b>协议</b>
+                            <p></p>
+                            <p>http://头部需要在录入的URI中体现</p></li>
+                        <li><b>路径</b>
+                            <p></p>
+                            <p>进入部署Flink集群的Yarn页面，取Yarn所运行的地址和端口号。</p>
+                            <p>进入所要添加Flink集群的Web Monitor，取<u>/proxy</u>及其后的资源路径，拼接到Yarn地址后面。</p></li>
+                        <p>记得在URI末尾添加反斜杠/，否则点击URI无法正确跳转到对应的Web Monitor</p>
+                        <li><b>示例</b>
+                            <p></p>
+                            <p><u>http://10.0.0.1:8088/proxy/123456679/</u></p></li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- 模态框底部 -->
+            <div class="modal-footer" style="border: 0"></div>
+
+        </div>
+    </div>
+</div>
+
+
+<!-- 顶部固定栏 -->
+<nav class="navbar navbar-inverse navbar-fixed-top">
+    <div class="container-fluid">
+        <div class="navbar-header">
+            <a class="navbar-brand hand-mouse" id="flinkmanager">Flink Manager</a>
+        </div>
+    </div>
+</nav>
+
+<div class="container-fluid">
+    <div class="row">
+        <!--侧边导航栏-->
+
+        <div class="col-sm-1 sidebar" id="full-side-bar">
+            <ul class="nav nav-sidebar" id="full-side-ul">
+                <li class="active" id="navi_overview">
+                    <a href="#overview" data-toggle="tab" class="nav-a">
+                        <span class="glyphicon glyphicon-globe"></span>
+                        <span>Overview</span>
+                    </a>
+                </li>
+                <li id="navi_clusters"><a href="#clusters" data-toggle="tab" class="nav-a">
+                    <span class="glyphicon glyphicon-cog"></span>
+                    <span>Clusters</span>
+                </a></li>
+                <li id="navi_taskmanagers"><a href="#taskmanagers" data-toggle="tab" class="nav-a">
+                    <span class="glyphicon glyphicon-list"></span>
+                    <span>Task Managers</span>
+                </a></li>
+                <li id="navi_running_jobs"><a href="#running_jobs" data-toggle="tab" class="nav-a">
+                    <span class="glyphicon glyphicon-flash"></span>
+                    <span>Running Jobs</span>
+                </a></li>
+            </ul>
+        </div>
+        <div class="col-less-half-1 sidebar hide" id="icon-side-bar">
+            <ul class="nav nav-sidebar" id="icon-side-ul">
+                <li class="active" id="navi_overview_icon"><a href="#overview" data-toggle="tab" class="nav-a">
+                    <span class="glyphicon glyphicon-globe"></span>
+                </a></li>
+                <li id="navi_clusters_icon"><a href="#clusters" data-toggle="tab" class="nav-a">
+                    <span class="glyphicon glyphicon-cog"></span>
+                </a></li>
+                <li id="navi_taskmanagers_icon"><a href="#taskmanagers" data-toggle="tab" class="nav-a">
+                    <span class="glyphicon glyphicon-list"></span>
+                </a></li>
+                <li id="navi_running_jobs_icon"><a href="#running_jobs" data-toggle="tab" class="nav-a">
+                    <span class="glyphicon glyphicon-flash"></span>
+                </a></li>
+            </ul>
+        </div>
+
+        <!--Main-->
+        <div class="col-sm-11 col-sm-offset-1 main" id="main-body">
+
+
+            <div class="tab-content">
+                <!--overview-->
+                <div class="tab-pane active" id="overview">
+                    <div class="container-fluid">
+                        <div class="row">
+                            <!-- 集群信息面板 -->
+                            <div class="col-sm-6 default-color2">
+                                <div class="panel panel-default">
+                                    <div class="panel-heading">
+                                        <h3 class="panel-title">
+                                            正在运行的集群数
+                                        </h3>
+                                    </div>
+                                    <div class="panel-body">
+                                        <div class="row">
+                                            <div class="col-sm-12 container-fluid "
+                                                 style="color: green; padding-left: 15px">
+                                                <span class="big-number" id="running_cluster_cnt"></span>
+                                            </div>
+
+                                        </div>
+                                        <hr/>
+                                        <div class="row">
+                                            <div class="col-sm-6 container-fluid" style="color: gray">
+                                                <span>集群总数</span>
+                                                <span id="total_cluster_cnt"></span>
+                                            </div>
+                                            <div class="col-sm-6 container-fluid" style="color: gray">
+                                                <span>正在运行的Taskmanager数</span>
+                                                <span id="running_tm_cnt"></span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- Job信息面板-->
+                            <div class="col-sm-6 default-color6">
+                                <div class="panel panel-default">
+                                    <div class="panel-heading">
+                                        <h3 class="panel-title">
+                                            正在运行的Job数
+                                        </h3>
+                                    </div>
+                                    <div class="panel-body">
+                                        <div class="row">
+                                            <div class="col-sm-12 container-fluid" style="color: green">
+                                                <span class="big-number" id="running_job_cnt"></span>
+                                            </div>
+                                        </div>
+                                        <hr/>
+                                        <div class="row">
+                                            <div class="col-sm-4 container-fluid" style="color: gray">
+                                                <span>已完成</span>
+                                                <span id="finished_job_cnt"></span>
+                                            </div>
+                                            <div class="col-sm-4 container-fluid" style="color: gray">
+                                                <span>取消</span>
+                                                <span id="canceled_job_cnt"></span>
+                                            </div>
+                                            <div class="col-sm-4 container-fluid" style="color: gray">
+                                                <span>失败</span>
+                                                <span id="failed_job_cnt"></span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!--添加集群按钮-->
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <div id="toolbar">
+                                    <div class="btn-group btn-group-sm">
+                                        <button id="btn-add" type="button" class="btn btn-default icon-user"
+                                                data-toggle="modal"
+                                                data-target="#myModal"> 增加
+                                        </button>
+                                        <button class="btn"
+                                                data-toggle="modal"
+                                                data-target="#add-guide">
+                                            ?
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!--集群信息列表-->
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <table id="cluster_list">
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
+                <!--clusters-->
+                <div class="tab-pane" id="clusters">
+                    <div class="container-fluid less-padding">
+                        <div class="row">
+                            <div class="col-sm-2 less-padding" id="dataSource">
+                                <ul class="nav nav-pills nav-stacked datasourceslist" id="jm_datasourcelist"></ul>
+                            </div>
+                            <div class="col-sm-10" id="clusterContent">
+                                <ul id="myTab" class="nav nav-tabs">
+                                    <li class="active"><a href="#jmconfig" data-toggle="tab">Jobmanager Config</a></li>
+                                </ul>
+                                <div id="myTabContent" class="tab-content">
+                                    <div class="tab-pane fade in active" id="jmconfig">
+                                        <table id="jmconfigtable"></table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
+                <!--taskmanagers-->
+                <div class="tab-pane" id="taskmanagers">
+                    <div class="container-fluid less-padding">
+                        <div class="row">
+                            <!--taskmanager 数据来源-->
+                            <div class="col-sm-2 less-padding">
+                                <ul class="nav nav-pills nav-stacked datasourceslist" id="tm_datasourcelist">
+                                </ul>
+                            </div>
+                            <div class="col-sm-10" id="tab_tm">
+                                <table id="taskmanager_list">
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
+                <!--jobs-->
+                <div class="tab-pane" id="running_jobs">
+                    <div class="container-fluid less-padding">
+                        <div class="row">
+                            <div class="col-sm-2 less-padding">
+                                <!--job 数据来源-->
+                                <ul class="nav nav-pills nav-stacked datasourceslist" id="running_job_datasourcelist">
+                                </ul>
+                            </div>
+                            <div class="col-sm-10">
+                                <table id="running_jobs_table"></table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+
+
+<script th:src="@{common/jquery.min.js}"></script>
+<script th:src="@{common/bootstrap/js/bootstrap.js}"></script>
+<script th:src="@{common/bootstrap-table/src/bootstrap-table.js}"></script>
+<script th:src="@{common/bootstrap-table/src/extensions/export/tableExport.js}"></script>
+<script th:src="@{common/bootstrap-table/src/extensions/export/bootstrap-table-export.js}"></script>
+<script th:src="@{common/bootstrap/js/bootstrap-confirmation.min.js}"></script>
+<script th:src="@{common/bootstrap-table/src/locale/bootstrap-table-zh-CN.js}"></script>
+<script th:src="@{common/layer/layer.js}"></script>
+<script th:src="@{common/page/js/dashboard.js}"></script>
+</html>
